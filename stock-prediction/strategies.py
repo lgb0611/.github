@@ -61,8 +61,16 @@ def load():
     p = pd.read_parquet(os.path.join(DATA_DIR, "prices.parquet"))
     p = p.sort_values(["code", "date"]).reset_index(drop=True)
     # 거래정지일은 시가·고가·저가가 0 → 종가로 채움
+    # (조건을 먼저 저장해 둬야 함: 시가를 먼저 채우면 고가·저가가 0으로 남는 버그가 있었음)
+    halt = p["open"] == 0
     for c in ["open", "high", "low"]:
-        p[c] = p[c].where(p["open"] > 0, p["close"]).astype(float)
+        p[c] = p[c].where(~halt, p["close"]).astype(float)
+    # 일부 종목은 저가만 0으로 들어온 날이 있음 → 시가·종가 중 낮은 값으로
+    bad_low = p["low"] <= 0
+    p.loc[bad_low, "low"] = p.loc[bad_low, ["open", "close"]].min(axis=1)
+    # 수정주가 반올림 등으로 종가가 고가보다 높은 날이 있음 → 고가는 그날 최고, 저가는 그날 최저로 정리
+    ohlc = p[["open", "high", "low", "close"]]
+    p["high"], p["low"] = ohlc.max(axis=1), ohlc.min(axis=1)
     p["close"] = p["close"].astype(float)
     p["volume"] = p["volume"].astype(float)
     return p
