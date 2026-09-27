@@ -1,0 +1,3 @@
+AUC 0.5580
+IC_mean 0.1204
+IC_positive 0.859
