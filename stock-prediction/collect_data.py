@@ -2,7 +2,7 @@
 한국 주식 전 종목(코스피 + 코스닥) 10년치 일봉 데이터를 네이버 금융에서 받아옵니다.
 
 실행: python collect_data.py
-결과: data/stock_list.csv (종목 목록), data/prices.parquet (전체 주가)
+결과: data/stock_list.csv (종목 목록), data/prices.parquet (전체 주가), data/index.parquet (지수)
 
 참고
 - 가격은 액면분할 등이 반영된 '수정주가'입니다.
@@ -73,6 +73,20 @@ def get_prices(code):
     return df
 
 
+def get_index_prices():
+    """코스피·코스닥 지수 일봉 (시장 상승장 필터와 비교 기준용)."""
+    rows = []
+    for symbol in ["KOSPI", "KOSDAQ"]:
+        url = ("https://fchart.stock.naver.com/sise.nhn"
+               f"?symbol={symbol}&timeframe=day&count=3000&requestType=0")
+        text = requests.get(url, headers=HEADERS, timeout=15).text
+        for item in re.findall(r'data="([^"]+)"', text):
+            date, _, _, _, close, _ = item.split("|")
+            rows.append({"index": symbol, "date": pd.Timestamp(date), "close": float(close)})
+    df = pd.DataFrame(rows)
+    return df[df["date"] >= "2015-01-01"]
+
+
 def main():
     os.makedirs(DATA_DIR, exist_ok=True)
 
@@ -91,6 +105,8 @@ def main():
                 results.append(df)
             if i % 500 == 0:
                 print(f"   {i}/{len(futures)} 완료")
+
+    get_index_prices().to_parquet(os.path.join(DATA_DIR, "index.parquet"), index=False)
 
     prices = pd.concat(results, ignore_index=True)
     prices.to_parquet(os.path.join(DATA_DIR, "prices.parquet"), index=False)
