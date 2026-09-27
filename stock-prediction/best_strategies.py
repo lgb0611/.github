@@ -159,6 +159,13 @@ def run_exit(m, legs):
     return ret - COST, hold, value
 
 
+def lookup_index(idx, col, p):
+    """지수 표(idx)의 col 값을 각 행의 (시장, 날짜)에 맞춰 가져옴."""
+    s = idx.set_index(["index", "date"])[col]
+    keys = pd.MultiIndex.from_arrays([p["market"], p["date"]])
+    return pd.Series(s.reindex(keys).to_numpy(), index=p.index)
+
+
 def load_all():
     p = S.load()
     P = S.Panel(p)
@@ -173,10 +180,9 @@ def load_all():
     idx["ma60"] = idx.groupby("index")["close"].transform(lambda s: s.rolling(60).mean())
     idx["bull"] = idx["close"] > idx["ma60"]
     market = pd.read_csv(os.path.join(S.DATA_DIR, "stock_list.csv"), dtype={"code": str})
-    p = p.merge(market[["code", "market"]], on="code", how="left")
-    p = p.merge(idx[["index", "date", "bull"]].rename(columns={"index": "market"}),
-                on=["market", "date"], how="left")
-    p["bull"] = p["bull"].fillna(False).astype(bool)
+    # merge는 큰 표 전체를 복사해서 메모리가 부족해지므로 값만 찾아 붙임
+    p["market"] = p["code"].map(market.set_index("code")["market"])
+    p["bull"] = lookup_index(idx, "bull", p).fillna(False).astype(bool)
 
     universe = ((p["tv20"] >= S.MIN_TRADING_VALUE) & (p["close"] >= S.MIN_PRICE)
                 & (p["volume"] > 0) & out["ok"]).to_numpy()
@@ -204,9 +210,9 @@ def stats(df):
                 prof=(df["ret"] > 0).mean(), hold=df["hold"].mean(), pf=gain / loss if loss > 0 else np.nan)
 
 
-def portfolio(trades, dates, value_paths, start=None):
-    """최대 SLOTS종목, 종목당 자산의 1/SLOTS씩 투자하는 실제 계좌 흉내. 같은 날 신호가 많으면 거래대금 큰 순."""
-    trades = trades.sort_values(["entry_idx", "tv20"], ascending=[True, False])
+def portfolio(trades, dates, value_paths, start=None, key="tv20", slots=SLOTS):
+    """최대 slots종목, 종목당 자산의 1/slots씩 투자하는 실제 계좌 흉내. 같은 날 신호가 많으면 key 값이 큰 순서로 매수."""
+    trades = trades.sort_values(["entry_idx", key], ascending=[True, False])
     if start is not None:
         trades = trades[trades["entry_idx"] >= start]
     by_day = {d: g for d, g in trades.groupby("entry_idx")}
@@ -229,9 +235,9 @@ def portfolio(trades, dates, value_paths, start=None):
         # 신규 매수 (매수일 = entry_idx)
         if d in by_day:
             for _, t in by_day[d].iterrows():
-                if len(positions) >= SLOTS:
+                if len(positions) >= slots:
                     break
-                amount = min(equity / SLOTS, cash)
+                amount = min(equity / slots, cash)
                 if amount <= 0:
                     break
                 cash -= amount
