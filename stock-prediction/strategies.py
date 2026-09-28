@@ -22,8 +22,12 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 BASE = os.path.dirname(__file__)
-DATA_DIR = os.path.join(BASE, "data")
-RESULT_DIR = os.path.join(BASE, "results")
+# MARKET=us 로 실행하면 미국 데이터(data_us/)를 쓰고 결과를 results_us/에 저장
+MARKET = os.environ.get("MARKET", "kr")
+DATA_DIR = os.path.join(BASE, "data" if MARKET == "kr" else f"data_{MARKET}")
+RESULT_DIR = os.environ.get("RESULT_DIR") or os.path.join(BASE, "results" if MARKET == "kr" else f"results_{MARKET}")
+BENCH = {"kr": "KOSPI", "us": "NASDAQ"}[MARKET]   # 차트·연도별 비교용 지수
+KRW_PER_USD = 1400       # 미국은 원화 기준을 달러로 바꿔 같은 크기로 맞춤
 
 TARGET = 0.15            # 성공 기준: +15%
 WINDOW = 20              # 성공 판정 기간: 20거래일
@@ -31,6 +35,13 @@ COOLDOWN = 20            # 같은 신호 중복 제외 기간
 COST = 0.0025            # 왕복 거래비용 (수수료 + 거래세 + 슬리피지)
 MIN_TRADING_VALUE = 1e9  # 20일 평균 거래대금 10억 원 이상
 MIN_PRICE = 1000
+# 데이터 오류 제거: 한국은 하루 가격제한폭이 ±30%라서 ±35%를 넘는 움직임은 데이터 오류
+BIG_MOVE = 0.35
+if MARKET == "us":
+    MIN_TRADING_VALUE /= KRW_PER_USD   # 약 $71만
+    MIN_PRICE /= KRW_PER_USD           # 약 $0.71
+    BIG_MOVE = np.inf                  # 미국은 가격제한폭이 없어 큰 움직임도 실제 데이터
+BIG_MOVE = float(os.environ.get("BIG_MOVE", BIG_MOVE))   # 민감도 확인용으로 바꿀 수 있음
 SPLIT_DATE = "2023-01-01"  # 이전 = 발견 기간, 이후 = 확인 기간
 MIN_TRADES = 300           # 발견 기간 신호가 이보다 적으면 순위에서 제외
 
@@ -207,7 +218,7 @@ def compute_outcomes(p, P):
     fwd_max[P.left < WINDOW] = np.nan
     max_gain = fwd_max / entry_px - 1
     # 데이터 오류 제거: 미래 20일 안에 하루 ±35% 넘는 변동이 있으면 제외
-    bad = (p["ret1"].abs() > 0.35).astype(float)
+    bad = (p["ret1"].abs() > BIG_MOVE).astype(float)
     bad_fwd = bad[::-1].rolling(WINDOW + 1, min_periods=1).max()[::-1].shift(-1).to_numpy()
 
     # 매도: 매수일 종가부터 확인해서 처음으로 이평선 아래로 마감한 날 → 그 다음날 시가에 매도

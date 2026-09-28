@@ -165,7 +165,7 @@ def main():
 
     ydf = pd.DataFrame(yearly)
     idx = pd.read_parquet(os.path.join(S.DATA_DIR, "index.parquet")).pivot(index="date", columns="index", values="close")
-    ydf["코스피"] = idx["KOSPI"].resample("YE").last().pct_change().reindex(
+    ydf[S.BENCH] = idx[S.BENCH].resample("YE").last().pct_change().reindex(
         pd.to_datetime(ydf.index.astype(str) + "-12-31")).to_numpy()
     print(f"\n[연도별 계좌 수익률, {MAIN}, SG 제외] (2026년은 9월까지)")
     print(ydf.map(lambda v: fmt(v, "{:+.1%}")).to_string())
@@ -179,8 +179,8 @@ def main():
                            ("★ + 상승장만", "Gap<=20% + TT + bull")]:
             cv = curves[(MAIN, ex, vname)]
             ax.plot(cv / cv.iloc[0], label=lab, lw=2 if "★" in vname else 1.2)
-        k = idx["KOSPI"].reindex(curves[(MAIN, ex, "기준: 신고가 돌파 전체")].index).ffill()
-        ax.plot(k / k.iloc[0], label="KOSPI", color="black", ls="--")
+        k = idx[S.BENCH].reindex(curves[(MAIN, ex, "기준: 신고가 돌파 전체")].index).ffill()
+        ax.plot(k / k.iloc[0], label=S.BENCH, color="black", ls="--")
         ax.axvline(SPLIT, color="k", alpha=0.3)
         ax.set_yscale("log")
         ax.set_title(f"{CHART_LABEL} breakout, exit {ex}: account (max 10 positions, SG excluded, log)")
