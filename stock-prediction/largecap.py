@@ -55,7 +55,7 @@ def all_exits():
     return ex
 
 
-def run_market():
+def run_market(exits=None, out_name="largecap.csv"):
     print(f"[{S.MARKET.upper()}] 1) 데이터 준비 중...")
     p, P, out, ok, dates = M.prepare()
     shares = current_caps(p)
@@ -82,7 +82,7 @@ def run_market():
         "52주 신고가 + 거래대금 상위 30위 + 상승장": w52 & bull & (rank <= 30),
         "52주 신고가 + 상승장": w52 & bull,
     }
-    exits = all_exits()
+    exits = exits or all_exits()
     success = out["success"].to_numpy()
     rows = []
     for ename, sig in entries.items():
@@ -101,6 +101,7 @@ def run_market():
                     row.update({f"{label}_거래수": int(pm.sum()), f"{label}_승률": success[r][pm].mean(),
                                 f"{label}_거래평균": ret[pm].mean(), f"{label}_중간값": np.median(ret[pm]) if pm.any() else np.nan,
                                 f"{label}_수익비율": (ret[pm] > 0).mean(), f"{label}_보유일": hold[pm].mean(),
+                                f"{label}_10%이상손실": (ret[pm] <= -0.10 - S.COST + 1e-6).mean(),
                                 f"{label}_연평균": cs["연평균수익률"], f"{label}_최대낙폭": cs["최대낙폭"],
                                 f"{label}_샤프": cs["샤프지수"]})
                 row["투자비중"] = V.avg_exposure(t, len(dates)) if len(t) else np.nan
@@ -108,7 +109,7 @@ def run_market():
             del m
             print(f"   [{ename} / {'대형주만' if cap_on else '전체'}] 신호 {len(r)}건 × 매도 {len(exits)}개 완료")
     res = pd.DataFrame(rows)
-    res.to_csv(os.path.join(S.RESULT_DIR, "largecap.csv"), index=False, encoding="utf-8-sig")
+    res.to_csv(os.path.join(S.RESULT_DIR, out_name), index=False, encoding="utf-8-sig")
 
 
 def summary():
