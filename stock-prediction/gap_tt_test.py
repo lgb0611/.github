@@ -6,9 +6,12 @@
 - 52주 신고가 돌파에서도 같은 효과가 나오는지 재확인
 - 무작위 비교(순열 검정), 연도별 수익, SG 주가조작 8종목 포함/제외 비교
 
-실행: python gap_tt_test.py   (collect_data.py를 먼저 실행해야 함)
+실행: python gap_tt_test.py        역사적 신고가 기준
+      python gap_tt_test.py 104w   104주(520거래일) 신고가 기준 (결과 파일 이름 끝에 _104w)
+      (collect_data.py를 먼저 실행해야 함)
 """
 import os
+import sys
 
 import matplotlib
 import numpy as np
@@ -23,6 +26,10 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 RESULT_DIR = S.RESULT_DIR
+MODE = sys.argv[1] if len(sys.argv) > 1 else "ath"
+MAIN = {"ath": "역사적 신고가 돌파", "104w": "104주 신고가 돌파"}[MODE]
+SUFFIX = "" if MODE == "ath" else f"_{MODE}"
+CHART_LABEL = {"ath": "ATH", "104w": "104-week high"}[MODE]
 SPLIT = V.SPLIT
 EXITS = V.EXITS
 EXIT_NAMES = V.EXIT_NAMES
@@ -56,7 +63,8 @@ def main():
         return (sig & (recent == 0)).to_numpy() & universe
 
     pools = {
-        "역사적 신고가 돌파": cooled((c > p["hh_all"]) & (P.pos >= 500)),
+        MAIN: cooled((c > p["hh_all"]) & (P.pos >= 500)) if MODE == "ath"
+        else cooled(c > P.shift(P.roll(p["high"], 520, "max"), 1)),
         "52주 신고가 돌파": cooled(c > p["hh250"]),
     }
     rng = np.random.default_rng(0)
@@ -107,7 +115,7 @@ def main():
                                 f"{label}_연평균": cs["연평균수익률"], f"{label}_샤프": cs["샤프지수"],
                                 f"{label}_최대낙폭": cs["최대낙폭"]})
                 table.append(row)
-                if pool_name == "역사적 신고가 돌파" and vname in (
+                if pool_name == MAIN and vname in (
                         "이격 20% 이하", "★ 이격 20% 이하 + 트렌드 템플릿", "★ + 상승장만"):
                     y = curve.resample("YE").last()
                     y = pd.concat([pd.Series([curve.iloc[0]], index=[curve.index[0]]), y]).pct_change().dropna()
@@ -125,9 +133,9 @@ def main():
                 perm_rows.append(row)
 
     res = pd.DataFrame(table)
-    res.to_csv(os.path.join(RESULT_DIR, "gap_tt_test.csv"), index=False, encoding="utf-8-sig")
+    res.to_csv(os.path.join(RESULT_DIR, f"gap_tt_test{SUFFIX}.csv"), index=False, encoding="utf-8-sig")
     perm = pd.DataFrame(perm_rows)
-    perm.to_csv(os.path.join(RESULT_DIR, "gap_tt_permutation.csv"), index=False, encoding="utf-8-sig")
+    perm.to_csv(os.path.join(RESULT_DIR, f"gap_tt_permutation{SUFFIX}.csv"), index=False, encoding="utf-8-sig")
 
     pd.set_option("display.width", 320)
     pd.set_option("display.unicode.east_asian_width", True)
@@ -159,27 +167,27 @@ def main():
     idx = pd.read_parquet(os.path.join(S.DATA_DIR, "index.parquet")).pivot(index="date", columns="index", values="close")
     ydf["코스피"] = idx["KOSPI"].resample("YE").last().pct_change().reindex(
         pd.to_datetime(ydf.index.astype(str) + "-12-31")).to_numpy()
-    print("\n[연도별 계좌 수익률, 역사적 신고가, SG 제외] (2026년은 9월까지)")
+    print(f"\n[연도별 계좌 수익률, {MAIN}, SG 제외] (2026년은 9월까지)")
     print(ydf.map(lambda v: fmt(v, "{:+.1%}")).to_string())
-    ydf.to_csv(os.path.join(RESULT_DIR, "gap_tt_yearly.csv"), encoding="utf-8-sig")
+    ydf.to_csv(os.path.join(RESULT_DIR, f"gap_tt_yearly{SUFFIX}.csv"), encoding="utf-8-sig")
 
     # 차트
     fig, axes = plt.subplots(1, 2, figsize=(17, 6))
     for ax, ex in zip(axes, EXITS):
-        for vname, lab in [("기준: 신고가 돌파 전체", "All ATH"), ("이격 20% 이하", "Gap<=20%"),
+        for vname, lab in [("기준: 신고가 돌파 전체", f"All {CHART_LABEL}"), ("이격 20% 이하", "Gap<=20%"),
                            ("트렌드 템플릿만", "Trend template"), ("★ 이격 20% 이하 + 트렌드 템플릿", "Gap<=20% + TT"),
                            ("★ + 상승장만", "Gap<=20% + TT + bull")]:
-            cv = curves[("역사적 신고가 돌파", ex, vname)]
+            cv = curves[(MAIN, ex, vname)]
             ax.plot(cv / cv.iloc[0], label=lab, lw=2 if "★" in vname else 1.2)
-        k = idx["KOSPI"].reindex(curves[("역사적 신고가 돌파", ex, "기준: 신고가 돌파 전체")].index).ffill()
+        k = idx["KOSPI"].reindex(curves[(MAIN, ex, "기준: 신고가 돌파 전체")].index).ffill()
         ax.plot(k / k.iloc[0], label="KOSPI", color="black", ls="--")
         ax.axvline(SPLIT, color="k", alpha=0.3)
         ax.set_yscale("log")
-        ax.set_title(f"ATH breakout, exit {ex}: account (max 10 positions, SG excluded, log)")
+        ax.set_title(f"{CHART_LABEL} breakout, exit {ex}: account (max 10 positions, SG excluded, log)")
         ax.legend(fontsize=8)
         ax.grid(alpha=0.3)
     plt.tight_layout()
-    plt.savefig(os.path.join(RESULT_DIR, "gap_tt_test.png"), dpi=110)
+    plt.savefig(os.path.join(RESULT_DIR, f"gap_tt_test{SUFFIX}.png"), dpi=110)
 
 
 if __name__ == "__main__":
