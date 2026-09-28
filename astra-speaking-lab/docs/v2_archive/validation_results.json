@@ -1,0 +1,39 @@
+{
+  "version": "2.0.0",
+  "date": "2026-09-09",
+  "automated_tests": {
+    "server_api_content": 40,
+    "core_schedule_backup": 27,
+    "ui_dom_simulation": 28,
+    "total": 95,
+    "failed": 0
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "node": "v24.19.0",
+    "os": "Linux"
+  },
+  "content": {
+    "core_pairs_manually_reviewed": 100,
+    "existing_paragraph_pairs_manually_reviewed": 42,
+    "added_short_contexts": 30,
+    "bilingual_pairs_corrected": 2,
+    "library_reference_items_not_fully_language_verified": 2774
+  },
+  "checks": {
+    "standalone_matches_server_html": true,
+    "original_source_files_byte_identical": 32,
+    "javascript_syntax": "passed",
+    "python_syntax": "passed",
+    "real_loopback_http": "passed",
+    "fresh_bootstrap_end_to_end": "final result collection interrupted by environment network approval cancellation"
+  },
+  "not_verified": [
+    "Real microphone and playback hardware",
+    "Live paid OpenAI API calls and model grading accuracy",
+    "Windows/macOS first-run installation",
+    "Actual browser visual layout and mobile overflow",
+    "Empirical learning efficacy"
+  ],
+  "browser_note": "DOM simulation only; Browser skill execution tool unavailable. v1 screenshots are archived, not v2 evidence."
+}

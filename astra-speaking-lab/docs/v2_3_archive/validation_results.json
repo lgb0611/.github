@@ -1,0 +1,52 @@
+{
+  "version": "2.3.0",
+  "date": "2026-09-10",
+  "automated_tests": {
+    "existing_core": 33,
+    "youtube_core": 9,
+    "automatic_lesson_core": 6,
+    "dom_interaction": 57,
+    "free_and_caption_server": 14,
+    "local_ai_and_http": 21,
+    "total": 140,
+    "failed": 0
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "node": "v24.19.0",
+    "os": "Linux"
+  },
+  "commands": [
+    "node --test tests/test_core.js tests/test_youtube_core.js tests/test_auto_lessons.js",
+    "node --test tests/test_ui.cjs",
+    "python -S -m unittest tests.test_free_server tests.test_youtube_server tests.test_local_ai -v"
+  ],
+  "additional_check": "Untimed DOM test rerun after removing guessed times from the optional manual editor; not added to total.",
+  "checks": {
+    "screenshot_source_extracts_three_complete_lessons": true,
+    "authored_fallback_patterns": 55,
+    "source_and_new_situation_samples_separated": true,
+    "automatic_queue_and_backup_restore": "passed",
+    "duplicate_cards_and_review_date_preservation": "passed",
+    "cancelled_or_changed_source_results_not_applied": "passed",
+    "missing_timestamps": "whole-video link with null times; no guessed clip",
+    "loopback_ai_no_remote_fallback": "fixed model and loopback host, cloud model metadata rejected",
+    "model_download": "explicit local POST; success, progress, failure and duplicate setup verified with fixture HTTP responses",
+    "javascript_syntax": "6 files passed",
+    "python_syntax": "15 files passed"
+  },
+  "not_verified": [
+    "Real Ollama installation, model download and generation (Ollama executable unavailable in this environment)",
+    "Local model language quality, speed, GPU and RAM requirements on the user PC",
+    "Live YouTube captions or playback",
+    "Real browser layout and microphone/speaker hardware",
+    "Windows/macOS launcher double-click",
+    "Paid OpenAI API calls",
+    "Empirical learning efficacy"
+  ],
+  "previous_api_tests": {
+    "count": 40,
+    "rerun": false,
+    "included_in_total": false
+  }
+}

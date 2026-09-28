@@ -1,0 +1,54 @@
+{
+  "version": "2.8.0",
+  "date": "2026-09-14",
+  "request": "Unify all existing learning materials in the materials tab",
+  "catalog": {
+    "bundled_materials": 25,
+    "categories": {
+      "gabriel": 10,
+      "speech": 11,
+      "kpop": 1,
+      "interview_pdf": 2,
+      "youtube": 1
+    },
+    "learning_items": 3297,
+    "authored_paragraph_exercises": 82,
+    "local_source_files": 34,
+    "personal_videos": "Derived from saved cards and the current caption draft; grouped and deduplicated by video ID",
+    "no_material_or_card_data_removed": true
+  },
+  "verification": {
+    "full_node_suite": {
+      "tests": 226,
+      "pass": 226,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "duration_ms": 187679.829566,
+      "report": "docs/catalog_node_test_results.txt"
+    },
+    "javascript_syntax_files": 11,
+    "source_and_data_comparison": "All 34 source files and 5 content JSON files are byte-identical to v2.7.1",
+    "html": "Standalone and server output are identical"
+  },
+  "tested_workflows": [
+    "Catalog covers all sidebar materials and does not mark browsing as study",
+    "Category counts, Korean-name and expression search, empty and reset states",
+    "Every legacy lesson and speech opens only its own expressions",
+    "Prepared lecture and KPOP paragraphs open with Korean prompts and hidden English",
+    "Speech example audio and meaning-first individual practice",
+    "PDF source switching, Korean display, playback, loops, speaking and return to filtered catalog",
+    "Restore personal videos, retain another video draft, avoid duplicate bundled videos",
+    "Recording and pending-answer guards",
+    "All previous Node regressions"
+  ],
+  "limits": {
+    "ui": "jsdom DOM simulation with mocked audio, captions and translations",
+    "real_browser": "Chromium was unavailable; browser download timed out and installation did not complete",
+    "actual_windows_audio": "not tested in this environment",
+    "paid_api_calls": 0,
+    "new_live_caption_fetches": 0,
+    "arthur_brooks_transcript": "Not bundled; existing catalog item still requires a successful caption fetch on the user PC",
+    "python_server_tests": "Server code unchanged; archived Python results are not counted as new runs"
+  }
+}

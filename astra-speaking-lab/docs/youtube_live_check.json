@@ -1,0 +1,9 @@
+{
+  "video_id": "M7lc1UVf-VE",
+  "source": "YouTube official developer documentation demo",
+  "optional_package_available": true,
+  "status": "not_verified",
+  "reason": "YouTube 자막 요청에 실패했습니다. 네트워크 또는 자막 서비스 상태를 확인하세요. YouTube의 스크립트 표시에서 자막을 복사해 붙여 넣으세요.",
+  "elapsed_seconds": 5.08,
+  "environment_note": "The tool reported network approval cancellation; live success is not established. No bypass or retry was attempted."
+}

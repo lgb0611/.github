@@ -1,0 +1,12 @@
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+# Private copyrighted learning sources and source-derived bundles:
+sources/
+data/library.json
+OPEN_ME.html
+static/index.html
+
+node_modules/

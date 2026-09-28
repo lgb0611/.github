@@ -1,0 +1,39 @@
+{
+  "version": "2.1.0",
+  "date": "2026-09-10",
+  "automated_tests": {
+    "core_schedule_backup_manual_feedback": 33,
+    "ui_dom_simulation": 37,
+    "real_free_server_http": 5,
+    "total": 75,
+    "failed": 0
+  },
+  "previous_api_server_tests": {
+    "passed_on": "2026-09-09",
+    "count": 40,
+    "rerun_for_2_1": false,
+    "included_in_total": false
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "node": "v24.19.0",
+    "os": "Linux"
+  },
+  "checks": {
+    "standalone_matches_server_html": true,
+    "original_sources_byte_identical": 32,
+    "javascript_syntax": "passed",
+    "python_syntax": "passed",
+    "stdlib_only_free_server_launch": "passed with python -S",
+    "paid_requests_blocked_in_free_mode": "passed; HTTP POST rejected and DOM client guards"
+  },
+  "not_verified": [
+    "Real browser layout: cloud browser refused loopback URL with ERR_BLOCKED_BY_CLIENT",
+    "Real microphone and playback hardware",
+    "Windows/macOS launcher double-click and microphone permissions",
+    "Windows voice typing",
+    "Live ChatGPT response quality and JSON format compliance",
+    "Paid OpenAI API calls",
+    "Empirical learning efficacy"
+  ]
+}

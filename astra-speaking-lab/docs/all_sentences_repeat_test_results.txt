@@ -1,0 +1,82 @@
+TAP version 13
+# Subtest: new situation favors an unseen short variant and labels a repeat accurately
+ok 1 - new situation favors an unseen short variant and labels a repeat accurately
+  ---
+  duration_ms: 1042.407372
+  type: 'test'
+  ...
+# Subtest: local source repeat restarts at source start and rejects out-of-range files
+ok 2 - local source repeat restarts at source start and rejects out-of-range files
+  ---
+  duration_ms: 807.670202
+  type: 'test'
+  ...
+# Subtest: transcript-only playback preserves short answers, repeated sentences and final fragments without learning cards
+ok 3 - transcript-only playback preserves short answers, repeated sentences and final fragments without learning cards
+  ---
+  duration_ms: 893.487378
+  type: 'test'
+  ...
+# Subtest: inclusive range repeats exactly three times and ignores duplicate or stale end events
+ok 4 - inclusive range repeats exactly three times and ignores duplicate or stale end events
+  ---
+  duration_ms: 1262.303633
+  type: 'test'
+  ...
+# Subtest: infinite single sentence repeat stops immediately and rejects late callbacks
+ok 5 - infinite single sentence repeat stops immediately and rejects late callbacks
+  ---
+  duration_ms: 1011.154801
+  type: 'test'
+  ...
+# Subtest: repeat gap applies between complete ranges and retains the remaining gap across pause
+ok 6 - repeat gap applies between complete ranges and retains the remaining gap across pause
+  ---
+  duration_ms: 720.588926
+  type: 'test'
+  ...
+# Subtest: learning-card repeat selects its full source sentence and uses the configured repeat count
+ok 7 - learning-card repeat selects its full source sentence and uses the configured repeat count
+  ---
+  duration_ms: 1009.072773
+  type: 'test'
+  ...
+# Subtest: card audio and starting microphone permission cancel transcript loops with no later restart
+ok 8 - card audio and starting microphone permission cancel transcript loops with no later restart
+  ---
+  duration_ms: 834.854186
+  type: 'test'
+  ...
+# Subtest: source edits clear old repeat settings; extraction range never truncates the complete transcript
+ok 9 - source edits clear old repeat settings; extraction range never truncates the complete transcript
+  ---
+  duration_ms: 684.606331
+  type: 'test'
+  ...
+# Subtest: repeat and later replay reuse transcript meanings without another translation call
+ok 10 - repeat and later replay reuse transcript meanings without another translation call
+  ---
+  duration_ms: 1429.574471
+  type: 'test'
+  ...
+# Subtest: PDF sentence ranges repeat exact text with prepared meanings without translation
+ok 11 - PDF sentence ranges repeat exact text with prepared meanings without translation
+  ---
+  duration_ms: 911.130828
+  type: 'test'
+  ...
+# Subtest: all short and repeated source sentences have stable cards on extraction and reopening
+ok 12 - all short and repeated source sentences have stable cards on extraction and reopening
+  ---
+  duration_ms: 2163.182411
+  type: 'test'
+  ...
+1..12
+# tests 12
+# suites 0
+# pass 12
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 13456.348518

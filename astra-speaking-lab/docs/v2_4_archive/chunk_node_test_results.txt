@@ -1,0 +1,706 @@
+TAP version 13
+# Subtest: reported caption produces its complete sentence instead of three tiny fragments
+ok 1 - reported caption produces its complete sentence instead of three tiny fragments
+  ---
+  duration_ms: 3.440925
+  type: 'test'
+  ...
+# Subtest: unknown phrases still produce sentence practice without invented translations
+ok 2 - unknown phrases still produce sentence practice without invented translations
+  ---
+  duration_ms: 1.523109
+  type: 'test'
+  ...
+# Subtest: whole video yields twenty by default or sixty distinct grounded sentences
+ok 3 - whole video yields twenty by default or sixty distinct grounded sentences
+  ---
+  duration_ms: 5.842991
+  type: 'test'
+  ...
+# Subtest: repeated subtitles and incomplete tails do not inflate practice count
+ok 4 - repeated subtitles and incomplete tails do not inflate practice count
+  ---
+  duration_ms: 0.263889
+  type: 'test'
+  ...
+# Subtest: source recall prompt and complete sentence survive backup restore
+ok 5 - source recall prompt and complete sentence survive backup restore
+  ---
+  duration_ms: 0.76823
+  type: 'test'
+  ...
+# Subtest: untimed sentences preserve missing positions
+ok 6 - untimed sentences preserve missing positions
+  ---
+  duration_ms: 0.206462
+  type: 'test'
+  ...
+# Subtest: sentence splitter preserves abbreviations and decimal values
+ok 7 - sentence splitter preserves abbreviations and decimal values
+  ---
+  duration_ms: 0.138339
+  type: 'test'
+  ...
+# Subtest: multiple sentences share their actual subtitle interval, not guessed word times
+ok 8 - multiple sentences share their actual subtitle interval, not guessed word times
+  ---
+  duration_ms: 0.176887
+  type: 'test'
+  ...
+# Subtest: long unpunctuated captions produce bounded long speech chunks without added words
+ok 9 - long unpunctuated captions produce bounded long speech chunks without added words
+  ---
+  duration_ms: 0.493375
+  type: 'test'
+  ...
+# Subtest: sixty-card session survives reload with unique queue and saved position
+ok 10 - sixty-card session survives reload with unique queue and saved position
+  ---
+  duration_ms: 4.619664
+  type: 'test'
+  ...
+# Subtest: HTML escapes script-bearing user content
+ok 11 - HTML escapes script-bearing user content
+  ---
+  duration_ms: 1.262927
+  type: 'test'
+  ...
+# Subtest: valid initial state round-trips and migrates v1
+ok 12 - valid initial state round-trips and migrates v1
+  ---
+  duration_ms: 2.057386
+  type: 'test'
+  ...
+# Subtest: backup rejects NaN dates, arrays, null attempts, unknown cards
+ok 13 - backup rejects NaN dates, arrays, null attempts, unknown cards
+  ---
+  duration_ms: 5.422456
+  type: 'test'
+  ...
+# Subtest: prototype keys in card/exposure maps are rejected
+ok 14 - prototype keys in card/exposure maps are rejected
+  ---
+  duration_ms: 0.178399
+  type: 'test'
+  ...
+# Subtest: duplicate attempt IDs and malformed exercises are rejected
+ok 15 - duplicate attempt IDs and malformed exercises are rejected
+  ---
+  duration_ms: 0.83493
+  type: 'test'
+  ...
+# Subtest: first cold success is due tomorrow
+ok 16 - first cold success is due tomorrow
+  ---
+  duration_ms: 0.263588
+  type: 'test'
+  ...
+# Subtest: same-day success never moves due forward
+ok 17 - same-day success never moves due forward
+  ---
+  duration_ms: 0.293773
+  type: 'test'
+  ...
+# Subtest: early successes several days later do not bypass scheduled spacing
+ok 18 - early successes several days later do not bypass scheduled spacing
+  ---
+  duration_ms: 0.153161
+  type: 'test'
+  ...
+# Subtest: planned intervals are 1,3,7,14,30 days
+ok 19 - planned intervals are 1,3,7,14,30 days
+  ---
+  duration_ms: 0.195224
+  type: 'test'
+  ...
+# Subtest: error resets evidence and schedules ten minutes
+ok 20 - error resets evidence and schedules ten minutes
+  ---
+  duration_ms: 0.20544
+  type: 'test'
+  ...
+# Subtest: immediate aided success does not erase a ten-minute relearning check
+ok 21 - immediate aided success does not erase a ten-minute relearning check
+  ---
+  duration_ms: 0.723693
+  type: 'test'
+  ...
+# Subtest: success shortly after lapse is practice, not independent recall
+ok 22 - success shortly after lapse is practice, not independent recall
+  ---
+  duration_ms: 0.579815
+  type: 'test'
+  ...
+# Subtest: retry stage cannot manufacture retention
+ok 23 - retry stage cannot manufacture retention
+  ---
+  duration_ms: 1.180091
+  type: 'test'
+  ...
+# Subtest: three due cold successes plus novel transfer confer operational mastery
+ok 24 - three due cold successes plus novel transfer confer operational mastery
+  ---
+  duration_ms: 0.115304
+  type: 'test'
+  ...
+# Subtest: revisited scene and first-ever transfer cannot manufacture mastery
+ok 25 - revisited scene and first-ever transfer cannot manufacture mastery
+  ---
+  duration_ms: 0.077086
+  type: 'test'
+  ...
+# Subtest: hints cannot count as transfer evidence
+ok 26 - hints cannot count as transfer evidence
+  ---
+  duration_ms: 0.131599
+  type: 'test'
+  ...
+# Subtest: exposure expires at 24h and survives serialization
+ok 27 - exposure expires at 24h and survives serialization
+  ---
+  duration_ms: 0.150767
+  type: 'test'
+  ...
+# Subtest: due ordering prioritizes oldest regardless of exercise coverage
+ok 28 - due ordering prioritizes oldest regardless of exercise coverage
+  ---
+  duration_ms: 0.260313
+  type: 'test'
+  ...
+# Subtest: no due phrase means no unrelated review exercise
+ok 29 - no due phrase means no unrelated review exercise
+  ---
+  duration_ms: 0.11263
+  type: 'test'
+  ...
+# Subtest: daily session prioritizes due cards and caps new items at three
+ok 30 - daily session prioritizes due cards and caps new items at three
+  ---
+  duration_ms: 2.710292
+  type: 'test'
+  ...
+# Subtest: large backlog suppresses new cards and honors the eight-item limit
+ok 31 - large backlog suppresses new cards and honors the eight-item limit
+  ---
+  duration_ms: 9.133238
+  type: 'test'
+  ...
+# Subtest: all reference cards can be practiced without an authored paragraph
+ok 32 - all reference cards can be practiced without an authored paragraph
+  ---
+  duration_ms: 5.11714
+  type: 'test'
+  ...
+# Subtest: import accepts aligned exercise and rejects unknown ID or fabricated evidence
+ok 33 - import accepts aligned exercise and rejects unknown ID or fabricated evidence
+  ---
+  duration_ms: 0.965458
+  type: 'test'
+  ...
+# Subtest: task keys separate single-card attempts, not presentation-only keyword mode
+ok 34 - task keys separate single-card attempts, not presentation-only keyword mode
+  ---
+  duration_ms: 0.19883
+  type: 'test'
+  ...
+# Subtest: 30 new short contexts cover all recent lesson cards with exact alignment
+ok 35 - 30 new short contexts cover all recent lesson cards with exact alignment
+  ---
+  duration_ms: 0.625855
+  type: 'test'
+  ...
+# Subtest: word count counts contractions as one word
+ok 36 - word count counts contractions as one word
+  ---
+  duration_ms: 0.143877
+  type: 'test'
+  ...
+# Subtest: nested corrupted feedback is rejected before the history view can crash
+ok 37 - nested corrupted feedback is rejected before the history view can crash
+  ---
+  duration_ms: 0.767579
+  type: 'test'
+  ...
+# Subtest: manual ChatGPT feedback accepts fenced JSON and pending request survives backup
+ok 38 - manual ChatGPT feedback accepts fenced JSON and pending request survives backup
+  ---
+  duration_ms: 2.085198
+  type: 'test'
+  ...
+# Subtest: manual feedback rejects another request or phrase ID
+ok 39 - manual feedback rejects another request or phrase ID
+  ---
+  duration_ms: 0.264469
+  type: 'test'
+  ...
+# Subtest: manual feedback rejects fabricated sentence and correction evidence
+ok 40 - manual feedback rejects fabricated sentence and correction evidence
+  ---
+  duration_ms: 0.412582
+  type: 'test'
+  ...
+# Subtest: manual feedback cannot omit the last sentence or non-Latin speech
+ok 41 - manual feedback cannot omit the last sentence or non-Latin speech
+  ---
+  duration_ms: 0.301515
+  type: 'test'
+  ...
+# Subtest: manual feedback rejects changed words called correct and inconsistent final text
+ok 42 - manual feedback rejects changed words called correct and inconsistent final text
+  ---
+  duration_ms: 1.082905
+  type: 'test'
+  ...
+# Subtest: manual feedback rejects malformed omissions and excessive payloads
+ok 43 - manual feedback rejects malformed omissions and excessive payloads
+  ---
+  duration_ms: 0.26501
+  type: 'test'
+  ...
+# Subtest: standalone offline app starts with real content and no network calls
+ok 44 - standalone offline app starts with real content and no network calls
+  ---
+  duration_ms: 734.17926
+  type: 'test'
+  ...
+# Subtest: v1 progress migrates while original v1 storage is retained
+ok 45 - v1 progress migrates while original v1 storage is retained
+  ---
+  duration_ms: 462.410693
+  type: 'test'
+  ...
+# Subtest: corrupt backup remains intact and visible save warning persists
+ok 46 - corrupt backup remains intact and visible save warning persists
+  ---
+  duration_ms: 483.009943
+  type: 'test'
+  ...
+# Subtest: cold answer snapshot remains unassisted even after comparing the model
+ok 47 - cold answer snapshot remains unassisted even after comparing the model
+  ---
+  duration_ms: 496.492708
+  type: 'test'
+  ...
+# Subtest: another answer after self-check cannot manufacture independent retrieval
+ok 48 - another answer after self-check cannot manufacture independent retrieval
+  ---
+  duration_ms: 409.935933
+  type: 'test'
+  ...
+# Subtest: hint history survives lesson-stage toggles and single-drill entry
+ok 49 - hint history survives lesson-stage toggles and single-drill entry
+  ---
+  duration_ms: 454.692505
+  type: 'test'
+  ...
+# Subtest: stored hint history survives reload
+ok 50 - stored hint history survives reload
+  ---
+  duration_ms: 458.838589
+  type: 'test'
+  ...
+# Subtest: oldest reference item can be reviewed offline without a paragraph
+ok 51 - oldest reference item can be reviewed offline without a paragraph
+  ---
+  duration_ms: 424.399397
+  type: 'test'
+  ...
+# Subtest: review list keeps English answers hidden until explicitly revealed
+ok 52 - review list keeps English answers hidden until explicitly revealed
+  ---
+  duration_ms: 385.328097
+  type: 'test'
+  ...
+# Subtest: session queue requires saved evaluation before proceeding
+ok 53 - session queue requires saved evaluation before proceeding
+  ---
+  duration_ms: 384.409822
+  type: 'test'
+  ...
+# Subtest: session skip does not change the skipped item schedule
+ok 54 - session skip does not change the skipped item schedule
+  ---
+  duration_ms: 385.820599
+  type: 'test'
+  ...
+# Subtest: recording remains locked until asynchronous stop finalizes
+ok 55 - recording remains locked until asynchronous stop finalizes
+  ---
+  duration_ms: 382.795446
+  type: 'test'
+  ...
+# Subtest: pending microphone permission locks exercise changes
+ok 56 - pending microphone permission locks exercise changes
+  ---
+  duration_ms: 449.077013
+  type: 'test'
+  ...
+# Subtest: unsupported microphone explains fallback and does not lock app
+ok 57 - unsupported microphone explains fallback and does not lock app
+  ---
+  duration_ms: 440.02979
+  type: 'test'
+  ...
+# Subtest: recording pause and resume remain local actions
+ok 58 - recording pause and resume remain local actions
+  ---
+  duration_ms: 451.876206
+  type: 'test'
+  ...
+# Subtest: model speech respects selected pace and marks assistance
+ok 59 - model speech respects selected pace and marks assistance
+  ---
+  duration_ms: 410.845894
+  type: 'test'
+  ...
+# Subtest: grade requires transcript confirmation and an API key
+ok 60 - grade requires transcript confirmation and an API key
+  ---
+  duration_ms: 367.240414
+  type: 'test'
+  ...
+# Subtest: transcription is explicit and its text is not automatically graded
+ok 61 - transcription is explicit and its text is not automatically graded
+  ---
+  duration_ms: 381.971313
+  type: 'test'
+  ...
+# Subtest: failed API grade retains answer and produces no invented evaluation
+ok 62 - failed API grade retains answer and produces no invented evaluation
+  ---
+  duration_ms: 388.644031
+  type: 'test'
+  ...
+# Subtest: new situation favors an unseen short variant and labels a repeat accurately
+ok 63 - new situation favors an unseen short variant and labels a repeat accurately
+  ---
+  duration_ms: 373.756877
+  type: 'test'
+  ...
+# Subtest: external exercise import rejects invented alignment without mutation
+ok 64 - external exercise import rejects invented alignment without mutation
+  ---
+  duration_ms: 370.188963
+  type: 'test'
+  ...
+# Subtest: external exercise import escapes markup and remembers answer exposure
+ok 65 - external exercise import escapes markup and remembers answer exposure
+  ---
+  duration_ms: 386.101305
+  type: 'test'
+  ...
+# Subtest: quota failure cannot be reported as a successfully saved schedule
+ok 66 - quota failure cannot be reported as a successfully saved schedule
+  ---
+  duration_ms: 472.64115
+  type: 'test'
+  ...
+# Subtest: cross-tab updates stop this tab from overwriting newer data
+ok 67 - cross-tab updates stop this tab from overwriting newer data
+  ---
+  duration_ms: 472.475009
+  type: 'test'
+  ...
+# Subtest: copy-to-ChatGPT preserves actual words and English-only recap
+ok 68 - copy-to-ChatGPT preserves actual words and English-only recap
+  ---
+  duration_ms: 487.53166
+  type: 'test'
+  ...
+# Subtest: successful fixture grade preserves submission-time hint state and populates error notebook
+ok 69 - successful fixture grade preserves submission-time hint state and populates error notebook
+  ---
+  duration_ms: 529.866191
+  type: 'test'
+  ...
+# Subtest: malformed imported progress does not replace working state
+ok 70 - malformed imported progress does not replace working state
+  ---
+  duration_ms: 468.986385
+  type: 'test'
+  ...
+# Subtest: single-card exercise survives export and fresh-start restore
+ok 71 - single-card exercise survives export and fresh-start restore
+  ---
+  duration_ms: 1371.954897
+  type: 'test'
+  ...
+# Subtest: free mode blocks paid requests even with stored consent and a connected key
+ok 72 - free mode blocks paid requests even with stored consent and a connected key
+  ---
+  duration_ms: 356.386893
+  type: 'test'
+  ...
+# Subtest: audio-only self-check stores a genuine self-rating without fabricated transcript
+ok 73 - audio-only self-check stores a genuine self-rating without fabricated transcript
+  ---
+  duration_ms: 373.967686
+  type: 'test'
+  ...
+# Subtest: empty self-check cannot create a practice record
+ok 74 - empty self-check cannot create a practice record
+  ---
+  duration_ms: 365.005049
+  type: 'test'
+  ...
+# Subtest: ChatGPT bridge imports reviewed feedback and error notebook without any API calls
+ok 75 - ChatGPT bridge imports reviewed feedback and error notebook without any API calls
+  ---
+  duration_ms: 387.64985
+  type: 'test'
+  ...
+# Subtest: bridge rejects mismatched current text and restores original submission before import
+ok 76 - bridge rejects mismatched current text and restores original submission before import
+  ---
+  duration_ms: 379.484531
+  type: 'test'
+  ...
+# Subtest: pending ChatGPT request survives a reload and copied snapshot stays immutable
+ok 77 - pending ChatGPT request survives a reload and copied snapshot stays immutable
+  ---
+  duration_ms: 797.372632
+  type: 'test'
+  ...
+# Subtest: late imported correction cannot overwrite a newer review schedule
+ok 78 - late imported correction cannot overwrite a newer review schedule
+  ---
+  duration_ms: 398.523845
+  type: 'test'
+  ...
+# Subtest: free launcher config disables the paid-mode switch
+ok 79 - free launcher config disables the paid-mode switch
+  ---
+  duration_ms: 423.341037
+  type: 'test'
+  ...
+# Subtest: device speech never silently selects an online voice
+ok 80 - device speech never silently selects an online voice
+  ---
+  duration_ms: 495.95626
+  type: 'test'
+  ...
+# Subtest: learning starts with both English and Korean cues hidden until requested
+ok 81 - learning starts with both English and Korean cues hidden until requested
+  ---
+  duration_ms: 509.774237
+  type: 'test'
+  ...
+# Subtest: YouTube source selection and phrase practice work without paid API calls
+ok 82 - YouTube source selection and phrase practice work without paid API calls
+  ---
+  duration_ms: 512.781274
+  type: 'test'
+  ...
+# Subtest: saved YouTube card restores in a fresh app and remains available for review
+ok 83 - saved YouTube card restores in a fresh app and remains available for review
+  ---
+  duration_ms: 1015.935097
+  type: 'test'
+  ...
+# Subtest: YouTube extraction rejects invented expression before altering saved records
+ok 84 - YouTube extraction rejects invented expression before altering saved records
+  ---
+  duration_ms: 504.634182
+  type: 'test'
+  ...
+# Subtest: manual YouTube ChatGPT extraction adds an independently labelled transfer exercise
+ok 85 - manual YouTube ChatGPT extraction adds an independently labelled transfer exercise
+  ---
+  duration_ms: 401.150263
+  type: 'test'
+  ...
+# Subtest: caption fetch keeps sub-second timing and never automatically displays answers
+ok 86 - caption fetch keeps sub-second timing and never automatically displays answers
+  ---
+  duration_ms: 408.546091
+  type: 'test'
+  ...
+# Subtest: a blocked caption request keeps the pasted transcript and gives a manual continuation
+ok 87 - a blocked caption request keeps the pasted transcript and gives a manual continuation
+  ---
+  duration_ms: 389.906213
+  type: 'test'
+  ...
+# Subtest: online device voice is allowed only after user opts in
+ok 88 - online device voice is allowed only after user opts in
+  ---
+  duration_ms: 383.554636
+  type: 'test'
+  ...
+# Subtest: microphone starts without loading a blocked YouTube iframe
+ok 89 - microphone starts without loading a blocked YouTube iframe
+  ---
+  duration_ms: 392.333286
+  type: 'test'
+  ...
+# Subtest: saved video expressions appear in the default library and new daily session
+ok 90 - saved video expressions appear in the default library and new daily session
+  ---
+  duration_ms: 411.415427
+  type: 'test'
+  ...
+# Subtest: late voice loading refreshes selection and a test sentence does not count as an expression hint
+ok 91 - late voice loading refreshes selection and a test sentence does not count as an expression hint
+  ---
+  duration_ms: 378.676326
+  type: 'test'
+  ...
+# Subtest: screenshot creates a whole sentence without handwritten fields or tiny duplicate cards
+ok 92 - screenshot creates a whole sentence without handwritten fields or tiny duplicate cards
+  ---
+  duration_ms: 419.550177
+  type: 'test'
+  ...
+# Subtest: twenty sentence default extends to forty and sixty-five across the whole video
+ok 93 - twenty sentence default extends to forty and sixty-five across the whole video
+  ---
+  duration_ms: 472.196736
+  type: 'test'
+  ...
+# Subtest: new deck and sequence survive reopening without loss of recorded review
+ok 94 - new deck and sequence survive reopening without loss of recorded review
+  ---
+  duration_ms: 811.117137
+  type: 'test'
+  ...
+# Subtest: same transcript extraction does not duplicate sentences or reset schedule
+ok 95 - same transcript extraction does not duplicate sentences or reset schedule
+  ---
+  duration_ms: 405.153272
+  type: 'test'
+  ...
+# Subtest: local AI adds full sentence meaning and a separately aligned transfer exercise
+ok 96 - local AI adds full sentence meaning and a separately aligned transfer exercise
+  ---
+  duration_ms: 428.086954
+  type: 'test'
+  ...
+# Subtest: cancelled enrichment ignores a late model answer while retaining immediately usable sentences
+ok 97 - cancelled enrichment ignores a late model answer while retaining immediately usable sentences
+  ---
+  duration_ms: 542.180474
+  type: 'test'
+  ...
+# Subtest: pending meaning cannot attach to changed captions
+ok 98 - pending meaning cannot attach to changed captions
+  ---
+  duration_ms: 556.572952
+  type: 'test'
+  ...
+# Subtest: AI is optional for unknown sentences and unavailable AI keeps the deck usable
+ok 99 - AI is optional for unknown sentences and unavailable AI keeps the deck usable
+  ---
+  duration_ms: 511.524199
+  type: 'test'
+  ...
+# Subtest: enrichment batches a large deck and preserves successful batches on later failure
+ok 100 - enrichment batches a large deck and preserves successful batches on later failure
+  ---
+  duration_ms: 568.429551
+  type: 'test'
+  ...
+# Subtest: untimed sentence listening uses device speech and keeps original time explicitly unknown
+ok 101 - untimed sentence listening uses device speech and keeps original time explicitly unknown
+  ---
+  duration_ms: 521.648485
+  type: 'test'
+  ...
+# Subtest: a YouTube link loads captions and prepares sentence study in one action
+ok 102 - a YouTube link loads captions and prepares sentence study in one action
+  ---
+  duration_ms: 540.135554
+  type: 'test'
+  ...
+# Subtest: source buttons expose canonical timestamp links and no blocked embedding request
+ok 103 - source buttons expose canonical timestamp links and no blocked embedding request
+  ---
+  duration_ms: 526.437838
+  type: 'test'
+  ...
+# Subtest: sentence speech and hide toggle work without marking an unrelated lesson as heard
+ok 104 - sentence speech and hide toggle work without marking an unrelated lesson as heard
+  ---
+  duration_ms: 692.512691
+  type: 'test'
+  ...
+# Subtest: local source file seeks subtitle bounds, pauses at end and stops before recording without upload
+ok 105 - local source file seeks subtitle bounds, pauses at end and stops before recording without upload
+  ---
+  duration_ms: 518.971962
+  type: 'test'
+  ...
+# Subtest: local source repeat restarts at source start and rejects out-of-range files
+ok 106 - local source repeat restarts at source start and rejects out-of-range files
+  ---
+  duration_ms: 447.733802
+  type: 'test'
+  ...
+# Subtest: changing video releases source file and edited captions invalidate the previous deck
+ok 107 - changing video releases source file and edited captions invalidate the previous deck
+  ---
+  duration_ms: 410.136296
+  type: 'test'
+  ...
+# Subtest: YouTube links normalize common formats and reject foreign or executable URLs
+ok 108 - YouTube links normalize common formats and reject foreign or executable URLs
+  ---
+  duration_ms: 3.054511
+  type: 'test'
+  ...
+# Subtest: caption times preserve fractions and reject invalid ranges
+ok 109 - caption times preserve fractions and reject invalid ranges
+  ---
+  duration_ms: 0.77512
+  type: 'test'
+  ...
+# Subtest: SRT, VTT and copied YouTube captions preserve grounded source lines
+ok 110 - SRT, VTT and copied YouTube captions preserve grounded source lines
+  ---
+  duration_ms: 0.771405
+  type: 'test'
+  ...
+# Subtest: untimed text never gets fabricated source timestamps
+ok 111 - untimed text never gets fabricated source timestamps
+  ---
+  duration_ms: 0.961171
+  type: 'test'
+  ...
+# Subtest: rule candidates are actual source substrings and cannot invent expression matches
+ok 112 - rule candidates are actual source substrings and cannot invent expression matches
+  ---
+  duration_ms: 2.070155
+  type: 'test'
+  ...
+# Subtest: custom YouTube cards reject unsafe links and fabricated quotes
+ok 113 - custom YouTube cards reject unsafe links and fabricated quotes
+  ---
+  duration_ms: 0.64219
+  type: 'test'
+  ...
+# Subtest: YouTube cards and their review history survive a fresh backup import
+ok 114 - YouTube cards and their review history survive a fresh backup import
+  ---
+  duration_ms: 1.115815
+  type: 'test'
+  ...
+# Subtest: ChatGPT expression import verifies video and exact source, ignores model timestamps
+ok 115 - ChatGPT expression import verifies video and exact source, ignores model timestamps
+  ---
+  duration_ms: 0.502879
+  type: 'test'
+  ...
+# Subtest: adjacent subtitle fragments form one grounded phrase with the actual time span
+ok 116 - adjacent subtitle fragments form one grounded phrase with the actual time span
+  ---
+  duration_ms: 1.037306
+  type: 'test'
+  ...
+1..116
+# tests 116
+# suites 0
+# pass 116
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 31553.298867

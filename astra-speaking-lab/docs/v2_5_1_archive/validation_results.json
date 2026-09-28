@@ -1,0 +1,63 @@
+{
+  "version": "2.5.1",
+  "date": "2026-09-10",
+  "reported_issues": [
+    "Online-only voices were filtered out without an online voice permission in the YouTube view",
+    "The same voice availability error appeared twice in the audio panel",
+    "Paragraph checkboxes lacked a visible selection-to-practice action near the cards"
+  ],
+  "automated_tests": {
+    "existing_core": 33,
+    "youtube_core": 9,
+    "sentence_lesson_core": 10,
+    "korean_prompt_core": 6,
+    "dom_interaction": 87,
+    "new_issue_regressions_included": 9,
+    "total_unique_this_revision": 145,
+    "failed": 0
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "node": "v24.19.0",
+    "os": "Linux"
+  },
+  "commands": [
+    "node --test --test-reporter=tap tests/test_core.js tests/test_youtube_core.js tests/test_auto_lessons.js tests/test_korean_core.js tests/test_ui.cjs",
+    "node --test --test-reporter=tap --test-name-pattern='paragraph checkboxes immediately' tests/test_ui.cjs"
+  ],
+  "run_accounting": "Full Node suite: 145 passed. After a final adjustment to retain the paragraph completion status in the selection bar, its end-to-end DOM regression was rerun: 1 passed, already included in the 145 unique tests. Earlier targeted voice/paragraph runs are not counted again. Python server code was unchanged, so prior v2.5 Python results (47 passed) were retained and excluded from this revision total.",
+  "checks": {
+    "online_only_voice_permission_visible_in_youtube": "passed in jsdom",
+    "single_audio_panel_status_no_duplicate_availability_note": "passed in jsdom",
+    "explicit_consent_then_exact_pending_sentence_only": "passed with simulated speech synthesis",
+    "latest_request_only_stop_and_navigation_clear_pending_speech": "passed with simulated speech synthesis",
+    "online_voice_setting_synced_and_restored": "passed",
+    "late_voice_loading_and_network_error_message": "passed with simulated speech synthesis",
+    "speech_start_timeout_and_stale_event_rejection": "passed with simulated timer and speech synthesis",
+    "selected_card_highlight_count_chips_and_clear": "passed in jsdom",
+    "one_card_instruction_and_five_card_limit": "passed",
+    "bottom_button_creates_all_selected_cards_korean_paragraph_and_switches_view": "passed in jsdom",
+    "paragraph_progress_cancel_and_completion_status": "passed with mocked translation and model responses",
+    "no_paid_api_calls_for_voice_or_paragraph_flow": "passed",
+    "original_sources_byte_identical": 32,
+    "javascript_syntax_files": 8,
+    "server_and_standalone_html_equal": true
+  },
+  "not_verified": [
+    "Actual sound output on the user PC, installed voice quality, tab mute and audio output device",
+    "Browser visual layout rendering on the user PC",
+    "Actual Chrome translation model download and language quality",
+    "Actual Ollama model generation quality, speed and memory use",
+    "Live YouTube access or caption retrieval",
+    "Windows/macOS launcher double-click",
+    "Paid OpenAI API calls"
+  ],
+  "previous_python_tests": {
+    "version": "2.5.0",
+    "count": 47,
+    "passed": 47,
+    "rerun": false,
+    "included_in_this_total": false,
+    "path": "docs/v2_5_archive/validation_results.json"
+  }
+}

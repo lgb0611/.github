@@ -1,0 +1,56 @@
+{
+  "version": "2.4.0",
+  "date": "2026-09-10",
+  "automated_tests": {
+    "existing_core": 33,
+    "youtube_core": 9,
+    "sentence_lesson_core": 10,
+    "dom_interaction": 65,
+    "free_and_caption_server": 14,
+    "local_ai_and_http": 22,
+    "total_unique": 153,
+    "failed": 0
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "node": "v24.19.0",
+    "os": "Linux"
+  },
+  "commands": [
+    "node --test --test-reporter=tap tests/test_core.js tests/test_youtube_core.js tests/test_auto_lessons.js tests/test_ui.cjs",
+    "python -S -m unittest tests.test_free_server tests.test_youtube_server tests.test_local_ai -v",
+    "node --test --test-reporter=tap --test-name-pattern='reopening a saved sentence|sentence speech and hide|changing video releases' tests/test_ui.cjs"
+  ],
+  "run_accounting": "Full Node run 116 passed; Python run 36 passed. Final targeted DOM run 3 passed, of which 2 repeated tests and 1 new test: 153 unique tests. Final source-link href initialization and documentation changes were not separately retested.",
+  "checks": {
+    "source_sentences_instead_of_tiny_patterns": "passed",
+    "20_default_10_40_60_options_and_next_batch": "passed",
+    "65_sentence_whole_video_queue_and_restore": "passed",
+    "sentence_boundaries_decimals_abbreviations_and_shared_source_times": "passed",
+    "unpunctuated_long_speech_chunks": "passed",
+    "no_fabricated_translation_without_local_ai": "passed",
+    "original_recall_and_new_situation_sample_alignment": "passed",
+    "partial_ai_batch_failure_and_cancellation": "passed",
+    "no_paid_requests_in_free_mode": "passed",
+    "tts_target_sentence_and_online_voice_opt_in": "passed",
+    "native_source_timestamp_links_without_iframes": "passed",
+    "local_media_seek_end_repeat_and_stop_on_record": "passed with simulated media events",
+    "source_file_release_and_no_upload": "passed",
+    "restored_visible_answers_mark_hint_exposure": "passed",
+    "original_sources_byte_identical": 32,
+    "javascript_and_python_syntax": "passed"
+  },
+  "not_verified": [
+    "Live YouTube access, caption retrieval or playback",
+    "Real speaker/microphone audio and codec playback on the user PC",
+    "Real Ollama installation, model download, language quality, speed or memory use",
+    "Browser visual rendering and Windows/macOS launcher double-click",
+    "Paid OpenAI API calls",
+    "Empirical learning efficacy"
+  ],
+  "previous_api_tests": {
+    "count": 40,
+    "rerun": false,
+    "included_in_total": false
+  }
+}

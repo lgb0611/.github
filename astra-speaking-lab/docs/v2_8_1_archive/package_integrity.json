@@ -1,0 +1,18 @@
+{
+  "version": "2.8.1",
+  "previous_package_sha256": "52e6efbbac835a993cc2142171b76a89290b3ba4181d3d925004a205008ebb8e",
+  "previous_source_files_preserved": 34,
+  "source_count": 35,
+  "existing_learning_cards_preserved": 3297,
+  "existing_pdf_materials_preserved": 2,
+  "new_material": "pdf_harvard",
+  "new_units": 84,
+  "new_paragraphs": 5,
+  "unchanged_data_files": [
+    "exercises.json",
+    "transfer.json",
+    "video-materials.json"
+  ],
+  "standalone_matches_server_html": true,
+  "html_sha256": "1626a4090eb934a96b1bc3f20c17c46d21b73ae0a557ebce0499e792d3f91bb5"
+}

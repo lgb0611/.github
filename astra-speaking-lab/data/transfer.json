@@ -1,0 +1,572 @@
+[
+  {
+    "id": "transfer_g08_01",
+    "lesson_id": "g08",
+    "card_ids": [
+      "g08_01"
+    ],
+    "title": "전시회 초대",
+    "task_ko": "내일 전시회 개막식에 초대받았어. 거기에 입고 갈 만한 옷을 찾아야 해.",
+    "sample_en": "I've been invited to an exhibition opening tomorrow. I need to find something to wear to it.",
+    "situation_ko": "전시회 초대",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g08_01",
+        "korean_cue": "내일 전시회 개막식에 초대받았어. 거기에 입고 갈 만한 옷을 찾아야 해.",
+        "english_use": "I've been invited to an exhibition opening tomorrow. I need to find something to wear to it."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g08_02",
+    "lesson_id": "g08",
+    "card_ids": [
+      "g08_02"
+    ],
+    "title": "무거운 상자",
+    "task_ko": "이 상자들을 위층으로 옮기는 걸 도와드릴까요?",
+    "sample_en": "Would you like any help carrying these boxes upstairs?",
+    "situation_ko": "무거운 상자",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g08_02",
+        "korean_cue": "이 상자들을 위층으로 옮기는 걸 도와드릴까요?",
+        "english_use": "Would you like any help carrying these boxes upstairs?"
+      }
+    ]
+  },
+  {
+    "id": "transfer_g08_03",
+    "lesson_id": "g08",
+    "card_ids": [
+      "g08_03"
+    ],
+    "title": "주말 계획",
+    "task_ko": "이번 주말에 같이 뭔가 하자고 했잖아. 어떤 걸 생각하고 있어?",
+    "sample_en": "You said we should do something together this weekend. What do you have in mind?",
+    "situation_ko": "주말 계획",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g08_03",
+        "korean_cue": "이번 주말에 같이 뭔가 하자고 했잖아. 어떤 걸 생각하고 있어?",
+        "english_use": "You said we should do something together this weekend. What do you have in mind?"
+      }
+    ]
+  },
+  {
+    "id": "transfer_g08_04",
+    "lesson_id": "g08",
+    "card_ids": [
+      "g08_04"
+    ],
+    "title": "새 의자",
+    "task_ko": "방에 놓을 의자를 찾고 있어요. 심플하고 편하지만 우아하기도 한 것으로요.",
+    "sample_en": "I'm looking for a chair for my room. Something simple and comfortable, but also elegant.",
+    "situation_ko": "새 의자",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g08_04",
+        "korean_cue": "방에 놓을 의자를 찾고 있어요. 심플하고 편하지만 우아하기도 한 것으로요.",
+        "english_use": "I'm looking for a chair for my room. Something simple and comfortable, but also elegant."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g08_05",
+    "lesson_id": "g08",
+    "card_ids": [
+      "g08_05"
+    ],
+    "title": "빌린 코트",
+    "task_ko": "그 코트 좀 빌려줄래? 사기 전에 비슷한 스타일을 입어보고 싶어.",
+    "sample_en": "Could I borrow that coat? I'd like to try it on before buying a similar one.",
+    "situation_ko": "빌린 코트",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g08_05",
+        "korean_cue": "그 코트 좀 빌려줄래? 사기 전에 비슷한 스타일을 입어보고 싶어.",
+        "english_use": "Could I borrow that coat? I'd like to try it on before buying a similar one."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g08_06",
+    "lesson_id": "g08",
+    "card_ids": [
+      "g08_06"
+    ],
+    "title": "출장 일정",
+    "task_ko": "몇 주 후에 여동생이 결혼해서 출장 일정을 바꿔야 해.",
+    "sample_en": "My sister is getting married in a few weeks, so I need to change my business trip.",
+    "situation_ko": "출장 일정",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g08_06",
+        "korean_cue": "몇 주 후에 여동생이 결혼해서 출장 일정을 바꿔야 해.",
+        "english_use": "My sister is getting married in a few weeks, so I need to change my business trip."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g08_07",
+    "lesson_id": "g08",
+    "card_ids": [
+      "g08_07"
+    ],
+    "title": "책 두 권",
+    "task_ko": "펜 하나만 사려고 했는데 새 책 두 권을 가지고 가게를 나왔어.",
+    "sample_en": "I only meant to buy a pen, but I walked out of the store with two new books.",
+    "situation_ko": "책 두 권",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g08_07",
+        "korean_cue": "펜 하나만 사려고 했는데 새 책 두 권을 가지고 가게를 나왔어.",
+        "english_use": "I only meant to buy a pen, but I walked out of the store with two new books."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g08_08",
+    "lesson_id": "g08",
+    "card_ids": [
+      "g08_08"
+    ],
+    "title": "우산의 품질",
+    "task_ko": "싸게 산 우산이 처음 쓴 날 뒤집혔어. 역시 싼 게 비지떡인가 봐.",
+    "sample_en": "The cheap umbrella turned inside out the first day I used it. I guess you get what you pay for.",
+    "situation_ko": "우산의 품질",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g08_08",
+        "korean_cue": "싸게 산 우산이 처음 쓴 날 뒤집혔어. 역시 싼 게 비지떡인가 봐.",
+        "english_use": "The cheap umbrella turned inside out the first day I used it. I guess you get what you pay for."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g08_09",
+    "lesson_id": "g08",
+    "card_ids": [
+      "g08_09"
+    ],
+    "title": "라디오 수리",
+    "task_ko": "이 라디오는 아직 버리지 마. 우리 이웃은 이런 걸 고치는 데 정말 능숙해.",
+    "sample_en": "Don't throw this radio away yet. My neighbor is amazing at fixing things like this.",
+    "situation_ko": "라디오 수리",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g08_09",
+        "korean_cue": "이 라디오는 아직 버리지 마. 우리 이웃은 이런 걸 고치는 데 정말 능숙해.",
+        "english_use": "Don't throw this radio away yet. My neighbor is amazing at fixing things like this."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g08_10",
+    "lesson_id": "g08",
+    "card_ids": [
+      "g08_10"
+    ],
+    "title": "잘못된 예약",
+    "task_ko": "호텔 예약 날짜를 잘못 골랐어. 직원이 도와줄 수 있으면 좋겠어.",
+    "sample_en": "I chose the wrong dates for my hotel booking. Hopefully, the staff can help me out.",
+    "situation_ko": "잘못된 예약",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g08_10",
+        "korean_cue": "호텔 예약 날짜를 잘못 골랐어. 직원이 도와줄 수 있으면 좋겠어.",
+        "english_use": "I chose the wrong dates for my hotel booking. Hopefully, the staff can help me out."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g09_01",
+    "lesson_id": "g09",
+    "card_ids": [
+      "g09_01"
+    ],
+    "title": "면접 이야기",
+    "task_ko": "면접은 끝났어. 어떻게 진행됐냐면 이래. 먼저 지난 프로젝트에 대해 물어봤어.",
+    "sample_en": "The interview is over. Here's how it went. First, they asked about my last project.",
+    "situation_ko": "면접 이야기",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g09_01",
+        "korean_cue": "면접은 끝났어. 어떻게 진행됐냐면 이래. 먼저 지난 프로젝트에 대해 물어봤어.",
+        "english_use": "The interview is over. Here's how it went. First, they asked about my last project."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g09_02",
+    "lesson_id": "g09",
+    "card_ids": [
+      "g09_02"
+    ],
+    "title": "발표 소리 확인",
+    "task_ko": "잠깐 시간 있으면 내 목소리가 뒤에서도 들리는지 확인해 줄래?",
+    "sample_en": "If you've got a minute, would you check whether you can hear me at the back?",
+    "situation_ko": "발표 소리 확인",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g09_02",
+        "korean_cue": "잠깐 시간 있으면 내 목소리가 뒤에서도 들리는지 확인해 줄래?",
+        "english_use": "If you've got a minute, would you check whether you can hear me at the back?"
+      }
+    ]
+  },
+  {
+    "id": "transfer_g09_03",
+    "lesson_id": "g09",
+    "card_ids": [
+      "g09_03"
+    ],
+    "title": "빠진 첨부",
+    "task_ko": "파일을 첨부하는 걸 잊었네. 바로 처리할게.",
+    "sample_en": "I forgot to attach the file. I'll get right on it.",
+    "situation_ko": "빠진 첨부",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g09_03",
+        "korean_cue": "파일을 첨부하는 걸 잊었네. 바로 처리할게.",
+        "english_use": "I forgot to attach the file. I'll get right on it."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g09_04",
+    "lesson_id": "g09",
+    "card_ids": [
+      "g09_04"
+    ],
+    "title": "사진 복구",
+    "task_ko": "오래된 사진을 복구하는 데 예상보다 오래 걸리고 있어.",
+    "sample_en": "Restoring the old photos is taking me longer than I expected.",
+    "situation_ko": "사진 복구",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g09_04",
+        "korean_cue": "오래된 사진을 복구하는 데 예상보다 오래 걸리고 있어.",
+        "english_use": "Restoring the old photos is taking me longer than I expected."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g09_05",
+    "lesson_id": "g09",
+    "card_ids": [
+      "g09_05"
+    ],
+    "title": "공유 공간",
+    "task_ko": "우리 둘 다 같은 시간에 연습실이 필요해. 같이 해결 방법을 찾아보자.",
+    "sample_en": "We both need the practice room at the same time. Let's work it out together.",
+    "situation_ko": "공유 공간",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g09_05",
+        "korean_cue": "우리 둘 다 같은 시간에 연습실이 필요해. 같이 해결 방법을 찾아보자.",
+        "english_use": "We both need the practice room at the same time. Let's work it out together."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g09_06",
+    "lesson_id": "g09",
+    "card_ids": [
+      "g09_06"
+    ],
+    "title": "반려견 돌보기",
+    "task_ko": "누가 개를 산책시킬지를 두고 어제 말다툼했어.",
+    "sample_en": "We had an argument yesterday about who would walk the dog.",
+    "situation_ko": "반려견 돌보기",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g09_06",
+        "korean_cue": "누가 개를 산책시킬지를 두고 어제 말다툼했어.",
+        "english_use": "We had an argument yesterday about who would walk the dog."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g09_07",
+    "lesson_id": "g09",
+    "card_ids": [
+      "g09_07"
+    ],
+    "title": "긴 촬영",
+    "task_ko": "긴 촬영을 마친 뒤 나는 유난히 피곤하고 짜증이 났어.",
+    "sample_en": "I was unusually tired and cranky after the long photo shoot.",
+    "situation_ko": "긴 촬영",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g09_07",
+        "korean_cue": "긴 촬영을 마친 뒤 나는 유난히 피곤하고 짜증이 났어.",
+        "english_use": "I was unusually tired and cranky after the long photo shoot."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g09_08",
+    "lesson_id": "g09",
+    "card_ids": [
+      "g09_08"
+    ],
+    "title": "밀린 설거지",
+    "task_ko": "설거지가 아직 안 된 건 알아. 그 일로 나를 닦달하지 말아줘.",
+    "sample_en": "I know the dishes aren't done yet. Please don't get on my case about it.",
+    "situation_ko": "밀린 설거지",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g09_08",
+        "korean_cue": "설거지가 아직 안 된 건 알아. 그 일로 나를 닦달하지 말아줘.",
+        "english_use": "I know the dishes aren't done yet. Please don't get on my case about it."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g09_09",
+    "lesson_id": "g09",
+    "card_ids": [
+      "g09_09"
+    ],
+    "title": "짧은 답장",
+    "task_ko": "그 차가운 답장 때문에 나는 속상했어.",
+    "sample_en": "That cold reply left me feeling upset.",
+    "situation_ko": "짧은 답장",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g09_09",
+        "korean_cue": "그 차가운 답장 때문에 나는 속상했어.",
+        "english_use": "That cold reply left me feeling upset."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g09_10",
+    "lesson_id": "g09",
+    "card_ids": [
+      "g09_10"
+    ],
+    "title": "계속된 비판",
+    "task_ko": "처음에는 신경 쓰지 않았지만 계속되는 비판이 점점 마음에 영향을 줬어.",
+    "sample_en": "I didn't mind at first, but the constant criticism started to get to me.",
+    "situation_ko": "계속된 비판",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g09_10",
+        "korean_cue": "처음에는 신경 쓰지 않았지만 계속되는 비판이 점점 마음에 영향을 줬어.",
+        "english_use": "I didn't mind at first, but the constant criticism started to get to me."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g10_01",
+    "lesson_id": "g10",
+    "card_ids": [
+      "g10_01"
+    ],
+    "title": "다큐멘터리",
+    "task_ko": "그 다큐멘터리는 흥미로웠어. 그런데 내가 기대했던 것과는 좀 달랐어.",
+    "sample_en": "The documentary was interesting. It wasn't exactly what I was expecting, though.",
+    "situation_ko": "다큐멘터리",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g10_01",
+        "korean_cue": "그 다큐멘터리는 흥미로웠어. 그런데 내가 기대했던 것과는 좀 달랐어.",
+        "english_use": "The documentary was interesting. It wasn't exactly what I was expecting, though."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g10_02",
+    "lesson_id": "g10",
+    "card_ids": [
+      "g10_02"
+    ],
+    "title": "혼자 맡은 행사",
+    "task_ko": "행사 전체를 혼자 준비하겠다고 했어. 감당하기 어려운 일을 벌인 것 같아.",
+    "sample_en": "I offered to organize the whole event on my own. I think I bit off more than I could chew.",
+    "situation_ko": "혼자 맡은 행사",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g10_02",
+        "korean_cue": "행사 전체를 혼자 준비하겠다고 했어. 감당하기 어려운 일을 벌인 것 같아.",
+        "english_use": "I offered to organize the whole event on my own. I think I bit off more than I could chew."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g10_03",
+    "lesson_id": "g10",
+    "card_ids": [
+      "g10_03"
+    ],
+    "title": "무거운 책장",
+    "task_ko": "친구와 책장을 옮기려고 했지만 우리 둘 다 한쪽 끝조차 들어 올릴 수 없었어.",
+    "sample_en": "My friend and I tried to move the bookcase, but neither of us could even lift one end.",
+    "situation_ko": "무거운 책장",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g10_03",
+        "korean_cue": "친구와 책장을 옮기려고 했지만 우리 둘 다 한쪽 끝조차 들어 올릴 수 없었어.",
+        "english_use": "My friend and I tried to move the bookcase, but neither of us could even lift one end."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g10_04",
+    "lesson_id": "g10",
+    "card_ids": [
+      "g10_04"
+    ],
+    "title": "어려운 프로젝트",
+    "task_ko": "프로젝트가 생각보다 어렵지만 끝날 때까지 버텨볼 거야.",
+    "sample_en": "The project is harder than I expected, but I'm going to stick it out until it's finished.",
+    "situation_ko": "어려운 프로젝트",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g10_04",
+        "korean_cue": "프로젝트가 생각보다 어렵지만 끝날 때까지 버텨볼 거야.",
+        "english_use": "The project is harder than I expected, but I'm going to stick it out until it's finished."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g10_05",
+    "lesson_id": "g10",
+    "card_ids": [
+      "g10_05"
+    ],
+    "title": "아침 모임",
+    "task_ko": "이른 아침 독서 모임은 내 일정에 잘 맞지 않아.",
+    "sample_en": "The early-morning book club isn't the right fit for my schedule.",
+    "situation_ko": "아침 모임",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g10_05",
+        "korean_cue": "이른 아침 독서 모임은 내 일정에 잘 맞지 않아.",
+        "english_use": "The early-morning book club isn't the right fit for my schedule."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g10_06",
+    "lesson_id": "g10",
+    "card_ids": [
+      "g10_06"
+    ],
+    "title": "점심 운동",
+    "task_ko": "우리는 유연성과 건강을 개선하려고 점심시간에 스트레칭을 해.",
+    "sample_en": "We stretch during our lunch break to improve our flexibility and health.",
+    "situation_ko": "점심 운동",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g10_06",
+        "korean_cue": "우리는 유연성과 건강을 개선하려고 점심시간에 스트레칭을 해.",
+        "english_use": "We stretch during our lunch break to improve our flexibility and health."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g10_07",
+    "lesson_id": "g10",
+    "card_ids": [
+      "g10_07"
+    ],
+    "title": "알림 끄기",
+    "task_ko": "보고서를 쓰는 동안 집중을 유지하려고 알림을 껐어.",
+    "sample_en": "I turned off notifications to stay focused while writing the report.",
+    "situation_ko": "알림 끄기",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g10_07",
+        "korean_cue": "보고서를 쓰는 동안 집중을 유지하려고 알림을 껐어.",
+        "english_use": "I turned off notifications to stay focused while writing the report."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g10_08",
+    "lesson_id": "g10",
+    "card_ids": [
+      "g10_08"
+    ],
+    "title": "재미있는 실수",
+    "task_ko": "그 실수가 자꾸 떠올라서 우리는 계속 웃었어.",
+    "sample_en": "We kept laughing because we kept thinking about that mistake.",
+    "situation_ko": "재미있는 실수",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g10_08",
+        "korean_cue": "그 실수가 자꾸 떠올라서 우리는 계속 웃었어.",
+        "english_use": "We kept laughing because we kept thinking about that mistake."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g10_09",
+    "lesson_id": "g10",
+    "card_ids": [
+      "g10_09"
+    ],
+    "title": "아르바이트",
+    "task_ko": "그 아르바이트를 그만둘까 생각 중이지만 이번 달은 끝까지 일할 거야.",
+    "sample_en": "I'm thinking of leaving that part-time job, but I'll finish out the month.",
+    "situation_ko": "아르바이트",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g10_09",
+        "korean_cue": "그 아르바이트를 그만둘까 생각 중이지만 이번 달은 끝까지 일할 거야.",
+        "english_use": "I'm thinking of leaving that part-time job, but I'll finish out the month."
+      }
+    ]
+  },
+  {
+    "id": "transfer_g10_10",
+    "lesson_id": "g10",
+    "card_ids": [
+      "g10_10"
+    ],
+    "title": "등산 초대",
+    "task_ko": "다음 주에 등산에 갈지도 몰라. 날씨가 어떨지 두고 보자.",
+    "sample_en": "Maybe I'll go hiking next week. We'll see what the weather is like.",
+    "situation_ko": "등산 초대",
+    "origin": "v2 앱 작성 새 상황 · 원자료 인용 아님",
+    "alignment": [
+      {
+        "card_id": "g10_10",
+        "korean_cue": "다음 주에 등산에 갈지도 몰라. 날씨가 어떨지 두고 보자.",
+        "english_use": "Maybe I'll go hiking next week. We'll see what the weather is like."
+      }
+    ]
+  }
+]

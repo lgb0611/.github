@@ -1,0 +1,40 @@
+test_foreign_host_is_rejected (tests.test_free_server.FreeServerTests.test_foreign_host_is_rejected) ... ok
+test_free_page_and_config (tests.test_free_server.FreeServerTests.test_free_page_and_config) ... ok
+test_head_has_no_body (tests.test_free_server.FreeServerTests.test_head_has_no_body) ... ok
+test_only_learning_assets_are_served (tests.test_free_server.FreeServerTests.test_only_learning_assets_are_served) ... ok
+test_paid_endpoints_rejected (tests.test_free_server.FreeServerTests.test_paid_endpoints_rejected) ... ok
+test_busy_rejects_duplicate_network_work (tests.test_youtube_server.CaptionEndpointTests.test_busy_rejects_duplicate_network_work) ... ok
+test_caption_failure_is_actionable_and_unlocks_next_request (tests.test_youtube_server.CaptionEndpointTests.test_caption_failure_is_actionable_and_unlocks_next_request) ... ok
+test_excess_fields_and_large_body_rejected (tests.test_youtube_server.CaptionEndpointTests.test_excess_fields_and_large_body_rejected) ... ok
+test_foreign_site_and_bad_token_never_call_service (tests.test_youtube_server.CaptionEndpointTests.test_foreign_site_and_bad_token_never_call_service) ... ok
+test_success_passes_only_video_id_to_service (tests.test_youtube_server.CaptionEndpointTests.test_success_passes_only_video_id_to_service) ... ok
+test_access_block_is_not_retried (tests.test_youtube_server.PublicCaptionTests.test_access_block_is_not_retried) ... ok
+test_english_track_prefers_manual_and_preserves_real_times (tests.test_youtube_server.PublicCaptionTests.test_english_track_prefers_manual_and_preserves_real_times) ... ok
+test_invalid_id_rejected_before_import_or_network (tests.test_youtube_server.PublicCaptionTests.test_invalid_id_rejected_before_import_or_network) ... ok
+test_missing_optional_package_has_manual_fallback (tests.test_youtube_server.PublicCaptionTests.test_missing_optional_package_has_manual_fallback) ... ok
+test_errors_do_not_erase_the_client_input_or_return_fake_lessons (tests.test_local_ai.AppEndpointTests.test_errors_do_not_erase_the_client_input_or_return_fake_lessons) ... ok
+test_extraction_requires_the_local_app_token_and_origin (tests.test_local_ai.AppEndpointTests.test_extraction_requires_the_local_app_token_and_origin) ... ok
+test_oversized_caption_body_is_rejected_before_model_work (tests.test_local_ai.AppEndpointTests.test_oversized_caption_body_is_rejected_before_model_work) ... ok
+test_setup_is_an_explicit_post_with_no_model_override (tests.test_local_ai.AppEndpointTests.test_setup_is_an_explicit_post_with_no_model_override) ... ok
+test_valid_extraction_route_returns_local_result (tests.test_local_ai.AppEndpointTests.test_valid_extraction_route_returns_local_result) ... ok
+test_connection_failure_is_not_retried (tests.test_local_ai.ExtractionTests.test_connection_failure_is_not_retried) ... ok
+test_duplicate_running_extraction_does_not_start_another_model (tests.test_local_ai.ExtractionTests.test_duplicate_running_extraction_does_not_start_another_model) ... ok
+test_fabricated_quotes_duplicates_and_incomplete_lessons_are_filtered (tests.test_local_ai.ExtractionTests.test_fabricated_quotes_duplicates_and_incomplete_lessons_are_filtered) ... ok
+test_incomplete_output_is_never_saved_and_repair_is_bounded (tests.test_local_ai.ExtractionTests.test_incomplete_output_is_never_saved_and_repair_is_bounded) ... ok
+test_input_rejects_arbitrary_models_urls_and_bad_ids_before_network (tests.test_local_ai.ExtractionTests.test_input_rejects_arbitrary_models_urls_and_bad_ids_before_network) ... ok
+test_missing_model_does_not_trigger_download_or_generation (tests.test_local_ai.ExtractionTests.test_missing_model_does_not_trigger_download_or_generation) ... ok
+test_one_local_repair_can_recover_invalid_json (tests.test_local_ai.ExtractionTests.test_one_local_repair_can_recover_invalid_json) ... ok
+test_remote_model_metadata_is_rejected_before_chat (tests.test_local_ai.ExtractionTests.test_remote_model_metadata_is_rejected_before_chat) ... ok
+test_setup_requires_a_running_local_program (tests.test_local_ai.ExtractionTests.test_setup_requires_a_running_local_program) ... ok
+test_source_and_time_fields_come_from_input_not_the_model (tests.test_local_ai.ExtractionTests.test_source_and_time_fields_come_from_input_not_the_model) ... ok
+test_source_size_and_duplicate_ids_are_bounded (tests.test_local_ai.ExtractionTests.test_source_size_and_duplicate_ids_are_bounded) ... ok
+test_status_does_not_download_and_does_not_accept_cloud_tags (tests.test_local_ai.ExtractionTests.test_status_does_not_download_and_does_not_accept_cloud_tags) ... ok
+test_unknown_pattern_becomes_a_source_grounded_local_ai_lesson (tests.test_local_ai.ExtractionTests.test_unknown_pattern_becomes_a_source_grounded_local_ai_lesson) ... ok
+test_http_client_sends_only_to_loopback_and_rejects_redirects (tests.test_local_ai.LocalHTTPTests.test_http_client_sends_only_to_loopback_and_rejects_redirects) ... ok
+test_model_download_processes_progress_success_and_failure_over_local_http (tests.test_local_ai.LocalHTTPTests.test_model_download_processes_progress_success_and_failure_over_local_http) ... ok
+test_repeated_setup_does_not_start_multiple_downloads (tests.test_local_ai.LocalHTTPTests.test_repeated_setup_does_not_start_multiple_downloads) ... ok
+
+----------------------------------------------------------------------
+Ran 35 tests in 3.045s
+
+OK

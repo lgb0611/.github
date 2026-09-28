@@ -1,0 +1,23 @@
+{
+  "version": "2.10.0",
+  "previous_version": "2.9.0",
+  "previous_html_sha256": "a5d7fdfa36dee85ab644a61ef67827e3e3097613b1cf9d2727bb01d5f8f157e3",
+  "html_sha256": "34f4ce5519799979d9ed14afb5b2c6aee4168154124dc30200f63187f0598907",
+  "standalone_matches_server_html": true,
+  "source_count": 35,
+  "previous_source_files_preserved": 35,
+  "existing_learning_cards_preserved": 3381,
+  "unchanged_data_files": [
+    "library.json",
+    "materials.json",
+    "exercises.json",
+    "transfer.json",
+    "video-materials.json"
+  ],
+  "new_files": [
+    "static/speech-check.js",
+    "tests/test_speech_check.js",
+    "docs/DICTATION_KO.md",
+    "docs/v2_9_archive/"
+  ]
+}

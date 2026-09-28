@@ -1,0 +1,64 @@
+{
+  "version": "2.7.0",
+  "date": "2026-09-11",
+  "request": "Include the two supplied PDFs as ready-to-study materials with Korean meanings, listening, repeat and speaking practice",
+  "automated_tests": {
+    "node_total": 201,
+    "node_passed": 201,
+    "python_total": 48,
+    "python_passed": 48,
+    "total_unique": 249,
+    "failed": 0,
+    "new_material_regressions_included": 17
+  },
+  "new_materials": [
+    {
+      "id": "pdf_jennie",
+      "pages": 4,
+      "rows": 60,
+      "english_rows_matched_to_pdf": 60,
+      "sha256": "30960301403f0c0df3ae7aaf019287bf79dd43e9728d0a075d53fd6ff8caa603",
+      "bytes": 203545
+    },
+    {
+      "id": "pdf_elon",
+      "pages": 20,
+      "rows": 363,
+      "english_rows_matched_to_pdf": 363,
+      "sha256": "8cd372f9ae9d2e7a4e9a42b116ffa80f23f1871057ef5e7d4709b14637328370",
+      "bytes": 77959
+    }
+  ],
+  "data_counts": {
+    "cards": 3297,
+    "preserved_cards": 2874,
+    "new_cards": 423,
+    "preserved_paragraphs": 42,
+    "preserved_transfer_exercises": 30,
+    "new_authored_paragraphs": 10,
+    "source_files": 34
+  },
+  "checks": {
+    "existing_32_source_files_byte_identical": true,
+    "two_added_PDFs_byte_identical": true,
+    "existing_cards_lessons_and_exercise_data_unchanged": true,
+    "english_source_matching": "423/423 rows after removing PDF formatting and normalizing punctuation/whitespace",
+    "prepared_korean_for_every_new_row": true,
+    "static_javascript_syntax_files": 10,
+    "standalone_server_html_identical": true,
+    "actual_loopback_http_PDF_responses_byte_identical": true,
+    "paid_api_calls": 0
+  },
+  "test_accounting": "Final full Node suite: 201 passing tests. Python stdlib suite: 48 passing tests. Focused and earlier runs are not added to these totals. Final CSS/documentation changes do not change tested JavaScript behavior. Optional paid API pytest suite was not run because its dependencies are absent.",
+  "limitations": [
+    "Speech events and browser interactions simulated with jsdom; no physical speaker/microphone test.",
+    "No installed browser engine for visual layout testing in this runtime.",
+    "Windows launchers and installed voice quality were not tested.",
+    "PDF text correspondence is not external fact verification or a guarantee of every translation nuance."
+  ],
+  "runtime": {
+    "node": "v24.19.0",
+    "python": "3.12.14",
+    "os": "Linux"
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "version": "2.10.0",
+  "date": "2026-09-28",
+  "request": "Upgrade the speaking practice program where it helps most",
+  "change": "Optional free browser dictation while recording, and word-level comparison with the example answer in self-check",
+  "verification": {
+    "full_node_suite": {
+      "tests": 261,
+      "pass": 261,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "duration_ms": 282771.319924,
+      "report": "docs/dictation_node_test_results.txt"
+    },
+    "new_unit_tests": {
+      "file": "tests/test_speech_check.js",
+      "tests": 13
+    },
+    "new_ui_tests": {
+      "file": "tests/test_ui.cjs (v2.10.0 section)",
+      "tests": 8
+    },
+    "python_server_suite": {
+      "pass": 88,
+      "fail": 0,
+      "report": "docs/dictation_python_test_results.txt",
+      "note": "Two stale v2.x assertions were updated: card count 3297 -> 3381 and core count 523 -> 607 after the Harvard PDF (84 cards), and a home-page text that no longer exists."
+    },
+    "harvard_source_script": "84/84 units grounded (tests/test_harvard_source.py, PyMuPDF development check)",
+    "real_browser": {
+      "note": "Chromium via Playwright with a fake microphone. \"simulated\" runs inject mock recognition results; the real run uses Chromium's own webkitSpeechRecognition.",
+      "runs": [
+        {
+          "name": "desktop-simulated",
+          "browser": "141.0.7390.37",
+          "recognitionApi": true,
+          "liveText": "I went to a store to find something to",
+          "liveStatus": "듣는 중 · 말한 영어가 여기에 글자로 나타납니다.",
+          "answerFilled": true,
+          "recordingContinued": true,
+          "playbackReady": true,
+          "comparison": "예시 답안 단어 56개 중 34개를 같은 순서로 말했어요 (61%).",
+          "horizontalOverflowPx": 0,
+          "pageErrors": []
+        },
+        {
+          "name": "mobile-simulated",
+          "browser": "141.0.7390.37",
+          "recognitionApi": true,
+          "liveText": "I went to a store to find something to",
+          "liveStatus": "듣는 중 · 말한 영어가 여기에 글자로 나타납니다.",
+          "answerFilled": true,
+          "recordingContinued": true,
+          "playbackReady": true,
+          "comparison": "예시 답안 단어 56개 중 34개를 같은 순서로 말했어요 (61%).",
+          "horizontalOverflowPx": 0,
+          "pageErrors": []
+        },
+        {
+          "name": "desktop-real-chromium",
+          "browser": "141.0.7390.37",
+          "recognitionApi": true,
+          "liveText": "",
+          "liveStatus": "받아쓰기가 마이크를 쓰지 못했습니다. 일부 기기는 녹음과 받아쓰기를 동시에 하지 못합니다. 녹음은 계속됩니다.",
+          "answerFilled": false,
+          "recordingContinued": true,
+          "playbackReady": true,
+          "comparison": null,
+          "horizontalOverflowPx": 0,
+          "pageErrors": [
+            "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+          ]
+        }
+      ]
+    },
+    "real_browser_404_note": "The only console error is GET /favicon.ico -> 404. The app has never shipped a favicon; unrelated to this change.",
+    "standalone_matches_server_html": true
+  },
+  "tested_workflows": [
+    "Dictation is off by default; turning it on shows a transmission notice and can be declined",
+    "Live words appear while recording; stopping fills the answer box without ticking the confirmation box",
+    "Pause and resume follow the recorder; a browser ending a silent session restarts without losing words",
+    "Recognition errors keep the recording and explain the reason; typed answers are never overwritten",
+    "The answer area stays locked until dictation settles, so self-check cannot run on half-finished text",
+    "Self-check marks example words said/missing and finds target expressions through tense changes and placeholders",
+    "Sentence cards (captions, PDF lines) show only the word comparison, not the source sentence as a target",
+    "Learner text and example text are HTML-escaped in the comparison",
+    "Saved dictation preference must be a boolean in backups"
+  ],
+  "limits": {
+    "speech_service": "No real human speech was recognised in this environment; recognition results were mocked. Real Chromium reported audio-capture because the container has no real audio input.",
+    "on_device_recognition": "Not used. SpeechRecognition.available() crashed a headless Chromium 141 page in testing; full Chromium 141 returned \"downloadable\" without crashing.",
+    "comparison": "Reference only, not a score. Different wording lowers the overlap; pronunciation is not assessed.",
+    "paid_api_calls": 0
+  }
+}

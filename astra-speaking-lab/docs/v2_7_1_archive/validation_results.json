@@ -1,0 +1,71 @@
+{
+  "version": "2.7.1",
+  "date": "2026-09-14",
+  "request": "Add the user-supplied YouTube video to the study catalog",
+  "video": {
+    "id": "hZWTGyXF0mI",
+    "lesson_id": "video_hZWTGyXF0mI",
+    "title": "하버드 교수입니다 제말 들으십쇼",
+    "study_title": "Arthur Brooks · 하버드 교수입니다 제말 들으십쇼",
+    "channel": "BZCF | 비즈까페",
+    "url": "https://www.youtube.com/watch?v=hZWTGyXF0mI",
+    "duration_seconds": 779,
+    "caption_language": "en",
+    "caption_kind": "asr",
+    "metadata_checked_at": "2026-09-14",
+    "source_kind": "YouTube 영상 · 영어 자동 자막",
+    "description": "영상 선택 → 자막 불러오기 → 문장·한국어 뜻 → 듣고 말하기. 한 번에 20개씩 준비하고 다음 묶음을 추가할 수 있습니다.",
+    "short_title": "Arthur Brooks · 영상 학습"
+  },
+  "live_source_checks": {
+    "oembed_title_and_channel": "confirmed via public YouTube oEmbed",
+    "video_page_duration_seconds": 779,
+    "player_status": "OK",
+    "caption_track": "en, asr",
+    "caption_body": "not retrieved; direct timed-text response was empty and the app caption loader also failed",
+    "bundled_transcript": false,
+    "bundled_new_video_Korean_translations": false
+  },
+  "implementation": {
+    "catalog_locations": [
+      "materials view",
+      "practice shortcuts",
+      "YouTube view",
+      "lesson picker"
+    ],
+    "on_click": "fill exact source URL/title, load public English captions and run the existing free sentence/Korean-learning workflow",
+    "same_video_draft": "reuse instead of another download",
+    "existing_draft_replacement": "confirm before replacement; cancel restores original URL/title/raw text/view",
+    "default_chunk_count": 20,
+    "paid_api_calls": 0
+  },
+  "automated_tests": {
+    "full_suite": {
+      "tests": 210,
+      "passed": 210,
+      "failed": 0
+    },
+    "final_targeted_after_busy_button_fix": {
+      "tests": 11,
+      "passed": 11,
+      "failed": 0
+    },
+    "accounting": "210 tests passed in the full suite. A later saved-video button state fix and one added regression were verified by the final targeted run, which includes overlap. Do not add run totals. The unchanged Python server suite was not rerun; prior 48 passing tests remain archived."
+  },
+  "preservation": {
+    "source_files": 34,
+    "cards": 3297,
+    "pdf_rows": 423,
+    "pdf_authored_paragraphs": 10,
+    "existing_paragraphs": 42,
+    "transfer_exercises": 30,
+    "all_previous_data_files_byte_identical": true,
+    "all_source_files_byte_identical": true,
+    "standalone_server_html_equal": true
+  },
+  "limitations": [
+    "Transcript retrieval for this specific video did not succeed in the task environment.",
+    "Caption-learning, Korean and speech integration verified with mock captions/translation/speech in jsdom.",
+    "Actual browser voice, user-machine caption access and Windows launcher execution were not tested."
+  ]
+}

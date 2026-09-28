@@ -1,0 +1,65 @@
+{
+  "version": "2.6.1",
+  "date": "2026-09-10",
+  "request": "Keep the Korean meaning visible beneath the current transcript sentence, including sentences not extracted as learning cards",
+  "root_cause": "The transcript player only looked up translations through exact learning-card matches and hid the Korean element for all other transcript rows.",
+  "automated_tests": {
+    "existing_core": 33,
+    "youtube_core": 9,
+    "sentence_lesson_core": 10,
+    "korean_prompt_and_cache_core": 9,
+    "dom_interaction": 124,
+    "new_issue_regressions_included": 16,
+    "total_unique_this_revision": 185,
+    "passed": 185,
+    "failed": 0
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "node": "v24.19.0",
+    "os": "Linux"
+  },
+  "commands": [
+    "node --test --test-reporter=tap tests/test_core.js tests/test_youtube_core.js tests/test_auto_lessons.js tests/test_korean_core.js tests/test_ui.cjs"
+  ],
+  "run_accounting": "The final full suite passed all 185 tests after all source changes. An earlier full run passed 182 tests. Additional lifecycle/timeout regressions exposed a post-close asynchronous callback in the DOM harness; teardown now dispatches the browser unload event, and the player also handles pagehide and rejects updates to a disposed document. The final total counts each test once; earlier and targeted runs are not added.",
+  "checks": {
+    "sentence_55_of_116_outside_20_card_deck": "passed; Korean prepared before native speech, no extra card created",
+    "all_65_transcript_sentences_have_matching_visible_korean_before_speech": "passed with simulated translation and speech",
+    "independent_exact_source_cache_and_legacy_backup_migration": "passed",
+    "bounded_cache_rejects_invalid_duplicate_and_foreign_engine_entries": "passed",
+    "repeated_sentence_and_reopen_reuse_meanings_without_translation_engine": "passed",
+    "prefetch_next_up_to_five_sentences": "passed",
+    "paused_translation_completion_does_not_start_audio": "passed",
+    "stop_source_change_and_next_sentence_ignore_late_results": "passed",
+    "free_local_translation_for_non_card_sentence": "passed with mocked loopback responses",
+    "mismatched_local_source_never_displayed_or_cached": "passed",
+    "unavailable_translation_visible_retry_then_meaning_before_audio": "passed",
+    "single_translation_failure_does_not_disable_later_browser_translation": "passed",
+    "translation_timeout_retry_and_stale_result_rejection": "passed",
+    "stopped_translation_has_no_false_loading_indicator": "passed",
+    "retry_while_paused_prepares_meaning_without_autoplay": "passed",
+    "translator_creation_occurs_under_playback_click_even_with_cached_first_rows": "passed with simulated activation",
+    "prior_full_playback_range_repeat_sentence_audio_and_korean_practice": "passed",
+    "paid_api_calls_for_new_translation": "none",
+    "original_sources_byte_identical": 32,
+    "javascript_syntax_files": 9,
+    "server_and_standalone_html_equal": true
+  },
+  "not_verified": [
+    "Actual PC speech output and microphone",
+    "Actual Chrome language-pack download, support and translation quality",
+    "Actual Ollama installation, speed or translation quality",
+    "Visual browser rendering or Windows/macOS launcher double-click",
+    "Live YouTube caption retrieval",
+    "Paid OpenAI API calls"
+  ],
+  "previous_python_tests": {
+    "version": "2.5.0",
+    "count": 47,
+    "passed": 47,
+    "rerun": false,
+    "included_in_this_total": false,
+    "path": "docs/v2_5_archive/validation_results.json"
+  }
+}

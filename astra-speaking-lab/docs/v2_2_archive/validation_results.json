@@ -1,0 +1,52 @@
+{
+  "version": "2.2.0",
+  "date": "2026-09-10",
+  "automated_tests": {
+    "core_schedule_backup_manual_feedback": 33,
+    "youtube_caption_and_source_logic": 9,
+    "ui_dom_simulation": 48,
+    "real_free_server_http": 5,
+    "real_caption_endpoint_http_with_mocked_service": 5,
+    "caption_service_mocked_provider": 4,
+    "total": 104,
+    "failed": 0
+  },
+  "previous_api_server_tests": {
+    "count": 40,
+    "rerun_for_2_2": false,
+    "included_in_total": false
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "node": "v24.19.0",
+    "os": "Linux"
+  },
+  "checks": {
+    "standalone_matches_server_html": true,
+    "original_sources_byte_identical": 32,
+    "javascript_syntax": "passed (4 files)",
+    "python_syntax": "passed (13 files)",
+    "stdlib_only_free_server_tests": "passed with python -S",
+    "optional_caption_package_install": "passed in isolated scratch target; youtube-transcript-api 1.2.4",
+    "paid_requests_blocked_in_free_mode": "passed; HTTP POST rejected and DOM client guards",
+    "original_video_embed": "DOM validates src, timing, removal during microphone use and explicit loading; live playback unverified",
+    "voices": "mocked late voiceschanged, explicit remote-voice choice and synthesis event handling passed",
+    "live_youtube_caption_fetch": "not verified; network call failed and tool reported network approval cancellation"
+  },
+  "commands": [
+    "python build_page.py",
+    "node --test tests/test_core.js tests/test_youtube_core.js tests/test_ui.cjs",
+    "python -S -m unittest tests.test_free_server tests.test_youtube_server -v"
+  ],
+  "not_verified": [
+    "Contents of the shared ChatGPT conversation; link could not be read",
+    "Live YouTube captions, embedded or external video playback",
+    "Real browser layout: previous loopback navigation blocked with ERR_BLOCKED_BY_CLIENT",
+    "Real microphone, speaker and installed browser voices",
+    "Windows/macOS launcher double-click and microphone permissions",
+    "Windows voice typing",
+    "Live ChatGPT response quality and JSON compliance",
+    "Paid OpenAI API calls",
+    "Empirical learning efficacy"
+  ]
+}

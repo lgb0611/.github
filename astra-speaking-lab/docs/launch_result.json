@@ -1,0 +1,8 @@
+{
+  "linux_server_launch": "PASS",
+  "loopback_http": "PASS",
+  "api_key": false,
+  "version": "2.0",
+  "reasoning": "medium",
+  "bootstrap_fresh_install": "Not verified: environment network approval cancelled"
+}

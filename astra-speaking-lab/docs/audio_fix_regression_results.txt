@@ -1,0 +1,64 @@
+TAP version 13
+# Subtest: YouTube online-only voices offer a visible permission and resume exactly the pending sentence
+ok 1 - YouTube online-only voices offer a visible permission and resume exactly the pending sentence
+  ---
+  duration_ms: 1204.441214
+  type: 'test'
+  ...
+# Subtest: voice permission only replays the latest blocked sentence and stop clears that request
+ok 2 - voice permission only replays the latest blocked sentence and stop clears that request
+  ---
+  duration_ms: 442.378618
+  type: 'test'
+  ...
+# Subtest: leaving the video clears pending permission playback and does not speak an old sentence
+ok 3 - leaving the video clears pending permission playback and does not speak an old sentence
+  ---
+  duration_ms: 427.935613
+  type: 'test'
+  ...
+# Subtest: late online voices appear in the YouTube selector after permission without a settings detour
+ok 4 - late online voices appear in the YouTube selector after permission without a settings detour
+  ---
+  duration_ms: 410.64405
+  type: 'test'
+  ...
+# Subtest: a speech request that never starts produces an actionable message and ignores late events
+ok 5 - a speech request that never starts produces an actionable message and ignores late events
+  ---
+  duration_ms: 422.237407
+  type: 'test'
+  ...
+# Subtest: paragraph checkboxes immediately show selected cards and a working bottom start action
+ok 6 - paragraph checkboxes immediately show selected cards and a working bottom start action
+  ---
+  duration_ms: 433.115246
+  type: 'test'
+  ...
+# Subtest: paragraph chips and clear action keep the checkboxes, highlight and selected IDs in sync
+ok 7 - paragraph chips and clear action keep the checkboxes, highlight and selected IDs in sync
+  ---
+  duration_ms: 427.740079
+  type: 'test'
+  ...
+# Subtest: a sixth paragraph selection is rejected with feedback beside the start button
+ok 8 - a sixth paragraph selection is rejected with feedback beside the start button
+  ---
+  duration_ms: 423.715779
+  type: 'test'
+  ...
+# Subtest: paragraph preparation shows progress and can be cancelled directly from the selection bar
+ok 9 - paragraph preparation shows progress and can be cancelled directly from the selection bar
+  ---
+  duration_ms: 466.262507
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 5205.676675

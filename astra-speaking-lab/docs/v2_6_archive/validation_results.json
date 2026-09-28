@@ -1,0 +1,66 @@
+{
+  "version": "2.6.0",
+  "date": "2026-09-10",
+  "request": "Full transcript speech playback and inclusive sentence-range repeat without paid API",
+  "automated_tests": {
+    "existing_core": 33,
+    "youtube_core": 9,
+    "sentence_lesson_core": 10,
+    "korean_prompt_core": 6,
+    "dom_interaction": 111,
+    "new_issue_regressions_included": 18,
+    "total_unique_this_revision": 169,
+    "failed": 0
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "node": "v24.19.0",
+    "os": "Linux"
+  },
+  "commands": [
+    "node --test --test-reporter=tap tests/test_core.js tests/test_youtube_core.js tests/test_auto_lessons.js tests/test_korean_core.js tests/test_ui.cjs"
+  ],
+  "run_accounting": "Final complete Node suite passed after final source changes: 169 tests. An initial complete run passed 167/169; the microphone-control refresh was fixed and the caption-fetch fixture expectation was corrected to match existing automatic extraction. Subsequent changes only update documentation, this report and package metadata. No results are counted twice.",
+  "checks": {
+    "full_65_sentence_transcript_not_limited_to_20_cards": "passed with simulated sequential utterance completion",
+    "short_replies_repetitions_final_fragment_preserved": "passed",
+    "inclusive_sentence_range_and_exact_finite_count": "passed",
+    "infinite_repeat_stop_and_late_callback_rejection": "passed",
+    "pause_resume_late_end_while_paused": "passed with simulated native speech",
+    "gap_between_range_cycles_and_pause_remaining_gap": "passed with simulated timer/clock",
+    "previous_next_bounds_and_paused_navigation": "passed",
+    "single_card_repeat_maps_to_exact_source_sentence": "passed",
+    "online_voice_consent_resumes_pending_whole_range": "passed",
+    "stop_clears_pending_voice_permission_request": "passed",
+    "other_audio_recording_translation_navigation_cancel_old_playback": "passed",
+    "recording_completion_reenables_playback": "passed",
+    "source_change_invalidates_old_range": "passed",
+    "selected_extraction_range_does_not_truncate_transcript": "passed",
+    "saved_transcript_and_fetched_captions_populate_player": "passed",
+    "speech_start_timeout_and_network_error_stop_loop": "passed with simulated failure",
+    "voice_speed_change_cancel_and_apply_next_start": "passed",
+    "paging_and_range_selection_beyond_first_40_rows": "passed",
+    "prior_auto_korean_sentence_audio_paragraph_tests": "passed",
+    "paid_api_calls_for_new_playback": "none",
+    "original_sources_byte_identical": 32,
+    "javascript_syntax_files": 9,
+    "server_and_standalone_html_equal": true
+  },
+  "not_verified": [
+    "Actual speaker/microphone output, installed voices or speech quality",
+    "Real browser pause/resume behavior or visual rendering",
+    "Windows/macOS launcher double-click",
+    "Live YouTube caption retrieval",
+    "Actual browser translation download or quality",
+    "Actual Ollama installation, model speed or generation quality",
+    "Paid OpenAI API calls"
+  ],
+  "previous_python_tests": {
+    "version": "2.5.0",
+    "count": 47,
+    "passed": 47,
+    "rerun": false,
+    "included_in_this_total": false,
+    "path": "docs/v2_5_archive/validation_results.json"
+  }
+}

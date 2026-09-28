@@ -1,0 +1,46 @@
+{
+  "note": "Chromium via Playwright with a fake microphone. \"simulated\" runs inject mock recognition results; the real run uses Chromium's own webkitSpeechRecognition.",
+  "runs": [
+    {
+      "name": "desktop-simulated",
+      "browser": "141.0.7390.37",
+      "recognitionApi": true,
+      "liveText": "I went to a store to find something to",
+      "liveStatus": "듣는 중 · 말한 영어가 여기에 글자로 나타납니다.",
+      "answerFilled": true,
+      "recordingContinued": true,
+      "playbackReady": true,
+      "comparison": "예시 답안 단어 56개 중 34개를 같은 순서로 말했어요 (61%).",
+      "horizontalOverflowPx": 0,
+      "pageErrors": []
+    },
+    {
+      "name": "mobile-simulated",
+      "browser": "141.0.7390.37",
+      "recognitionApi": true,
+      "liveText": "I went to a store to find something to",
+      "liveStatus": "듣는 중 · 말한 영어가 여기에 글자로 나타납니다.",
+      "answerFilled": true,
+      "recordingContinued": true,
+      "playbackReady": true,
+      "comparison": "예시 답안 단어 56개 중 34개를 같은 순서로 말했어요 (61%).",
+      "horizontalOverflowPx": 0,
+      "pageErrors": []
+    },
+    {
+      "name": "desktop-real-chromium",
+      "browser": "141.0.7390.37",
+      "recognitionApi": true,
+      "liveText": "",
+      "liveStatus": "받아쓰기가 마이크를 쓰지 못했습니다. 일부 기기는 녹음과 받아쓰기를 동시에 하지 못합니다. 녹음은 계속됩니다.",
+      "answerFilled": false,
+      "recordingContinued": true,
+      "playbackReady": true,
+      "comparison": null,
+      "horizontalOverflowPx": 0,
+      "pageErrors": [
+        "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+      ]
+    }
+  ]
+}

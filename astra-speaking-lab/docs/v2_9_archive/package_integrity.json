@@ -1,0 +1,17 @@
+{
+  "version": "2.9.0",
+  "previous_package_sha256": "47baa1067ccae0460a446fa23dd5d279b4676143a35d9aa33a7a862c2c552aa7",
+  "previous_source_files_preserved": 35,
+  "source_count": 35,
+  "existing_learning_cards_preserved": 3381,
+  "existing_pdf_materials_preserved": 3,
+  "unchanged_data_files": [
+    "library.json",
+    "materials.json",
+    "exercises.json",
+    "transfer.json"
+  ],
+  "video_materials_change": "Description updated for whole-transcript extraction; video metadata unchanged",
+  "standalone_matches_server_html": true,
+  "html_sha256": "a5d7fdfa36dee85ab644a61ef67827e3e3097613b1cf9d2727bb01d5f8f157e3"
+}

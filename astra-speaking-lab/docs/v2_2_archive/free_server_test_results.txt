@@ -1,0 +1,19 @@
+test_foreign_host_is_rejected (tests.test_free_server.FreeServerTests.test_foreign_host_is_rejected) ... ok
+test_free_page_and_config (tests.test_free_server.FreeServerTests.test_free_page_and_config) ... ok
+test_head_has_no_body (tests.test_free_server.FreeServerTests.test_head_has_no_body) ... ok
+test_only_learning_assets_are_served (tests.test_free_server.FreeServerTests.test_only_learning_assets_are_served) ... ok
+test_paid_endpoints_rejected (tests.test_free_server.FreeServerTests.test_paid_endpoints_rejected) ... ok
+test_busy_rejects_duplicate_network_work (tests.test_youtube_server.CaptionEndpointTests.test_busy_rejects_duplicate_network_work) ... ok
+test_caption_failure_is_actionable_and_unlocks_next_request (tests.test_youtube_server.CaptionEndpointTests.test_caption_failure_is_actionable_and_unlocks_next_request) ... ok
+test_excess_fields_and_large_body_rejected (tests.test_youtube_server.CaptionEndpointTests.test_excess_fields_and_large_body_rejected) ... ok
+test_foreign_site_and_bad_token_never_call_service (tests.test_youtube_server.CaptionEndpointTests.test_foreign_site_and_bad_token_never_call_service) ... ok
+test_success_passes_only_video_id_to_service (tests.test_youtube_server.CaptionEndpointTests.test_success_passes_only_video_id_to_service) ... ok
+test_access_block_is_not_retried (tests.test_youtube_server.PublicCaptionTests.test_access_block_is_not_retried) ... ok
+test_english_track_prefers_manual_and_preserves_real_times (tests.test_youtube_server.PublicCaptionTests.test_english_track_prefers_manual_and_preserves_real_times) ... ok
+test_invalid_id_rejected_before_import_or_network (tests.test_youtube_server.PublicCaptionTests.test_invalid_id_rejected_before_import_or_network) ... ok
+test_missing_optional_package_has_manual_fallback (tests.test_youtube_server.PublicCaptionTests.test_missing_optional_package_has_manual_fallback) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 1.032s
+
+OK

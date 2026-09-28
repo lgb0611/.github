@@ -1,0 +1,67 @@
+
+> astra-speaking-lab@2.0.0 test
+> node --test tests/test_core.js tests/test_ui.cjs
+
+✔ HTML escapes script-bearing user content (1.226921ms)
+✔ valid initial state round-trips and migrates v1 (1.278864ms)
+✔ backup rejects NaN dates, arrays, null attempts, unknown cards (0.741801ms)
+✔ prototype keys in card/exposure maps are rejected (0.178091ms)
+✔ duplicate attempt IDs and malformed exercises are rejected (0.35821ms)
+✔ first cold success is due tomorrow (0.209137ms)
+✔ same-day success never moves due forward (0.131756ms)
+✔ early successes several days later do not bypass scheduled spacing (0.104006ms)
+✔ planned intervals are 1,3,7,14,30 days (0.453313ms)
+✔ error resets evidence and schedules ten minutes (0.237884ms)
+✔ immediate aided success does not erase a ten-minute relearning check (0.248628ms)
+✔ success shortly after lapse is practice, not independent recall (0.170205ms)
+✔ retry stage cannot manufacture retention (0.411853ms)
+✔ three due cold successes plus novel transfer confer operational mastery (0.182813ms)
+✔ revisited scene and first-ever transfer cannot manufacture mastery (0.079172ms)
+✔ hints cannot count as transfer evidence (0.064379ms)
+✔ exposure expires at 24h and survives serialization (0.302752ms)
+✔ due ordering prioritizes oldest regardless of exercise coverage (0.315ms)
+✔ no due phrase means no unrelated review exercise (0.117292ms)
+✔ daily session prioritizes due cards and caps new items at three (1.252343ms)
+✔ large backlog suppresses new cards and honors the eight-item limit (7.938716ms)
+✔ all reference cards can be practiced without an authored paragraph (7.387534ms)
+✔ import accepts aligned exercise and rejects unknown ID or fabricated evidence (1.086871ms)
+✔ task keys separate single-card attempts, not presentation-only keyword mode (0.296824ms)
+✔ 30 new short contexts cover all recent lesson cards with exact alignment (1.288668ms)
+✔ word count counts contractions as one word (0.244895ms)
+✔ nested corrupted feedback is rejected before the history view can crash (0.367236ms)
+✔ standalone offline app starts with real content and no network calls (1310.331922ms)
+✔ v1 progress migrates while original v1 storage is retained (565.220135ms)
+✔ corrupt backup remains intact and visible save warning persists (547.968388ms)
+✔ cold answer snapshot remains unassisted even after comparing the model (617.021226ms)
+✔ another answer after self-check cannot manufacture independent retrieval (550.24757ms)
+✔ hint history survives lesson-stage toggles and single-drill entry (579.18208ms)
+✔ stored hint history survives reload (586.259619ms)
+✔ oldest reference item can be reviewed offline without a paragraph (459.395526ms)
+✔ review list keeps English answers hidden until explicitly revealed (437.29295ms)
+✔ session queue requires saved evaluation before proceeding (580.098145ms)
+✔ session skip does not change the skipped item schedule (476.173738ms)
+✔ recording remains locked until asynchronous stop finalizes (469.705185ms)
+✔ pending microphone permission locks exercise changes (520.964499ms)
+✔ unsupported microphone explains fallback and does not lock app (501.146405ms)
+✔ recording pause and resume remain local actions (425.468448ms)
+✔ model speech respects selected pace and marks assistance (394.455869ms)
+✔ grade requires transcript confirmation and an API key (420.723241ms)
+✔ transcription is explicit and its text is not automatically graded (455.172825ms)
+✔ failed API grade retains answer and produces no invented evaluation (540.441968ms)
+✔ new situation favors an unseen short variant and labels a repeat accurately (447.961197ms)
+✔ external exercise import rejects invented alignment without mutation (528.846366ms)
+✔ external exercise import escapes markup and remembers answer exposure (600.975202ms)
+✔ quota failure cannot be reported as a successfully saved schedule (628.690884ms)
+✔ cross-tab updates stop this tab from overwriting newer data (570.062198ms)
+✔ copy-to-ChatGPT preserves actual words and English-only recap (511.695543ms)
+✔ successful fixture grade preserves submission-time hint state and populates error notebook (570.021059ms)
+✔ malformed imported progress does not replace working state (409.006662ms)
+✔ single-card exercise survives export and fresh-start restore (1619.919568ms)
+ℹ tests 55
+ℹ suites 0
+ℹ pass 55
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 17259.146038

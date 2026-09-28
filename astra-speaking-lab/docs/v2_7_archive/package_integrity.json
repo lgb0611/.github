@@ -1,0 +1,61 @@
+{
+  "version": "2.7.0",
+  "source_count": 34,
+  "preserved_original_source_count": 32,
+  "preserved_sources": [
+    "sources/bezos_princeton_2010_study.docx",
+    "sources/brown_power_of_vulnerability_study.docx",
+    "sources/chaplin_great_dictator_study.docx",
+    "sources/conan_harvard_class_day_study.docx",
+    "sources/gabriel_01_1.png",
+    "sources/gabriel_01_2.png",
+    "sources/gabriel_02_1.png",
+    "sources/gabriel_02_2.png",
+    "sources/gabriel_03_1.png",
+    "sources/gabriel_03_2.png",
+    "sources/gabriel_04_1.png",
+    "sources/gabriel_05_1.png",
+    "sources/gabriel_05_2.png",
+    "sources/gabriel_06_1.png",
+    "sources/gabriel_06_2.png",
+    "sources/gabriel_07_1.png",
+    "sources/gabriel_07_2.png",
+    "sources/gabriel_08_1.png",
+    "sources/gabriel_08_2.png",
+    "sources/gabriel_09_1.png",
+    "sources/gabriel_09_2.png",
+    "sources/gabriel_10_1.png",
+    "sources/gabriel_10_2.png",
+    "sources/jobs_stanford_study.docx",
+    "sources/kpop_expressions.pdf",
+    "sources/kpop_script.pdf",
+    "sources/malala_un_speech_study.docx",
+    "sources/obama_audacity_hope_study.docx",
+    "sources/portman_harvard_class_day_study.docx",
+    "sources/rowling_fringe_benefits_study.docx",
+    "sources/this_is_water_study.docx",
+    "sources/vanessa_bryant_eulogy_study.docx"
+  ],
+  "added_sources": [
+    {
+      "id": "pdf_jennie",
+      "pages": 4,
+      "rows": 60,
+      "english_rows_matched_to_pdf": 60,
+      "sha256": "30960301403f0c0df3ae7aaf019287bf79dd43e9728d0a075d53fd6ff8caa603",
+      "bytes": 203545
+    },
+    {
+      "id": "pdf_elon",
+      "pages": 20,
+      "rows": 363,
+      "english_rows_matched_to_pdf": 363,
+      "sha256": "8cd372f9ae9d2e7a4e9a42b116ffa80f23f1871057ef5e7d4709b14637328370",
+      "bytes": 77959
+    }
+  ],
+  "original_zip_sha256": "8837f0dca2b6080e8354d4cccb323b8167eef2633703a231e160aa1d820fee92",
+  "previous_version_zip_sha256": "00dc53071a73a9861bdad9071fd47cc1ec67f4fe5296f4399e3e1fe0fb84db25",
+  "html_sha256": "7cb9327bf9e314ac6b41f68e35c3c568fbf17be68eb8476ff3c0f981689ed7f8",
+  "server_and_standalone_html_equal": true
+}

@@ -1,0 +1,12 @@
+{
+  "name": "astra-speaking-lab",
+  "version": "2.10.0",
+  "private": true,
+  "description": "Optional DOM regression tests; the app itself has no npm dependency.",
+  "scripts": {
+    "test": "node --max-old-space-size=4096 --test tests/test_core.js tests/test_speech_check.js tests/test_youtube_core.js tests/test_auto_lessons.js tests/test_korean_core.js tests/test_materials.js tests/test_catalog.js tests/test_ui.cjs"
+  },
+  "devDependencies": {
+    "jsdom": "30.0.1"
+  }
+}

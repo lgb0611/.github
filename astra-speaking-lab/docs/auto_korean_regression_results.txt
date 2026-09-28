@@ -1,0 +1,64 @@
+TAP version 13
+# Subtest: missing translation engines give an explicit setup state without an invented Korean version
+ok 1 - missing translation engines give an explicit setup state without an invented Korean version
+  ---
+  duration_ms: 786.03275
+  type: 'test'
+  ...
+# Subtest: translation cancellation preserves finished sentences and ignores a late translated result
+ok 2 - translation cancellation preserves finished sentences and ignores a late translated result
+  ---
+  duration_ms: 472.694667
+  type: 'test'
+  ...
+# Subtest: caption changes while translating cannot attach a late Korean result to the changed source
+ok 3 - caption changes while translating cannot attach a late Korean result to the changed source
+  ---
+  duration_ms: 449.534996
+  type: 'test'
+  ...
+# Subtest: Korean meanings appear below English immediately per completed sentence without rebuilding cards
+ok 4 - Korean meanings appear below English immediately per completed sentence without rebuilding cards
+  ---
+  duration_ms: 434.864028
+  type: 'test'
+  ...
+# Subtest: opening a saved video automatically fills only missing Korean meanings without a prepare click
+ok 5 - opening a saved video automatically fills only missing Korean meanings without a prepare click
+  ---
+  duration_ms: 906.35732
+  type: 'test'
+  ...
+# Subtest: saved Korean meanings show on the first render even when no translation engine is available
+ok 6 - saved Korean meanings show on the first render even when no translation engine is available
+  ---
+  duration_ms: 1078.730177
+  type: 'test'
+  ...
+# Subtest: showing more saved sentences automatically resumes missing meanings when translation becomes available
+ok 7 - showing more saved sentences automatically resumes missing meanings when translation becomes available
+  ---
+  duration_ms: 521.558259
+  type: 'test'
+  ...
+# Subtest: the link click prepares browser translation before delayed caption retrieval loses user activation
+ok 8 - the link click prepares browser translation before delayed caption retrieval loses user activation
+  ---
+  duration_ms: 419.491554
+  type: 'test'
+  ...
+# Subtest: one failed browser translation does not leave all later sentences without Korean meanings
+ok 9 - one failed browser translation does not leave all later sentences without Korean meanings
+  ---
+  duration_ms: 406.618155
+  type: 'test'
+  ...
+1..9
+# tests 9
+# suites 0
+# pass 9
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 6023.63301

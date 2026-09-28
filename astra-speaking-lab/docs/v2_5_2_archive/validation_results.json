@@ -1,0 +1,57 @@
+{
+  "version": "2.5.2",
+  "date": "2026-09-10",
+  "request": "Show Korean meanings directly below extracted English sentences automatically",
+  "automated_tests": {
+    "existing_core": 33,
+    "youtube_core": 9,
+    "sentence_lesson_core": 10,
+    "korean_prompt_core": 6,
+    "dom_interaction": 93,
+    "new_issue_regressions_included": 6,
+    "total_unique_this_revision": 151,
+    "failed": 0
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "node": "v24.19.0",
+    "os": "Linux"
+  },
+  "commands": [
+    "node --test --test-reporter=tap tests/test_core.js tests/test_youtube_core.js tests/test_auto_lessons.js tests/test_korean_core.js tests/test_ui.cjs"
+  ],
+  "run_accounting": "Full Node suite passed after all final source changes: 151 tests. The earlier targeted 9-test run is included, not counted twice. Subsequent changes only update documentation and this report. Python code was unchanged; prior v2.5 Python results (47 passed) are retained and excluded from this revision total.",
+  "checks": {
+    "completed_meaning_shown_below_english_before_whole_batch_finishes": "passed in jsdom with a deliberately delayed translation",
+    "update_meaning_in_place_without_rebuilding_cards": "passed",
+    "reopen_saved_video_automatically_translates_only_missing_meanings": "passed",
+    "saved_meanings_visible_on_initial_render_without_any_translation_engine": "passed",
+    "show_more_automatically_resumes_missing_translations": "passed",
+    "translator_created_under_link_click_before_delayed_caption_request": "passed with simulated user activation and translation API",
+    "single_browser_translation_failure_does_not_stop_later_sentences": "passed with simulated invalid translation",
+    "retry_only_missing_failed_sentence": "passed",
+    "cancellation_and_changed_source_reject_late_results": "passed",
+    "online_voice_consent_and_exact_sentence_audio": "passed with simulated speech synthesis",
+    "paragraph_selection_and_korean_first_practice": "passed with simulated translation/model output",
+    "no_paid_api_calls_for_automatic_translation": "passed",
+    "original_sources_byte_identical": 32,
+    "javascript_syntax_files": 8,
+    "server_and_standalone_html_equal": true
+  },
+  "not_verified": [
+    "Actual Chrome translation support, first language-pack download or translation quality on the user PC",
+    "Actual Ollama installation, model generation quality, speed or memory use",
+    "Real speaker/microphone output and voice quality",
+    "Visual browser rendering and Windows/macOS launcher double-click",
+    "Live YouTube caption retrieval",
+    "Paid OpenAI API calls"
+  ],
+  "previous_python_tests": {
+    "version": "2.5.0",
+    "count": 47,
+    "passed": 47,
+    "rerun": false,
+    "included_in_this_total": false,
+    "path": "docs/v2_5_archive/validation_results.json"
+  }
+}

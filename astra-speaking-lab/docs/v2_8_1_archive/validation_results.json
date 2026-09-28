@@ -1,0 +1,62 @@
+{
+  "version": "2.8.1",
+  "date": "2026-09-15",
+  "request": "Add the user-supplied Harvard Prof.pdf as a study material",
+  "new_material": {
+    "id": "pdf_harvard",
+    "title": "Arthur Brooks · 행복과 인생 후반전 (Harvard Prof.)",
+    "pdf_pages": 6,
+    "topics": 9,
+    "units": 84,
+    "prepared_korean_meanings": 84,
+    "new_authored_paragraphs": 5,
+    "pdf_sha256": "692a0bd825ca1493095dee053c0f3de6f385cc61237e805d5435f738fcab1fb2",
+    "attributed_speech_style_units": 19,
+    "summary_units": 65
+  },
+  "catalog": {
+    "bundled_materials": 26,
+    "learning_cards": 3381,
+    "pdf_materials": 3,
+    "prepared_pdf_units": 507,
+    "all_authored_paragraphs": 87,
+    "local_original_files": 35
+  },
+  "verification": {
+    "full_node_suite": {
+      "tests": 232,
+      "pass": 232,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "duration_ms": 134045.808824,
+      "report": "docs/harvard_node_test_results.txt"
+    },
+    "pdf_source_check": {
+      "all_units_grounded": 84,
+      "all_source_body_words_and_numbers_preserved_in_order": true,
+      "source_page_bounds": true,
+      "cross_page_quote_preserved": true,
+      "report": "docs/harvard_source_verification.txt"
+    },
+    "pdf_visual_review": "All six input pages rendered and inspected",
+    "previous_content": "34 originals, 3297 cards, 24 base lessons and 2 PDF materials preserved",
+    "javascript_syntax_files": 11,
+    "standalone_matches_server_html": true
+  },
+  "tested_new_workflows": [
+    "Search and open the PDF from the catalog without caption or translation requests",
+    "Play all 84 units with their prepared Korean meanings",
+    "Reach the final topic and final sentence and repeat the exact selected units",
+    "Selected-unit paragraph practice and all five authored Korean prompts",
+    "Single Korean-first practice and saved review restoration"
+  ],
+  "limits": {
+    "ui": "jsdom simulation with mocked speech events; no actual Windows audio output test",
+    "korean": "App-authored Korean translation of the supplied PDF",
+    "source_kind": "An interview summary containing attributed speech-style passages and summary; no new verification against the video",
+    "timestamps": "No invented video timestamps or transcript mapping",
+    "paid_api_calls": 0,
+    "live_caption_fetches": 0
+  }
+}

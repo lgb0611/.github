@@ -1,0 +1,4 @@
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+88 passed, 2 warnings in 4.67s
+Harvard PDF: 84/84 units grounded; 9 sections, all 6 pages covered; source order and cross-page quote preserved.

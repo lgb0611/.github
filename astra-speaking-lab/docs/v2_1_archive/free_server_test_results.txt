@@ -1,0 +1,10 @@
+test_foreign_host_is_rejected (test_free_server.FreeServerTests.test_foreign_host_is_rejected) ... ok
+test_free_page_and_config (test_free_server.FreeServerTests.test_free_page_and_config) ... ok
+test_head_has_no_body (test_free_server.FreeServerTests.test_head_has_no_body) ... ok
+test_only_learning_assets_are_served (test_free_server.FreeServerTests.test_only_learning_assets_are_served) ... ok
+test_paid_endpoints_rejected (test_free_server.FreeServerTests.test_paid_endpoints_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.521s
+
+OK

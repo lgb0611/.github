@@ -1,0 +1,76 @@
+TAP version 13
+# Subtest: saved video metadata identifies the requested public video without bundling an unverified transcript
+ok 1 - saved video metadata identifies the requested public video without bundling an unverified transcript
+  ---
+  duration_ms: 1.686196
+  type: 'test'
+  ...
+# Subtest: saved video expressions appear in the default library and new daily session
+ok 2 - saved video expressions appear in the default library and new daily session
+  ---
+  duration_ms: 1355.055115
+  type: 'test'
+  ...
+# Subtest: opening a saved video automatically fills only missing Korean meanings without a prepare click
+ok 3 - opening a saved video automatically fills only missing Korean meanings without a prepare click
+  ---
+  duration_ms: 1537.42541
+  type: 'test'
+  ...
+# Subtest: saved video appears in the materials, YouTube catalog and lesson picker without an external load
+ok 4 - saved video appears in the materials, YouTube catalog and lesson picker without an external load
+  ---
+  duration_ms: 680.133623
+  type: 'test'
+  ...
+# Subtest: selecting a saved video loads its captions and prepares 20 Korean speaking cards with no paid API calls
+ok 5 - selecting a saved video loads its captions and prepares 20 Korean speaking cards with no paid API calls
+  ---
+  duration_ms: 1016.384746
+  type: 'test'
+  ...
+# Subtest: the saved-video lesson selector opens the video workflow instead of an empty expression library
+ok 6 - the saved-video lesson selector opens the video workflow instead of an empty expression library
+  ---
+  duration_ms: 1075.626374
+  type: 'test'
+  ...
+# Subtest: reopening a prepared saved video reuses its caption draft and meanings without duplicate cards
+ok 7 - reopening a prepared saved video reuses its caption draft and meanings without duplicate cards
+  ---
+  duration_ms: 1306.964935
+  type: 'test'
+  ...
+# Subtest: failed saved-video captions show an actionable error without invented cards and permit another source
+ok 8 - failed saved-video captions show an actionable error without invented cards and permit another source
+  ---
+  duration_ms: 774.339383
+  type: 'test'
+  ...
+# Subtest: a standalone saved-video click explains the free caption launcher without attempting a paid request
+ok 9 - a standalone saved-video click explains the free caption launcher without attempting a paid request
+  ---
+  duration_ms: 666.09926
+  type: 'test'
+  ...
+# Subtest: recording blocks a saved-video launch and leaves the active recording intact
+ok 10 - recording blocks a saved-video launch and leaves the active recording intact
+  ---
+  duration_ms: 668.010729
+  type: 'test'
+  ...
+# Subtest: saved-video buttons recover after reopening a deck whose Korean preparation was still pending
+ok 11 - saved-video buttons recover after reopening a deck whose Korean preparation was still pending
+  ---
+  duration_ms: 985.199168
+  type: 'test'
+  ...
+1..11
+# tests 11
+# suites 0
+# pass 11
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 10782.685231

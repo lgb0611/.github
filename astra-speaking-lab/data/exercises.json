@@ -1,0 +1,716 @@
+[
+  {
+    "id": "g01_story_1",
+    "lesson_id": "g01",
+    "card_ids": [
+      "g01_01",
+      "g01_02",
+      "g01_03",
+      "g01_04",
+      "g01_05"
+    ],
+    "title": "은퇴 선물로 만든 앨범",
+    "task_ko": "나는 은퇴하는 동료에게 사진 앨범을 만들어줄까 생각하고 있었어. 어떤 사람들은 그런 데 시간을 쓰는 건 낭비라고 하지만, 나는 그렇게 보지 않아. 함께한 시간을 직접 정리하는 데에는 뭔가 특별한 게 있거든. 동료가 내가 너무 많은 시간을 썼다고 하길래, 고마움의 표시라고 생각해 달라고 했어. 알고 보니 그 동료도 나를 위해 앨범을 만들고 있었더라.",
+    "sample_en": "I was thinking of making a photo album for a colleague who was retiring. Some people say it's a waste of time, but I don't see it that way. There's something special about putting those memories together yourself. When she said I'd spent too much time on it, I told her to think of it as a thank-you gift. Turns out, she was making an album for me too.",
+    "situation_ko": "동료의 은퇴 / 직접 만든 앨범 / 서로 같은 준비",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 1
+  },
+  {
+    "id": "g01_story_2",
+    "lesson_id": "g01",
+    "card_ids": [
+      "g01_01",
+      "g01_02",
+      "g01_03",
+      "g01_04",
+      "g01_05"
+    ],
+    "title": "동네 아이들과 벽화 그리기",
+    "task_ko": "나는 동네 도서관 벽화를 그리는 자원봉사에 참가해볼까 생각하고 있었어. 어떤 사람들은 전문가에게 맡기는 게 낫다고 하지만, 나는 그렇게 보지 않아. 이웃들과 함께 무언가를 만드는 데에는 뭔가 특별한 게 있거든. 친구가 자기 그림 실력을 걱정해서, 나는 연습할 기회라고 생각하라고 했어. 알고 보니 그 친구는 우리 중 그림을 가장 잘 그리더라.",
+    "sample_en": "I was thinking of volunteering to paint a mural at the local library. Some people say it's better to leave it to professionals, but I don't see it that way. There's something special about creating something with your neighbors. My friend was worried about his painting skills, so I told him to think of it as a chance to practice. Turns out, he was the best painter in our group.",
+    "situation_ko": "도서관 벽화 / 친구의 걱정 / 뜻밖의 실력",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 2
+  },
+  {
+    "id": "g02_story_1",
+    "lesson_id": "g02",
+    "card_ids": [
+      "g02_01",
+      "g02_02",
+      "g02_03",
+      "g02_04",
+      "g02_05"
+    ],
+    "title": "기차에서 만난 카메라 선생님",
+    "task_ko": "기차에서 나한테 무슨 일이 있었는지 상상도 못 할 거야. 여행용으로 어떤 카메라를 살지 고민하고 있었는데 옆자리 사람이 한 모델을 추천해줬어. 그는 그 모델이라면 믿고 골라도 된다고 했지. 사진 이야기를 하다가 시간 가는 줄 몰랐어. 그런데 내리기 직전에 예전 사진 수업 선생님과도 우연히 마주쳤어.",
+    "sample_en": "You'll never guess what happened to me on the train! I was struggling to decide which camera to buy for my trip when the person next to me recommended one. He said I couldn't go wrong with that model. We talked about photography and lost track of time. Just before I got off, I ran into my old photography teacher too.",
+    "situation_ko": "기차 / 카메라 추천 / 예전 선생님과 우연한 만남",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 1
+  },
+  {
+    "id": "g02_story_2",
+    "lesson_id": "g02",
+    "card_ids": [
+      "g02_01",
+      "g02_02",
+      "g02_03",
+      "g02_04",
+      "g02_05"
+    ],
+    "title": "서점의 추리소설 모임",
+    "task_ko": "오늘 서점에서 나한테 무슨 일이 있었는지 상상도 못 할 거야. 어떤 추리소설을 살지 결정하기 어려웠는데 직원이 한 작가를 추천해줬어. 그 작가의 책이면 믿고 골라도 된다고 했지. 책 이야기를 하다가 시간 가는 줄 몰랐어. 가게를 나가다가 대학 친구를 우연히 만났는데, 그 친구가 바로 그날 독서모임을 진행하고 있더라.",
+    "sample_en": "You'll never guess what happened to me at the bookstore today! I was struggling to decide which mystery novel to buy, and an employee recommended an author. She said I couldn't go wrong with his books. We talked about books and lost track of time. As I was leaving, I ran into a college friend who was running a book club there that day.",
+    "situation_ko": "서점 / 추리소설 / 대학 친구의 독서모임",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 2
+  },
+  {
+    "id": "g03_story_1",
+    "lesson_id": "g03",
+    "card_ids": [
+      "g03_01",
+      "g03_02",
+      "g03_03",
+      "g03_04",
+      "g03_05"
+    ],
+    "title": "해 질 무렵 발견한 공방",
+    "task_ko": "우리는 저녁을 먹고 산책을 나와 있었어. 골목에서 작은 도자기 공방이 눈에 띄었지. 내가 친구에게 도자기 수업을 들어보는 게 어떠냐고 물었어. 친구는 좋다며 해보자고 했어. 결국 우리는 머그잔을 만들면서 저녁 내내 그곳에 머물렀어.",
+    "sample_en": "We were out for a walk after dinner when we spotted a small pottery studio in an alley. I asked my friend, 'How do you feel about taking a pottery class?' She said, 'I'm down! Let's do it.' We ended up spending the whole evening there making mugs.",
+    "situation_ko": "저녁 산책 / 도자기 공방 / 즉석 수업",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 1
+  },
+  {
+    "id": "g03_story_2",
+    "lesson_id": "g03",
+    "card_ids": [
+      "g03_01",
+      "g03_02",
+      "g03_03",
+      "g03_04",
+      "g03_05"
+    ],
+    "title": "야외 영화 상영",
+    "task_ko": "우리는 공원에 산책을 나와 있었어. 잔디밭에서 영화를 상영할 준비를 하는 사람들이 눈에 띄었지. 내가 아내에게 영화를 보고 가는 게 어떠냐고 물었어. 아내는 좋다며 남아 있자고 했어. 결국 우리는 영화가 끝날 때까지 공원에 머물렀어.",
+    "sample_en": "We were out for a walk in the park when we spotted some people setting up an outdoor movie screen. I asked my wife, 'How do you feel about staying for the movie?' She said, 'I'm down! Let's stay.' We ended up staying in the park until the movie finished.",
+    "situation_ko": "공원 산책 / 야외 영화 / 계획보다 늦은 귀가",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 2
+  },
+  {
+    "id": "g04_story_1",
+    "lesson_id": "g04",
+    "card_ids": [
+      "g04_01",
+      "g04_02",
+      "g04_03",
+      "g04_04",
+      "g04_05"
+    ],
+    "title": "조용한 곳으로 떠나는 휴가",
+    "task_ko": "나는 주말마다 집에만 있어서 답답해 미칠 것 같았어. 그래서 아내와 일주일 휴가를 내기로 했지. 나는 다음 주 금요일이 우리 일정에 맞는지 물었어. 해외로 갈 여유는 없었지만, 너무 붐비지만 않으면 뭐든 좋았어. 우리는 결국 가까운 바닷가에서 쉬기로 했어.",
+    "sample_en": "I felt stir-crazy after spending every weekend at home. So my wife and I decided to take a week off. I asked, 'Does next Friday work for us?' We couldn't afford to go abroad, but I was up for anything as long as it wasn't too crowded. We decided to relax by the sea nearby.",
+    "situation_ko": "집에서 보낸 주말 / 일주일 휴가 / 한적한 바닷가",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 1
+  },
+  {
+    "id": "g04_story_2",
+    "lesson_id": "g04",
+    "card_ids": [
+      "g04_01",
+      "g04_02",
+      "g04_03",
+      "g04_04",
+      "g04_05"
+    ],
+    "title": "연말 가족 여행 계획",
+    "task_ko": "우리는 집 안에서 리모델링이 끝나기만 기다리다가 답답해 미칠 것 같았어. 가족과 함께 일주일 휴가를 내기로 했지. 내가 다음 주 금요일이 우리 일정에 맞는지 물었어. 비싼 호텔에 묵을 여유는 없었지만, 방이 깨끗하기만 하면 어디든 좋았어. 그래서 작은 게스트하우스를 예약했어.",
+    "sample_en": "We felt stir-crazy waiting at home for the renovation to be finished. We decided to take a week off as a family. I asked, 'Does next Friday work for us?' We couldn't afford to stay at an expensive hotel, but I was up for anything as long as the room was clean. So we booked a small guesthouse.",
+    "situation_ko": "리모델링 / 일정 확인 / 게스트하우스",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 2
+  },
+  {
+    "id": "g05_story_1",
+    "lesson_id": "g05",
+    "card_ids": [
+      "g05_01",
+      "g05_02",
+      "g05_03",
+      "g05_04",
+      "g05_05"
+    ],
+    "title": "휴가 뒤 첫 출근과 서점",
+    "task_ko": "긴 휴가가 끝났고 이제 현실로 돌아갈 시간이야. 오늘은 주차할 곳을 찾는 데 엄청 오래 걸렸어. 손가락만 튕기면 회사로 순간이동할 수 있으면 좋겠어. 그래도 월요일에 내가 기대하는 한 가지는 새 책을 고르는 거야. 그래서 출근길에 좋아하는 서점에 잠깐 들렀어.",
+    "sample_en": "The long holiday is over, and now it's back to reality. Finding a parking space took ages today. I wish I could just snap my fingers and teleport to work. Still, the one thing I look forward to on Mondays is choosing a new book. So I stopped by my favorite bookstore on the way to work.",
+    "situation_ko": "휴가 종료 / 주차 / 출근길 서점",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 1
+  },
+  {
+    "id": "g05_story_2",
+    "lesson_id": "g05",
+    "card_ids": [
+      "g05_01",
+      "g05_02",
+      "g05_03",
+      "g05_04",
+      "g05_05"
+    ],
+    "title": "출장 뒤 밀린 일",
+    "task_ko": "출장이 끝났으니 이제 현실로 돌아갈 시간이야. 아침에 이메일을 확인하는 데 엄청 오래 걸렸어. 밀린 일을 한 번에 끝낼 수 있으면 좋겠어. 그래도 내가 기대하는 한 가지는 퇴근 후 친구를 만나는 거야. 친구 집으로 가는 길에 빵집에 잠깐 들러 빵을 사기로 했어.",
+    "sample_en": "The business trip is over, so it's back to reality. Checking my emails took ages this morning. I wish I could finish all my work at once. Still, the one thing I look forward to is seeing my friend after work. I decided to stop by a bakery on the way to his place and buy some bread.",
+    "situation_ko": "출장 뒤 이메일 / 밀린 일 / 친구 방문",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 2
+  },
+  {
+    "id": "g06_story_1",
+    "lesson_id": "g06",
+    "card_ids": [
+      "g06_01",
+      "g06_02",
+      "g06_03",
+      "g06_04",
+      "g06_05"
+    ],
+    "title": "식물 키우기",
+    "task_ko": "내가 식물 키우는 걸 정말 못한다고 말한 적 있나? 나는 항상 그걸 더 잘하고 싶었지만, 아직도 식물을 키운 성적이 꽤 안 좋아. 물을 얼마나 줘야 할지, 어디에 두어야 할지 모든 걸 지나치게 고민하거든. 이번에는 쉬운 식물 하나로 시작해서 정해진 방법을 따라보려고 해.",
+    "sample_en": "Have I mentioned that I'm horrible at keeping plants alive? I've always wanted to get better at it, but I still have a pretty bad track record. I overthink everything, from how much water to give them to where to put them. This time, I'll start with one easy plant and follow a simple routine.",
+    "situation_ko": "식물 / 좋지 않은 성과 / 지나친 고민",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 1
+  },
+  {
+    "id": "g06_story_2",
+    "lesson_id": "g06",
+    "card_ids": [
+      "g06_01",
+      "g06_02",
+      "g06_03",
+      "g06_04",
+      "g06_05"
+    ],
+    "title": "여행 일정 짜기",
+    "task_ko": "내가 여행 일정을 짜는 걸 정말 못한다고 말한 적 있나? 항상 더 잘하고 싶었지만 아직도 성적이 꽤 안 좋아. 호텔부터 저녁 식당까지 모든 걸 지나치게 고민해서 정작 예약할 때는 시간이 없거든. 이번에는 친구에게 몇 가지 선택지만 추천해달라고 부탁할 생각이야.",
+    "sample_en": "Have I mentioned that I'm horrible at planning trips? I've always wanted to get better at it, but I still have a pretty bad track record. I overthink everything, from hotels to dinner spots, and then run out of time to book anything. This time, I'm going to ask a friend to recommend just a few options.",
+    "situation_ko": "여행 계획 / 호텔과 식당 / 선택지 줄이기",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 2
+  },
+  {
+    "id": "g07_story_1",
+    "lesson_id": "g07",
+    "card_ids": [
+      "g07_01",
+      "g07_02",
+      "g07_03",
+      "g07_04",
+      "g07_05"
+    ],
+    "title": "노트북 설정 문제",
+    "task_ko": "나는 지난 며칠 동안 노트북 설정을 계속 바꾸고 있었어. 화면이 자꾸 꺼져서 짜증 나 미치겠더라. 그래서 친구에게 한번 살펴봐 달라고 했어. 친구는 자기가 이걸 제대로 하고 있는지 잘 모르겠다고 했지만, 결국 화면이 꺼지지 않게 설정하는 방법을 알아냈어.",
+    "sample_en": "I've been changing my laptop settings for the past few days. The screen keeps turning off, and it's driving me crazy. So I asked a friend to take a look at it. He said, 'I'm not quite sure if I'm doing this right,' but he finally figured out how to keep the screen on.",
+    "situation_ko": "노트북 화면 / 친구의 도움 / 설정 해결",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 1
+  },
+  {
+    "id": "g07_story_2",
+    "lesson_id": "g07",
+    "card_ids": [
+      "g07_01",
+      "g07_02",
+      "g07_03",
+      "g07_04",
+      "g07_05"
+    ],
+    "title": "전화기의 알람",
+    "task_ko": "나는 지난 며칠 동안 아침마다 너무 일찍 깨고 있었어. 설정한 기억도 없는 알람이 자꾸 울려서 짜증 나 미치겠더라. 동생에게 전화기를 한번 살펴봐 달라고 했어. 동생은 이게 맞는 설정인지 잘 모르겠다고 했지만, 마침내 반복 알람을 끄는 방법을 알아냈어.",
+    "sample_en": "I've been waking up too early every morning for the past few days. An alarm I don't remember setting keeps going off, and it's driving me crazy. I asked my brother to take a look at my phone. He said, 'I'm not quite sure if this is the right setting,' but he finally figured out how to turn off the recurring alarm.",
+    "situation_ko": "새벽 알람 / 동생 / 반복 설정 해제",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 2
+  },
+  {
+    "id": "g08_story_1",
+    "lesson_id": "g08",
+    "card_ids": [
+      "g08_01",
+      "g08_02",
+      "g08_03",
+      "g08_04",
+      "g08_05"
+    ],
+    "title": "야외 행사에 입을 옷",
+    "task_ko": "나는 야외 행사에 입을 만한 것을 찾으러 가게에 갔어. 직원이 뭔가 찾는 걸 도와드릴까요 하고 물었지. 어떤 스타일을 생각하고 있는지 묻길래, 심플하고 편하지만 우아하기도 한 걸 찾는다고 했어. 직원이 재킷 하나를 보여줬고, 나는 입어봐도 되는지 물었어.",
+    "sample_en": "I went to a store to find something to wear to an outdoor event. An employee asked, 'Would you like any help finding something?' She asked what kind of style I had in mind. I said, 'Something simple and comfortable, but also elegant.' She showed me a jacket, and I asked, 'Can I try it on?'",
+    "situation_ko": "야외 행사 / 직원과 스타일 상담 / 재킷 착용",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 1
+  },
+  {
+    "id": "g08_story_2",
+    "lesson_id": "g08",
+    "card_ids": [
+      "g08_01",
+      "g08_02",
+      "g08_03",
+      "g08_04",
+      "g08_05"
+    ],
+    "title": "첫 발표를 위한 쇼핑",
+    "task_ko": "첫 발표 때 입을 만한 옷을 찾으러 친구와 쇼핑을 갔어. 직원이 고르는 걸 도와드릴까요 하고 물었지. 이어서 어떤 옷을 생각하고 있는지 물었어. 나는 심플하고 편하지만 우아하기도 한 걸 원한다고 했어. 몇 벌을 입어보고 가장 편한 옷을 골랐어.",
+    "sample_en": "I went shopping with a friend to find something to wear for my first presentation. An employee asked, 'Would you like any help choosing something?' Then she asked what I had in mind. I said I wanted something simple and comfortable, but also elegant. I tried on a few outfits and chose the most comfortable one.",
+    "situation_ko": "첫 발표 / 옷 상담 / 몇 벌 입어보기",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 2
+  },
+  {
+    "id": "g09_story_1",
+    "lesson_id": "g09",
+    "card_ids": [
+      "g09_01",
+      "g09_02",
+      "g09_03",
+      "g09_04",
+      "g09_05"
+    ],
+    "title": "발표 자료를 둘러싼 오해",
+    "task_ko": "어떻게 된 일이냐면 이래. 나는 동료에게 잠깐 시간 있으면 발표 자료를 확인해달라고 부탁했어. 동료는 바로 하겠다고 했지만 답이 오지 않았지. 나중에 동료가 자료를 살피는 데 예상보다 오래 걸리고 있다고 설명했어. 우리는 대화를 나눴고 오해를 해결했어.",
+    "sample_en": "Here's how it went. I asked my colleague, 'If you've got a minute, would you check my presentation?' He said, 'I'll get right on it,' but I didn't hear back. Later, he explained, 'This is taking me longer than I expected.' We talked and worked it out.",
+    "situation_ko": "발표 검토 부탁 / 늦은 답 / 오해 해결",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 1
+  },
+  {
+    "id": "g09_story_2",
+    "lesson_id": "g09",
+    "card_ids": [
+      "g09_01",
+      "g09_02",
+      "g09_03",
+      "g09_04",
+      "g09_05"
+    ],
+    "title": "가족 사진 정리",
+    "task_ko": "어떻게 된 일이냐면 이래. 나는 아내에게 잠깐 시간 있으면 앨범에 넣을 사진을 골라달라고 부탁했어. 아내는 바로 하겠다고 했는데 한참 동안 아무 소식이 없었지. 아내는 사진 고르는 데 예상보다 오래 걸린다고 했어. 우리는 함께 고르기로 하고 문제를 해결했어.",
+    "sample_en": "Here's how it went. I asked my wife, 'If you've got a minute, would you choose some photos for the album?' She said, 'I'll get right on it,' but I didn't hear anything for a while. She told me, 'This is taking me longer than I expected.' We decided to choose them together and worked it out.",
+    "situation_ko": "앨범 사진 / 선택 지연 / 함께 해결",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 2
+  },
+  {
+    "id": "g10_story_1",
+    "lesson_id": "g10",
+    "card_ids": [
+      "g10_01",
+      "g10_02",
+      "g10_03",
+      "g10_04",
+      "g10_05"
+    ],
+    "title": "처음 간 댄스 수업",
+    "task_ko": "친구와 댄스 수업에 갔어. 그런데 내가 기대했던 것과는 좀 달랐어. 우리가 감당하기 어려운 걸 시작한 것 같았지. 우리 둘 다 첫 동작조차 제대로 따라 할 수 없었어. 이번 주까지는 버텨보기로 했지만, 그 수업은 우리에게 잘 맞지 않는 것 같아.",
+    "sample_en": "My friend and I went to a dance class. It wasn't exactly what I was expecting, though. I think we bit off more than we could chew. Neither of us could even follow the first move properly. We decided to stick it out until the end of the week, but I don't think the class is the right fit for us.",
+    "situation_ko": "댄스 수업 / 첫 동작 실패 / 적성 판단",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 1
+  },
+  {
+    "id": "g10_story_2",
+    "lesson_id": "g10",
+    "card_ids": [
+      "g10_01",
+      "g10_02",
+      "g10_03",
+      "g10_04",
+      "g10_05"
+    ],
+    "title": "주말의 목공 수업",
+    "task_ko": "우리는 주말 목공 수업에 등록했어. 그런데 내가 기대했던 것과는 좀 달랐어. 작은 의자를 만들면 되는 줄 알았는데, 우리가 감당하기 어려운 걸 시작한 것 같더라. 우리 둘 다 첫 조각조차 정확하게 자를 수 없었어. 일단 끝까지 버텨보겠지만, 이 고급반은 우리에게 잘 맞지 않는 것 같아.",
+    "sample_en": "We signed up for a weekend woodworking class. It wasn't exactly what I was expecting, though. I thought we would just make a small chair, but I think we bit off more than we could chew. Neither of us could even cut the first piece accurately. We'll try to stick it out, but this advanced class doesn't seem like the right fit for us.",
+    "situation_ko": "목공 고급반 / 첫 절단 / 끝까지 해보기",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 2
+  },
+  {
+    "id": "g01_story_3",
+    "lesson_id": "g01",
+    "card_ids": [
+      "g01_06",
+      "g01_07",
+      "g01_08",
+      "g01_09",
+      "g01_10"
+    ],
+    "title": "너무 단단했던 견과류 바",
+    "task_ko": "견과류 바를 만든 뒤 나는 친구에게 하나를 건넸어. 친구가 첫입을 베어 먹자 얼굴을 찡그렸지. 친구는 운동하는 기분이라고 했고, 나는 그게 무슨 뜻인지 물었어. 맛은 괜찮다고 했지만 표정은 그렇지 않다고 말하고 있었지. 나는 웃으며 적어도 너무 빨리 먹는 건 막아주겠다고 했어.",
+    "sample_en": "After making some nut bars, I handed one to my friend. As he took his first bite, he made a face. He said it felt like a workout, so I asked, 'What does that mean?' He said it tasted fine, but his expression said otherwise. I laughed and said, 'At least it saves us from eating too fast.'",
+    "situation_ko": "수제 견과류 바 / 첫입의 반응 / 단단함에 대한 농담",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 3
+  },
+  {
+    "id": "g01_story_4",
+    "lesson_id": "g01",
+    "card_ids": [
+      "g01_06",
+      "g01_07",
+      "g01_08",
+      "g01_09",
+      "g01_10"
+    ],
+    "title": "레몬을 너무 넣은 과일 샐러드",
+    "task_ko": "과일 샐러드를 준비한 뒤 나는 동생에게 맛을 보라고 했어. 동생이 첫입을 먹자 잠깐 말을 멈췄지. 정신이 번쩍 드는 맛이라고 해서 나는 그게 무슨 뜻인지 물었어. 동생은 좋다고 했지만 표정은 그렇지 않다고 말하고 있었어. 레몬을 너무 넣은 걸 알고는 적어도 졸면서 먹는 건 막아주겠다고 농담했어.",
+    "sample_en": "After preparing a fruit salad, I asked my brother to try it. As he took his first bite, he stopped talking for a moment. He said it was a wake-up call, so I asked, 'What does that mean?' He said it was good, but his expression said otherwise. When I realized I'd added too much lemon, I joked, 'At least it saves us from falling asleep while we eat.'",
+    "situation_ko": "과일 샐러드 / 신맛 / 동생과 농담",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 4
+  },
+  {
+    "id": "g02_story_3",
+    "lesson_id": "g02",
+    "card_ids": [
+      "g02_06",
+      "g02_07",
+      "g02_08",
+      "g02_09",
+      "g02_10"
+    ],
+    "title": "우연히 참가한 사진 산책",
+    "task_ko": "나는 지역 행사 입장 줄에 서 있었어. 옆 사람이 사진 산책 프로그램을 한번 해보는 게 어떠냐고 했지. 나는 좋은 선택 같다고 대답했어. 함께 사진을 찍은 뒤 그 사람에게 이야기 나눠서 정말 좋았다고 했어. 줄에 서 있는 일이 새 취미를 발견하는 계기가 될 줄 누가 알았겠어?",
+    "sample_en": "I was waiting in line to enter a local event. The person next to me said, 'Why don't you give the photo walk a try?' I replied, 'That sounds like a good choice.' After we took some pictures together, I told her, 'It's been great chatting with you.' Who knew that waiting in line would lead to discovering a new hobby?",
+    "situation_ko": "행사 입장 줄 / 사진 산책 추천 / 새로운 취미",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 3
+  },
+  {
+    "id": "g02_story_4",
+    "lesson_id": "g02",
+    "card_ids": [
+      "g02_06",
+      "g02_07",
+      "g02_08",
+      "g02_09",
+      "g02_10"
+    ],
+    "title": "동네 센터에서 찾은 봉사 활동",
+    "task_ko": "나는 동네 센터에서 등록하려고 줄을 서 있었어. 옆 사람이 주말 봉사 활동을 한번 해보는 게 어떠냐고 했지. 나는 좋은 선택 같다고 했어. 우리는 활동 이야기를 더 나눴고 헤어질 때 이야기 나눠서 정말 좋았다고 했어. 등록하러 가는 일이 새로운 봉사 기회로 이어질 줄 누가 알았겠어?",
+    "sample_en": "I was waiting in line to register at the community center. The person next to me said, 'Why don't you give the weekend volunteering program a try?' I said, 'That sounds like a good choice.' We talked more about the activities, and when we left, I said, 'It's been great chatting with you.' Who knew that going to register would lead to a new volunteering opportunity?",
+    "situation_ko": "센터 등록 / 봉사 활동 / 뜻밖의 기회",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 4
+  },
+  {
+    "id": "g03_story_3",
+    "lesson_id": "g03",
+    "card_ids": [
+      "g03_06",
+      "g03_07",
+      "g03_08",
+      "g03_09",
+      "g03_10"
+    ],
+    "title": "분수 옆에서 읽던 책",
+    "task_ko": "나는 공원 분수 옆에서 세상 걱정 하나 없이 책을 읽고 있었어. 그날 분수는 작동하지 않기로 되어 있었지. 그런데 기계에서 소리가 나기 시작하자 뭔가 이상하게 느껴졌어. 갑자기 물이 솟아올라 나는 완전히 젖었어. 그래도 책은 무사했으니 불평할 수는 없지.",
+    "sample_en": "I was reading beside a fountain in the park without a care in the world. The fountain was supposed to be off that day. But when I heard a noise from the equipment, something didn't feel quite right. Water suddenly shot up, and I got completely soaked. My book was safe, though, so I can't complain.",
+    "situation_ko": "공원 분수 / 예상 밖의 작동 / 젖었지만 무사한 책",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 3
+  },
+  {
+    "id": "g03_story_4",
+    "lesson_id": "g03",
+    "card_ids": [
+      "g03_06",
+      "g03_07",
+      "g03_08",
+      "g03_09",
+      "g03_10"
+    ],
+    "title": "보트에서 날아온 물보라",
+    "task_ko": "우리는 보트에 앉아 세상 걱정 하나 없이 경치를 보고 있었어. 잔잔한 코스로 가기로 되어 있었지. 그런데 보트가 속도를 내자 뭔가 이상하게 느껴졌어. 큰 물보라가 올라와 우리 둘 다 완전히 젖었어. 그래도 돌고래를 봤으니 불평할 수는 없지.",
+    "sample_en": "We were sitting on a boat, enjoying the view without a care in the world. We were supposed to take a calm route. But when the boat sped up, something didn't feel quite right. A big wave splashed over us, and we were both completely soaked. We saw dolphins, though, so I can't complain.",
+    "situation_ko": "보트 관광 / 물보라 / 돌고래",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 4
+  },
+  {
+    "id": "g04_story_3",
+    "lesson_id": "g04",
+    "card_ids": [
+      "g04_06",
+      "g04_07",
+      "g04_08",
+      "g04_09",
+      "g04_10"
+    ],
+    "title": "기차표 할인으로 시작된 여행",
+    "task_ko": "추운 날씨 때문에 우리는 며칠 동안 집 안에 갇혀 있었어. 짧은 겨울 여행을 가고 싶던 참이었지. 마침 철도 회사가 좋은 할인 행사를 하고 있었어. 우리는 그날 바로 기차표를 예약했고, 그렇게 여행 계획이 본격적으로 시작됐어.",
+    "sample_en": "We had been stuck inside for days because of the cold. We wanted to go on a short winter getaway. The railway company had a great sale going on, so we booked our tickets that day. Just like that, our trip was set in motion.",
+    "situation_ko": "추위 / 기차표 할인 / 즉석 예약",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 3
+  },
+  {
+    "id": "g04_story_4",
+    "lesson_id": "g04",
+    "card_ids": [
+      "g04_06",
+      "g04_07",
+      "g04_08",
+      "g04_09",
+      "g04_10"
+    ],
+    "title": "친구가 보낸 숙소 할인",
+    "task_ko": "집에서 작업하느라 우리는 한 주 내내 안에 갇혀 있었어. 친구가 짧은 겨울 여행을 같이 가자고 연락했지. 산속 숙소가 좋은 할인 행사를 하고 있다고 했어. 우리는 일정을 맞춰 예약했고, 그렇게 계획이 본격적으로 움직이기 시작했어.",
+    "sample_en": "We had been stuck inside all week working from home. A friend suggested a short winter getaway together. She said a lodge in the mountains had a great sale going on. We checked our schedules and booked it. Just like that, the plan was set in motion.",
+    "situation_ko": "재택 작업 / 친구의 제안 / 산속 숙소",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 4
+  },
+  {
+    "id": "g05_story_3",
+    "lesson_id": "g05",
+    "card_ids": [
+      "g05_06",
+      "g05_07",
+      "g05_08",
+      "g05_09",
+      "g05_10"
+    ],
+    "title": "낯선 근무 시간과 따뜻한 죽",
+    "task_ko": "새 근무 시간이 시작됐는데, 그 말은 평소보다 일찍 점심을 먹어야 한다는 뜻이야. 아직 이 일정에 익숙해지지 않았어. 점심에 죽을 주문하자 직원이 먹고 갈지 가져갈지 물었지. 나는 가져가겠다고 하고 위에 허브를 조금 뿌려달라고 했어. 이렇게 따뜻한 점심을 먹으면 하루가 좀 나아져.",
+    "sample_en": "My new work schedule has started, which means I have to eat lunch earlier than usual. I haven't got used to it yet. When I ordered some porridge, the employee asked, 'Is that for here or to go?' I said, 'To go, with a sprinkle of herbs on top, please.' Having a warm lunch like this makes everything better.",
+    "situation_ko": "새 근무 시간 / 포장 죽 / 허브 토핑",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 3
+  },
+  {
+    "id": "g05_story_4",
+    "lesson_id": "g05",
+    "card_ids": [
+      "g05_06",
+      "g05_07",
+      "g05_08",
+      "g05_09",
+      "g05_10"
+    ],
+    "title": "아침 운동 뒤 먹는 요거트",
+    "task_ko": "이제 아침에 운동하는데, 그 말은 전보다 일찍 일어나야 한다는 뜻이야. 이 생활에 익숙해지는 중이야. 오늘은 운동 뒤에 요거트를 주문했고 직원이 먹고 갈지 가져갈지 물었어. 나는 먹고 가겠다고 하고 위에 시나몬을 조금 뿌려달라고 했지. 운동 뒤에 이렇게 아침을 먹으면 기분이 훨씬 좋아져.",
+    "sample_en": "I exercise in the morning now, which means I have to get up earlier. I'm getting used to the routine. Today, I ordered some yogurt after my workout, and the employee asked, 'Is that for here or to go?' I said, 'For here, with a sprinkle of cinnamon on top, please.' Having breakfast like this after a workout makes everything better.",
+    "situation_ko": "아침 운동 / 매장 요거트 / 시나몬",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 4
+  },
+  {
+    "id": "g06_story_3",
+    "lesson_id": "g06",
+    "card_ids": [
+      "g06_06",
+      "g06_07",
+      "g06_08",
+      "g06_09",
+      "g06_10"
+    ],
+    "title": "여동생의 졸업 선물",
+    "task_ko": "여동생의 졸업을 앞두고 뭘 사줘야 할지 전혀 몰랐어. 여동생은 액세서리에 별로 관심이 없거든. 마지막 순간까지 미루다가 도예 수업 이용권을 샀어. 그런데 있잖아, 여동생이 정말 좋아했어. 이건 축하할 일이야!",
+    "sample_en": "I had no idea what to get my sister for her graduation. She's not into accessories. After putting it off until the last minute, I bought her a voucher for a pottery class. And guess what? She loved it. This calls for a celebration!",
+    "situation_ko": "졸업 선물 / 도예 수업 / 예상 밖의 성공",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 3
+  },
+  {
+    "id": "g06_story_4",
+    "lesson_id": "g06",
+    "card_ids": [
+      "g06_06",
+      "g06_07",
+      "g06_08",
+      "g06_09",
+      "g06_10"
+    ],
+    "title": "아버지의 새 작업실",
+    "task_ko": "아버지의 새 작업실을 위한 선물을 뭘 사드려야 할지 전혀 몰랐어. 아버지는 장식품을 별로 좋아하지 않으셔. 마지막 순간까지 미루다가 좋은 작업용 조명을 골랐어. 그런데 있잖아, 마침 아버지가 필요로 하던 거였어. 선물 고르기에 성공했으니 축하할 일이야!",
+    "sample_en": "I had no idea what to get my father for his new workshop. He's not into decorations. After putting it off until the last minute, I chose a good work lamp. And guess what? It was exactly what he needed. I finally chose the right gift. This calls for a celebration!",
+    "situation_ko": "작업실 / 조명 선물 / 필요한 물건",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 4
+  },
+  {
+    "id": "g07_story_3",
+    "lesson_id": "g07",
+    "card_ids": [
+      "g07_06",
+      "g07_07",
+      "g07_08",
+      "g07_09",
+      "g07_10"
+    ],
+    "title": "업데이트를 반복하는 노트북",
+    "task_ko": "노트북이 업데이트를 반복하자 나는 이런 문제를 한 번 더는 감당할 수 없다고 했어. 재시작이 족히 5분 동안 계속됐지. 우리는 그 뒤 몇 시간 동안 파일을 백업했어. 새 노트북은 내일 오는데 그때까지 작업할 컴퓨터가 없을 거야. 그래도 적어도 중요한 파일을 잃을 걱정은 사라졌어.",
+    "sample_en": "When my laptop kept repeating an update, I said, 'I can't handle another problem like this.' The restarting went on for a good five minutes. We spent the next few hours backing up the files. The new laptop arrives tomorrow, and we won't have a computer to work on until then. At least the worry about losing important files is gone.",
+    "situation_ko": "반복 업데이트 / 파일 백업 / 새 컴퓨터 대기",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 3
+  },
+  {
+    "id": "g07_story_4",
+    "lesson_id": "g07",
+    "card_ids": [
+      "g07_06",
+      "g07_07",
+      "g07_08",
+      "g07_09",
+      "g07_10"
+    ],
+    "title": "아침마다 울리는 자동차 경보",
+    "task_ko": "자동차 경보가 또 울리자 나는 이렇게 잠을 깨는 아침을 한 번 더는 감당할 수 없다고 했어. 소리는 족히 5분 동안 계속됐지. 우리는 그 뒤 몇 시간 동안 수리해줄 곳을 찾아다녔어. 차는 금요일에 돌려받기로 해서 그때까지 차가 없을 거야. 그래도 적어도 그 시끄러운 소리는 사라졌어.",
+    "sample_en": "When the car alarm went off again, I said, 'I can't handle another morning waking up like this.' The noise went on for a good five minutes. We spent the next few hours looking for a repair shop. We're getting the car back on Friday, so we won't have a car until then. At least that awful noise is gone.",
+    "situation_ko": "자동차 경보 / 수리점 찾기 / 금요일까지 대기",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 4
+  },
+  {
+    "id": "g08_story_3",
+    "lesson_id": "g08",
+    "card_ids": [
+      "g08_06",
+      "g08_07",
+      "g08_08",
+      "g08_09",
+      "g08_10"
+    ],
+    "title": "결혼식에 쓸 여행 가방",
+    "task_ko": "친구가 몇 주 뒤에 결혼해. 결혼식에 가려고 나는 새 여행 가방을 들고 가게를 나왔지. 싼 가방을 샀더니 첫날 지퍼가 고장 났어. 역시 싼 게 비지떡인가 봐. 형은 이런 걸 고치는 데 아주 능숙해서 도와줄 수 있으면 좋겠어.",
+    "sample_en": "My friend is getting married in a few weeks. I walked out of the store with a new travel bag for the trip. It was cheap, and the zipper broke on the first day. I guess you get what you pay for. My brother is amazing at fixing things like this. Hopefully, he can help me out.",
+    "situation_ko": "친구의 결혼 / 여행 가방 / 고장 난 지퍼",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 3
+  },
+  {
+    "id": "g08_story_4",
+    "lesson_id": "g08",
+    "card_ids": [
+      "g08_06",
+      "g08_07",
+      "g08_08",
+      "g08_09",
+      "g08_10"
+    ],
+    "title": "결혼식 장식용 조명",
+    "task_ko": "사촌이 몇 주 뒤에 결혼해서 내가 장식을 도와주기로 했어. 나는 저렴한 조명 세트를 들고 가게를 나왔지. 집에서 켜보니 한 줄이 작동하지 않았어. 역시 싼 게 비지떡인가 봐. 친구가 이런 걸 고치는 데 정말 능숙한데 도와줄 수 있으면 좋겠어.",
+    "sample_en": "My cousin is getting married in a few weeks, and I agreed to help with the decorations. I walked out of the store with an inexpensive set of lights. When I switched them on at home, one string didn't work. I guess you get what you pay for. My friend is amazing at fixing things like this. Hopefully, she can help me out.",
+    "situation_ko": "결혼식 장식 / 저렴한 조명 / 친구의 도움",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 4
+  },
+  {
+    "id": "g09_story_3",
+    "lesson_id": "g09",
+    "card_ids": [
+      "g09_06",
+      "g09_07",
+      "g09_08",
+      "g09_09",
+      "g09_10"
+    ],
+    "title": "시험 공부 중 룸메이트와 다툼",
+    "task_ko": "우리는 공부할 때 음악을 틀어도 되는지를 두고 말다툼했어. 그날 나는 유난히 피곤하고 짜증이 나 있었지. 룸메이트는 그 일로 자신을 자꾸 닦달하지 말라고 했어. 그 대화 때문에 둘 다 속상했지. 시험 스트레스가 우리를 예민하게 만든 것 같아.",
+    "sample_en": "We had an argument about playing music while studying. I was unusually tired and cranky that day. My roommate asked me not to get on his case about it. The conversation left both of us feeling upset. I think the exam stress got to us.",
+    "situation_ko": "공부와 음악 / 룸메이트 / 시험 스트레스",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 3
+  },
+  {
+    "id": "g09_story_4",
+    "lesson_id": "g09",
+    "card_ids": [
+      "g09_06",
+      "g09_07",
+      "g09_08",
+      "g09_09",
+      "g09_10"
+    ],
+    "title": "장거리 이동 뒤 숙소 선택",
+    "task_ko": "우리는 여행지에서 어느 숙소에 묵을지를 두고 말다툼했어. 나는 장거리 이동 때문에 유난히 피곤하고 짜증이 나 있었지. 친구는 예약이 늦어진 일로 자신을 닦달하지 말라고 했어. 말다툼 때문에 둘 다 속상했지. 이동하면서 쌓인 피로가 우리에게 영향을 준 것 같아.",
+    "sample_en": "We had an argument about where to stay on our trip. I was unusually tired and cranky after the long journey. My friend asked me not to get on her case about the late booking. The argument left both of us feeling upset. I think the exhaustion from the journey got to us.",
+    "situation_ko": "장거리 이동 / 늦은 예약 / 피로 때문에 생긴 갈등",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 4
+  },
+  {
+    "id": "g10_story_3",
+    "lesson_id": "g10",
+    "card_ids": [
+      "g10_06",
+      "g10_07",
+      "g10_08",
+      "g10_09",
+      "g10_10"
+    ],
+    "title": "온라인 스트레칭 수업",
+    "task_ko": "우리는 유연성과 건강을 개선하려고 온라인 수업을 듣고 있어. 그런데 집에서는 집중을 유지하기가 어려워. 전화기를 계속 확인하게 되거든. 이번 달은 끝까지 해보고 다른 수업으로 바꿀지 결정할 거야. 어떻게 될지는 두고 보자.",
+    "sample_en": "We're taking an online class to improve our flexibility and health. It's hard to stay focused at home, though. We keep checking our phones. We're going to finish out the month before deciding whether to switch classes. We'll see.",
+    "situation_ko": "온라인 수업 / 전화기 / 이번 달 마무리",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 3
+  },
+  {
+    "id": "g10_story_4",
+    "lesson_id": "g10",
+    "card_ids": [
+      "g10_06",
+      "g10_07",
+      "g10_08",
+      "g10_09",
+      "g10_10"
+    ],
+    "title": "이른 아침의 운동 모임",
+    "task_ko": "우리는 유연성과 건강을 개선하려고 아침 운동 모임에 참가했어. 수업이 너무 일러서 집중을 유지하기 어려워. 우리는 계속 하품을 해. 그래도 이번 달은 끝까지 다녀본 뒤 저녁반으로 옮길지 생각해보려고 해. 일단 두고 보자.",
+    "sample_en": "We joined a morning exercise group to improve our flexibility and health. It's hard to stay focused because the class is so early. We keep yawning. We'll finish out the month before thinking about moving to an evening class. We'll see.",
+    "situation_ko": "이른 운동 / 하품 / 저녁반 고려",
+    "origin": "앱 작성 새 연습문단 (강의 원문 아님)",
+    "variant": 4
+  },
+  {
+    "id": "kpop_story_1",
+    "lesson_id": "kpop",
+    "card_ids": [
+      "kpop_13_1",
+      "kpop_119_1",
+      "kpop_128_1",
+      "kpop_159_1",
+      "kpop_219_1"
+    ],
+    "title": "처음 맡은 발표",
+    "task_ko": "처음 맡은 발표를 준비하느라 힘들었어. 동료가 부담 갖지 말라며 내 편이 되어주겠다고 했지. 도움이 될지 모르겠지만 내가 이미 준비를 많이 했다는 말도 해줬어. 덕분에 발표를 무사히 해낼 수 있었고, 주말에는 쉬면서 재충전했어.",
+    "sample_en": "Preparing for my first presentation was hard. My colleague said, 'No pressure. I've got your back.' She added, 'For what it's worth, you've already done a lot of preparation.' With her support, I got through the presentation. I rested and recharged over the weekend.",
+    "situation_ko": "발표 준비 / 동료의 지지 / 주말 휴식",
+    "origin": "앱 작성 새 연습문단 (영화 대사 아님)",
+    "variant": 1
+  },
+  {
+    "id": "kpop_story_2",
+    "lesson_id": "kpop",
+    "card_ids": [
+      "kpop_13_1",
+      "kpop_119_1",
+      "kpop_128_1",
+      "kpop_159_1",
+      "kpop_219_1"
+    ],
+    "title": "이사 첫날",
+    "task_ko": "이사 첫날에는 할 일이 너무 많았어. 친구가 부담 갖지 말라며 내 편이 되어주겠다고 했지. 도움이 될지 모르겠지만 새 집이 정말 좋다는 말도 해줬어. 우리는 함께 정리할 일을 해냈고, 다음 날에는 산책하며 재충전했어.",
+    "sample_en": "There was so much to do on moving day. My friend said, 'No pressure. I've got your back.' He added, 'For what it's worth, your new home is really nice.' We got through the unpacking together. The next day, we went for a walk to recharge.",
+    "situation_ko": "이사 / 친구의 도움 / 재충전",
+    "origin": "앱 작성 새 연습문단 (영화 대사 아님)",
+    "variant": 2
+  }
+]

@@ -1,0 +1,62 @@
+{
+  "version": "2.5.0",
+  "date": "2026-09-10",
+  "automated_tests": {
+    "existing_core": 33,
+    "youtube_core": 9,
+    "sentence_lesson_core": 10,
+    "korean_prompt_core": 6,
+    "dom_interaction": 78,
+    "free_and_caption_server": 14,
+    "local_ai_and_http": 22,
+    "korean_ai_and_http": 11,
+    "node_total": 136,
+    "python_total": 47,
+    "total_unique": 183,
+    "failed": 0
+  },
+  "runtime": {
+    "python": "3.12.14",
+    "node": "v24.19.0",
+    "os": "Linux"
+  },
+  "commands": [
+    "node --test --test-reporter=tap tests/test_core.js tests/test_youtube_core.js tests/test_auto_lessons.js tests/test_korean_core.js tests/test_ui.cjs",
+    "python3 -S -m unittest tests.test_free_server tests.test_youtube_server tests.test_local_ai tests.test_korean_ai -v"
+  ],
+  "run_accounting": "Both full suites passed after the final source changes. Node: 136. Python: 47. Earlier repeated runs are excluded. Subsequent changes only update documentation, package metadata and this report.",
+  "checks": {
+    "one_selected_sentence_one_speech_utterance": "passed with simulated speech synthesis",
+    "cancel_previous_audio_and_select_voice_rate": "passed with simulated speech synthesis",
+    "korean_prompt_visible_first_and_english_answer_hidden": "passed in jsdom",
+    "exact_source_translation_cache_and_backup_restore": "passed",
+    "browser_translation_and_local_model_fallback": "passed with mocked translators and HTTP responses",
+    "missing_translation_setup_and_no_fabricated_korean": "passed",
+    "all_2_to_5_selected_cards_in_paragraph_and_review": "passed",
+    "novel_paragraph_and_source_paragraph_labelled_separately": "passed",
+    "alignment_all_card_ids_and_exact_source_answer_cue_spans": "passed with model fixtures",
+    "cancellation_and_rejection_of_late_or_changed_source_results": "passed",
+    "entire_video_sentence_queue_and_more_batches": "passed",
+    "no_paid_requests_in_free_mode": "passed",
+    "local_ai_routes_token_origin_and_fixed_model_checks": "passed",
+    "original_source_media_controls": "passed with simulated media events",
+    "original_sources_byte_identical": 32,
+    "javascript_syntax_files": 8,
+    "python_syntax_files": 16,
+    "server_and_standalone_html_equal": true
+  },
+  "not_verified": [
+    "Real Chrome Translator availability, language-pack download and translation quality on the user PC",
+    "Actual speaker/microphone audio, installed voice quality and codec playback",
+    "Real Ollama installation, model download, translation/paragraph quality, speed or memory use",
+    "Live YouTube access, caption retrieval or playback",
+    "Browser visual rendering and Windows/macOS launcher double-click",
+    "Paid OpenAI API calls",
+    "Empirical learning efficacy"
+  ],
+  "previous_api_tests": {
+    "count": 40,
+    "rerun": false,
+    "included_in_total": false
+  }
+}

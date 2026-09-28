@@ -1,0 +1,2 @@
+# Optional public-caption loader, verified against its 1.2.4 documentation.
+youtube-transcript-api==1.2.4
