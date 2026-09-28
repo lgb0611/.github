@@ -6,6 +6,7 @@
 - 16부 매도(손절 -10% + 25일선 50% / 60일선 50%)와 비교
 
 실행: python largecap_exit_search.py && MARKET=us python largecap_exit_search.py && python largecap_exit_search.py summary
+      (거래대금 상위 10위로 바꾸려면 앞에 TOP=10 을 붙임. 결과 파일 이름 끝에 _top10)
 """
 import itertools
 import os
@@ -16,7 +17,9 @@ import pandas as pd
 import largecap as L
 import strategies as S
 
-ENTRY = "52주 신고가 + 거래대금 상위 30위 + 상승장"
+TOP = int(os.environ.get("TOP", 30))                   # 신호일 거래대금 순위 조건 (30 또는 10)
+ENTRY = f"52주 신고가 + 거래대금 상위 {TOP}위 + 상승장"
+SUFFIX = "" if TOP == 30 else f"_top{TOP}"
 BASE_EXIT = "손절 -10% + 25일선 50% / 60일선 50%"
 
 
@@ -50,8 +53,8 @@ def candidates():
 
 
 def summary():
-    kr = pd.read_csv(os.path.join(S.BASE, "results", "largecap_exit_search.csv"))
-    us = pd.read_csv(os.path.join(S.BASE, "results_us", "largecap_exit_search.csv"))
+    kr = pd.read_csv(os.path.join(S.BASE, "results", f"largecap_exit_search{SUFFIX}.csv"))
+    us = pd.read_csv(os.path.join(S.BASE, "results_us", f"largecap_exit_search{SUFFIX}.csv"))
     d = kr.merge(us, on=["매수", "시총조건", "매도"], suffixes=("_kr", "_us"))
     pd.set_option("display.width", 340)
     pd.set_option("display.unicode.east_asian_width", True)
@@ -82,11 +85,11 @@ def summary():
     d["네 곳 최소 샤프"] = d[cols].min(axis=1)
     print("\n[4] 참고: 네 곳 중 가장 나쁜 샤프가 높은 순 (네 곳을 다 보고 고른 것이라 검증 아님)")
     print(show(d.sort_values("네 곳 최소 샤프", ascending=False).head(8)).to_string(index=False))
-    d.to_csv(os.path.join(S.BASE, "results", "largecap_exit_search_summary.csv"), index=False, encoding="utf-8-sig")
+    d.to_csv(os.path.join(S.BASE, "results", f"largecap_exit_search_summary{SUFFIX}.csv"), index=False, encoding="utf-8-sig")
 
 
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] == "summary":
         summary()
     else:
-        L.run_market(candidates(), "largecap_exit_search.csv", only=[ENTRY], caps=(True,))
+        L.run_market(candidates(), f"largecap_exit_search{SUFFIX}.csv", only=[ENTRY], caps=(True,))

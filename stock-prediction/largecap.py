@@ -81,6 +81,7 @@ def run_market(exits=None, out_name="largecap.csv", only=None, caps=(True, False
         "역사적 신고가 + 거래대금 상위 10위 + 상승장": ath & bull & (rank <= 10),
         "역사적 신고가 + 이격 20% 이하 + 트렌드 템플릿 + 상승장": ath & bull & (gap <= 0.20) & tt,
         "52주 신고가 + 거래대금 상위 30위 + 상승장": w52 & bull & (rank <= 30),
+        "52주 신고가 + 거래대금 상위 10위 + 상승장": w52 & bull & (rank <= 10),
         "52주 신고가 + 상승장": w52 & bull,
     }
     exits = exits or all_exits()
