@@ -55,7 +55,8 @@ def all_exits():
     return ex
 
 
-def run_market(exits=None, out_name="largecap.csv"):
+def run_market(exits=None, out_name="largecap.csv", only=None, caps=(True, False)):
+    """only: 이 매수 신호만 계산 (None이면 5개 전부), caps: 대형주 조건 (True=대형주만, False=전체)"""
     print(f"[{S.MARKET.upper()}] 1) 데이터 준비 중...")
     p, P, out, ok, dates = M.prepare()
     shares = current_caps(p)
@@ -86,7 +87,9 @@ def run_market(exits=None, out_name="largecap.csv"):
     success = out["success"].to_numpy()
     rows = []
     for ename, sig in entries.items():
-        for cap_on in [True, False]:
+        if only and ename not in only:
+            continue
+        for cap_on in caps:
             r = np.where(sig & big)[0] if cap_on else np.where(sig)[0]
             m = B.path_matrix(p, P, r)
             early = p["date"].to_numpy()[r] < SPLIT
