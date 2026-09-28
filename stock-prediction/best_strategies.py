@@ -125,6 +125,8 @@ def run_leg(m, rule):
         close_signal |= C < peak * (1 - rule["trail"])
     if "ma" in rule:
         close_signal |= C < m[rule["ma"]]
+    if "min_hold" in rule:          # 최소 보유 기간 전에는 추적·이평선 매도 신호를 무시 (손절·익절은 그대로)
+        close_signal[:, :rule["min_hold"] - 1] = False
     if close_signal.any():
         k = first_true(close_signal & V)
         kk = np.maximum(k, 0)
