@@ -57,7 +57,7 @@ def call(path, body=None, key=None, timeout=30):
             return json.loads(res.read().decode('utf-8'))
     except urllib.error.HTTPError as exc:
         messages = {403: 'DeepL API 키가 올바르지 않습니다. 키를 다시 확인해 주세요.',
-                    456: '이번 달 DeepL 무료 번역 한도(50만 자)를 다 썼습니다. 다음 달에 다시 쓰거나 기존 번역을 사용하세요.',
+                    456: '이번 달 DeepL 무료 번역 한도를 다 썼습니다. 다음 달에 다시 쓰거나 기존 번역을 사용하세요.',
                     429: 'DeepL 요청이 너무 많습니다. 잠시 후 다시 시도하세요.'}
         raise DeepLError(messages.get(exc.code, f'DeepL 번역에 실패했습니다 (HTTP {exc.code}).')) from None
     except (urllib.error.URLError, TimeoutError, OSError):

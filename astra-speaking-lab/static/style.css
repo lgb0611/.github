@@ -118,3 +118,5 @@ button:disabled{cursor:not-allowed;opacity:.55}.input-options select{width:auto;
 /* v2.10.1 removed from the practice screen at the learner's request; still used internally by the step bar */
 #situationOnly,#combinedPractice,#newSituation,#beginRecall{display:none!important}
 #deeplStatus.error-text{color:var(--danger)}
+/* v2.11.2 hidden at the learner's request */
+.auto-expression-card .auto-help,.auto-expression-card .auto-file{display:none!important}
