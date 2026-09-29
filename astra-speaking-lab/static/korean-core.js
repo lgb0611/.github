@@ -6,7 +6,7 @@ const id=x=>typeof x==='string'&&/^[A-Za-z0-9_-]{1,150}$/.test(x)&&!['__proto__'
 const korean=x=>str(x)&&/[가-힣]/.test(x);
 const norm=x=>String(x).replace(/[‘’]/g,"'").replace(/\s+/g,' ').toLowerCase().trim();
 const target=c=>c.chunk_kind?c.expression:c.practice_sample_en||c.example_en||c.source_quote||c.expression;
-function validTranslation(t,source){return !!t&&typeof t==='object'&&str(t.source_en)&&korean(t.korean_text)&&['browser','local_ai'].includes(t.engine)&&(source===undefined||t.source_en===source);}
+function validTranslation(t,source){return !!t&&typeof t==='object'&&str(t.source_en)&&korean(t.korean_text)&&['browser','local_ai','deepl'].includes(t.engine)&&(source===undefined||t.source_en===source);}
 const TRANSCRIPT_CACHE_LIMIT=6000,TRANSCRIPT_CACHE_CHARS=1000000;
 function validTranscriptCache(rows){
  if(!Array.isArray(rows)||rows.length>TRANSCRIPT_CACHE_LIMIT)return false;
@@ -22,6 +22,8 @@ function cacheTranscriptMeaning(rows,t){
  return next;
 }
 function ko(c,cache){
+ // A DeepL translation the learner chose replaces earlier machine meanings.
+ if(cache?.engine==='deepl'&&validTranslation(cache,target(c)))return cache.korean_text;
  if(c.chunk_kind&&c.meaning_source==='local_ai'&&korean(c.meaning_ko))return c.meaning_ko;
  if(validTranslation(cache,target(c)))return cache.korean_text;
  if(!c.media&&korean(c.cue_ko))return c.cue_ko;

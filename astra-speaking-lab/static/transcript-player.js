@@ -64,6 +64,13 @@ function requestScriptKorean(row,priority=true){
  runScriptKorean(e);return request.promise;
 }
 async function translateScriptText(e,text){
+ if(config.deepl?.configured&&config.youtube_token){
+  try{
+   const response=await scriptKoBound(fetch('/deepl/translate',{method:'POST',headers:{'Content-Type':'application/json','X-Local-Token':config.youtube_token},body:JSON.stringify({texts:[text]}),signal:e.controller.signal}),e);
+   const result=await scriptKoBound(response.json(),e);const t={source_en:text,korean_text:result.translations?.[0]?.korean_text,engine:'deepl'};
+   if(response.ok&&result.engine==='deepl'&&result.translations?.[0]?.source_en===text&&K.validTranslation(t,text)&&t.korean_text.length<=2000)return t;
+  }catch(error){if(e.controller.signal.aborted)throw error;}
+ }
  if(e.unavailable)throw Error(e.unavailable);
  if(e.browser&&!e.translator){try{e.translator=await scriptKoBound(e.browser,e,390000);}catch(error){if(e.controller.signal.aborted)throw error;}e.browser=null;}
  if(!scriptKoCurrent(e))throw new DOMException('번역 중단','AbortError');

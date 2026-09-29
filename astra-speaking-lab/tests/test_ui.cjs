@@ -698,3 +698,46 @@ test('situation-only, Korean paragraph, new-situation and cover-and-speak button
  for(const id of ['situationOnly','combinedPractice','newSituation','beginRecall'])assert.equal(a.w.getComputedStyle(a.$(id)).display,'none',id);
  for(const id of ['sampleToggle','recordBtn','selfCheck'])assert.notEqual(a.w.getComputedStyle(a.$(id)).display,'none',id);
 });
+
+// v2.11.0: optional DeepL translation through the local launcher. DeepL itself is mocked.
+function deeplServer(a,{configured=true,fail=false}={}){
+ a.w.__deepl=[];a.w.__fetch=async(url,options={})=>{
+  const body=options.body?JSON.parse(options.body):null;
+  if(url==='/api/config')return {ok:true,json:async()=>({server:false,free_only:true,youtube_available:true,youtube_token:'fixture-token',deepl:{configured,plan:'free'}})};
+  if(url==='/deepl/translate'){a.w.__deepl.push({body,token:options.headers['X-Local-Token']});if(fail)return {ok:false,json:async()=>({detail:'이번 달 DeepL 무료 번역 한도(50만 자)를 다 썼습니다.'})};return {ok:true,json:async()=>({engine:'deepl',translations:body.texts.map(t=>({source_en:t,korean_text:'디엘 '+t}))})};}
+  if(url==='/deepl/key')return {ok:true,json:async()=>(body.clear?{configured:false,plan:'',usage:null}:{configured:true,plan:'free',usage:{character_count:1200,character_limit:500000}})};
+  if(url==='/deepl/usage')return {ok:true,json:async()=>({configured:true,plan:'free',usage:{character_count:1200,character_limit:500000}})};
+  if(url==='/local-ai/status')return {ok:true,json:async()=>({running:false,ready:false})};
+  return {ok:false,json:async()=>({detail:'unexpected '+url})};
+ };
+}
+test('with DeepL connected, new sentences are translated by DeepL with neighbouring context',async t=>{
+ const a=await app(t);deeplServer(a);await a.w.LabTest.refreshConfig();await manyCaptions(a,30);await tick();await tick();
+ const s=a.w.LabTest.getState(),first=s.customCards[0];
+ assert.equal(s.translations[first.id].engine,'deepl');assert.equal(s.translations[first.id].korean_text,'디엘 '+first.expression);
+ assert.equal(a.w.__deepl.length,2,'25 sentences per request');assert.equal(a.w.__deepl[0].token,'fixture-token');
+ assert.match(a.w.__deepl[1].body.context,/project number 23/);assert.ok(!a.w.__translatedTexts,'Chrome translator not needed');
+ assert.equal(a.d.querySelector('.auto-meaning').textContent,'디엘 '+first.expression);
+});
+test('existing machine translations can be replaced with DeepL in one click',async t=>{
+ const a=await app(t);await manyCaptions(a,5);await tick();const s=a.w.LabTest.getState(),id=s.customCards[0].id;
+ assert.equal(s.translations[id].engine,'browser');assert.ok(a.$('ytDeepLRetranslate').classList.contains('hidden'));assert.equal(a.$('ytDeepLSetup').classList.contains('hidden'),false);
+ deeplServer(a);await a.w.LabTest.refreshConfig();assert.equal(a.$('ytDeepLRetranslate').classList.contains('hidden'),false);assert.match(a.$('ytDeepLRetranslate').textContent,/5문장/);
+ s.cards[id]={due:NOW+86400000,independent:1};a.click('ytDeepLRetranslate');await tick();await tick();
+ assert.equal(s.translations[id].engine,'deepl');assert.equal(s.cards[id].independent,1,'review progress kept');assert.ok(a.$('ytDeepLRetranslate').classList.contains('hidden'));assert.match(a.$('ytKoStatus').textContent,/DeepL 번역으로 바꿨습니다/);
+ assert.ok(s.transcriptTranslations.every(x=>x.engine==='deepl'));
+});
+test('a DeepL failure falls back to the existing translator and explains why',async t=>{
+ const a=await app(t);deeplServer(a,{fail:true});await a.w.LabTest.refreshConfig();await manyCaptions(a,3);await tick();await tick();
+ const s=a.w.LabTest.getState();assert.equal(s.translations[s.customCards[0].id].engine,'browser');assert.equal(a.w.__deepl.length,1);
+});
+test('DeepL key is sent to the local launcher only and the page shows connection and usage',async t=>{
+ const a=await app(t);deeplServer(a,{configured:false});await a.w.LabTest.refreshConfig();a.click('settingsOpen');await tick();
+ assert.match(a.$('deeplStatus').textContent,/미연결/);a.$('deeplKey').value='11111111-2222-3333-4444-555555555555:fx';a.click('deeplSave');await tick();await tick();
+ assert.equal(a.$('deeplKey').value,'');assert.match(a.$('deeplStatus').textContent,/연결됨.*1,200 \/ 500,000자/);
+ assert.ok(!JSON.stringify(a.w.LabTest.getState()).includes('55555555:fx'),'key never stored in browser records');
+ a.click('deeplClear');await tick();await tick();assert.match(a.$('deeplStatus').textContent,/해제/);
+});
+test('DeepL settings are disabled when opened as a plain file',async t=>{
+ const a=await app(t,{offline:true});a.click('settingsOpen');await tick();assert.equal(a.$('deeplSave').disabled,true);assert.match(a.$('deeplStatus').textContent,/start_youtube_windows/);
+});

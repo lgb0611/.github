@@ -10,6 +10,9 @@ function refreshKoreanMeanings(){
   el.textContent=meaning||({waiting:'한국어 뜻을 자동으로 준비합니다…',translating:'이 문장의 한국어 뜻을 번역하고 있습니다…',paused:'한국어 번역을 중단했습니다. 완료된 뜻은 유지됩니다.',error:'한국어 자동 번역을 완료하지 못했습니다. 위 번역 연결 안내를 확인하세요.'})[phase];
   el.dataset.translation=phase;el.setAttribute('aria-busy',String(['waiting','translating'].includes(phase)));el.lang='ko';
  }
+ const upgradable=autoLessonCards.filter(c=>c.media&&hasKorean(c)&&state.translations[c.id]?.engine!=='deepl');
+ $('ytDeepLRetranslate').classList.toggle('hidden',!deeplReady()||!upgradable.length||!!koreanJob);$('ytDeepLRetranslate').textContent='DeepL로 한국어 다시 번역 · '+upgradable.length+'문장';
+ $('ytDeepLSetup').classList.toggle('hidden',deeplReady()||!autoLessonCards.length);
  const missing=autoLessonCards.filter(c=>!hasKorean(c)),retry=missing.some(c=>['paused','error'].includes(koreanMeaningStates.get(c.id)));
  $('ytPrepareKorean').classList.toggle('hidden',!retry||!!koreanJob);
  $('ytPrepareKorean').textContent=missing.some(c=>koreanMeaningStates.get(c.id)==='error')?'한국어 번역 다시 시도':'남은 한국어 이어 번역';
@@ -61,9 +64,28 @@ function saveKorean(c,text,engine){
  state.translations[c.id]=t;if(!saveState())throw Error('저장 공간이 부족합니다. 현재 기록을 내보낸 뒤 다시 시도하세요.');
  koreanMeaningStates.delete(c.id);refreshKoreanMeanings();
 }
+const deeplReady=()=>!!config.deepl?.configured&&!!config.youtube_token;
+function deeplContext(batch){
+ // Neighbouring transcript sentences guide DeepL; they are not translated or billed.
+ const pool=autoLessonCards.length?autoLessonCards:batch,first=pool.indexOf(batch[0]),last=pool.indexOf(batch.at(-1));
+ if(first<0||last<0)return '';
+ return [...pool.slice(Math.max(0,first-2),first),...pool.slice(last+1,last+3)].map(c=>K.target(c)).join(' ').slice(0,2000);
+}
+async function deeplTranslate(list,job){
+ for(let i=0;i<list.length;i+=25){
+  const batch=list.slice(i,i+25),texts=batch.map(c=>K.target(c));setKoreanPhase(batch,'translating');koreanMessage('DeepL로 한국어 번역 중 · '+i+' / '+list.length);
+  const result=await koreanLocalRequest('/deepl/translate',{texts,context:deeplContext(batch)},job);
+  if(result.engine!=='deepl'||!Array.isArray(result.translations)||result.translations.length!==batch.length||result.translations.some((t,k)=>t?.source_en!==texts[k]))throw Error('DeepL 결과가 문장과 맞지 않습니다.');
+  batch.forEach((c,k)=>saveKorean(c,result.translations[k].korean_text,'deepl'));
+ }
+}
 async function translateCards(selected,job){
  let missing=selected.filter(c=>!hasKorean(c));if(!missing.length)return;
  let browserError='';
+ if(deeplReady()){
+  try{await deeplTranslate(missing,job);}catch(e){if(!currentKoreanJob(job))throw e;browserError='DeepL: '+e.message+' ';koreanMessage(browserError+'다른 번역 방법으로 이어갑니다.',true);}
+  missing=selected.filter(c=>!hasKorean(c));if(!missing.length)return;
+ }
  if(window.Translator?.create){
   try{
    koreanMessage('문장별 한국어를 준비합니다. 처음에는 브라우저가 번역용 언어 파일을 내려받을 수 있습니다.');
@@ -185,6 +207,41 @@ async function createParagraphPractice(ids){
  $('taskText').scrollIntoView({block:'center',behavior:'smooth'});
 }
 $('ytPrepareKorean').onclick=()=>prepareKoreanCards(autoLessonCards.map(c=>c.id));
+async function retranslateWithDeepL(){
+ if(recording()||busy||!deeplReady())return;
+ const list=autoLessonCards.filter(c=>c.media&&state.translations[c.id]?.engine!=='deepl');
+ if(!list.length){koreanMessage('모든 문장이 이미 DeepL 번역입니다.');return;}
+ const ok=await runKoreanJob(list,async job=>{await deeplTranslate(list,job);return true;});
+ if(!ok)return;
+ // The transcript player keeps its own sentence cache; keep only DeepL entries so it shows the new meanings.
+ state.transcriptTranslations=(state.transcriptTranslations||[]).filter(t=>t.engine==='deepl');saveState();refreshKoreanMeanings();
+ koreanMessage(list.length+'개 문장의 한국어를 DeepL 번역으로 바꿨습니다.');
+}
+function deeplNote(text,error=false){$('deeplStatus').textContent=text;$('deeplStatus').className='tiny'+(error?' error-text':'');}
+async function deeplPost(path,body){
+ const res=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json','X-Local-Token':config.youtube_token||''},body:JSON.stringify(body)});
+ const data=await res.json();if(!res.ok)throw Error(data.detail||'DeepL 설정에 실패했습니다.');return data;
+}
+function usageText(u){return u&&Number.isInteger(u.character_count)&&Number.isInteger(u.character_limit)?` · 이번 달 ${u.character_count.toLocaleString()} / ${u.character_limit.toLocaleString()}자 사용`:'';}
+function renderDeepL(usage=null){
+ const local=!!config.youtube_token;
+ for(const id of ['deeplKey','deeplSave','deeplRemember'])$(id).disabled=!local;$('deeplClear').disabled=!local||!config.deepl?.configured;
+ if(!local){deeplNote('start_youtube_windows.bat 또는 start_free_windows.bat으로 실행했을 때 연결할 수 있습니다.');return;}
+ deeplNote(config.deepl?.configured?'DeepL 연결됨'+(config.deepl.plan==='free'?' · 무료 플랜':'')+usageText(usage)+' · 새 문장은 DeepL로 먼저 번역합니다.':'DeepL 미연결 · 지금은 Chrome 내장 번역 또는 무료 로컬 AI로 번역합니다.');
+}
+async function openDeepLSettings(){
+ renderDeepL();
+ if(deeplReady())try{const r=await deeplPost('/deepl/usage',{});renderDeepL(r.usage);}catch(e){deeplNote('DeepL 연결됨 · '+e.message,true);}
+}
+$('deeplSave').onclick=async()=>{
+ const key=$('deeplKey').value.trim();if(!key){deeplNote('DeepL API 키를 붙여 넣으세요.',true);return;}
+ $('deeplSave').disabled=true;deeplNote('키를 확인하고 있습니다…');
+ try{const r=await deeplPost('/deepl/key',{key,remember:$('deeplRemember').checked});config.deepl={configured:r.configured,plan:r.plan};$('deeplKey').value='';renderDeepL(r.usage);refreshKoreanMeanings();}
+ catch(e){deeplNote(e.message,true);}finally{$('deeplSave').disabled=!config.youtube_token;}
+};
+$('deeplClear').onclick=async()=>{try{const r=await deeplPost('/deepl/key',{clear:true});config.deepl={configured:r.configured,plan:r.plan};renderDeepL();refreshKoreanMeanings();deeplNote('DeepL 연결을 해제하고 저장된 키를 지웠습니다.');}catch(e){deeplNote(e.message,true);}};
+$('ytDeepLRetranslate').onclick=retranslateWithDeepL;
+$('ytDeepLSetup').onclick=()=>{if(recording()||busy)return;$('settingsOpen').click();$('deeplKey').focus();};
 $('prepareCurrentKorean').onclick=async()=>{if(recording()||busy)return;const id=activeIds()[0];if(await prepareKoreanCards([id])){exercise=resolveExercise(exercise.id);renderTask();saveDraft();}};
 $('ytParagraph').onclick=()=>createParagraphPractice(paragraphPicked.size?[...paragraphPicked]:defaultParagraphCards());
 $('ytParagraphStart').onclick=()=>createParagraphPractice([...paragraphPicked]);

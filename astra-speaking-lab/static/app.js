@@ -571,6 +571,7 @@ function renderConfig(){
  $('saveSettings').disabled=!config.server||!paidMode;$('clearKey').disabled=!config.server;
  $('apiNote').textContent=paidMode?'유료 API 기능이 켜져 있습니다. 음성인식·교정·출제 버튼을 누르면 별도 API 요금이 발생할 수 있습니다.':'API 요금 0원 · 자가 점검과 복습은 오프라인에서 가능합니다. ChatGPT 요청 복사는 사용 중인 ChatGPT 계정의 이용 한도가 적용되며, 직접 붙여 넣을 때만 전송됩니다.';
  if(typeof youtubeCapability==='function')youtubeCapability();
+ if(typeof refreshKoreanMeanings==='function')refreshKoreanMeanings();
 }
 async function saveSettings(clear=false){
  if(!config.server)return;
@@ -629,7 +630,7 @@ function bind(){
  $('smartReview').onclick=()=>{if(recording()||busy)return;const due=C.dueCards(library.cards,state.cards);if(!due.length){status('지금 복습할 표현이 없습니다. 오늘의 연습으로 새 표현을 시작할 수 있습니다.');return;}practiceCard(due[0].id);};
  $('librarySearch').oninput=()=>{libraryLimit=30;renderLibrary();};$('librarySource').onchange=()=>{libraryLimit=30;renderLibrary();};$('coreOnly').onchange=()=>{libraryLimit=30;renderLibrary();};$('moreLibrary').onclick=()=>{libraryLimit+=30;renderLibrary();};
  $('generatePicked').onclick=generatePicked;$('copyGenerate').onclick=copyGenerate;$('clearPicked').onclick=()=>{picked.clear();renderLibrary();};
- $('settingsOpen').onclick=()=>{if(recording()||busy)return;$('consentCheck').checked=state.consent;$('settingsDialog').showModal();};$('saveSettings').onclick=()=>saveSettings(false);$('clearKey').onclick=()=>saveSettings(true);
+ $('settingsOpen').onclick=()=>{if(recording()||busy)return;$('consentCheck').checked=state.consent;$('settingsDialog').showModal();if(typeof openDeepLSettings==='function')openDeepLSettings();};$('saveSettings').onclick=()=>saveSettings(false);$('clearKey').onclick=()=>saveSettings(true);
  $('methodOpen').onclick=()=>{$('importNotes').textContent=library.import_notes.join('\n');$('methodDialog').showModal();};
  $('exportData').onclick=exportData;$('importData').onchange=()=>importProgress($('importData').files[0]);
  $('clearProgress').onclick=()=>{if(confirm('이 브라우저의 학습 기록을 전부 지울까요? 먼저 기록을 내보내 백업할 수 있습니다.')){const fresh=C.initialState();try{localStorage.setItem(STORAGE,JSON.stringify(fresh));state=fresh;storageBlocked=false;location.reload();}catch(e){$('settingsStatus').textContent='초기화 내용을 저장하지 못했습니다. 기존 기록을 유지합니다.';}}};

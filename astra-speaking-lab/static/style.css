@@ -117,3 +117,4 @@ button:disabled{cursor:not-allowed;opacity:.55}.input-options select{width:auto;
 .expression-checks{list-style:none;margin:0;padding:0}.expression-checks li{padding:8px 0;border-top:1px solid var(--line);font-size:14px;overflow-wrap:anywhere}.expression-checks li.found span{color:#2f7a3e}.expression-checks li.missing span{color:#9a5320}
 /* v2.10.1 removed from the practice screen at the learner's request; still used internally by the step bar */
 #situationOnly,#combinedPractice,#newSituation,#beginRecall{display:none!important}
+#deeplStatus.error-text{color:var(--danger)}

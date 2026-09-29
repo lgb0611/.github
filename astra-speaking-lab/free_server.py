@@ -10,6 +10,7 @@ import webbrowser
 import secrets
 import transcript_service
 import local_ai
+import deepl_service
 
 ROOT = Path(__file__).resolve().parent
 YOUTUBE_TOKEN = secrets.token_urlsafe(32)
@@ -39,7 +40,7 @@ class FreeHandler(BaseHTTPRequestHandler):
         try:
             path = unquote(urlsplit(self.path).path)
             if path == '/api/config':
-                return self.send_content(200, json.dumps({'server': False, 'free_only': True, 'connected': False, 'youtube_available': transcript_service.available(), 'youtube_token': YOUTUBE_TOKEN, 'local_ai': True}).encode(), 'application/json', head)
+                return self.send_content(200, json.dumps({'server': False, 'free_only': True, 'connected': False, 'youtube_available': transcript_service.available(), 'youtube_token': YOUTUBE_TOKEN, 'local_ai': True, 'deepl': deepl_service.status()}).encode(), 'application/json', head)
             if path == '/local-ai/status':
                 return self.send_content(200, json.dumps(local_ai.status()).encode(), 'application/json', head)
             if path in {'/', '/OPEN_ME.html'}:
@@ -58,7 +59,7 @@ class FreeHandler(BaseHTTPRequestHandler):
             self.send_content(400, b'Invalid path.', head=head)
 
     def do_POST(self):
-        if self.path not in {'/youtube/transcript', '/youtube/extract', '/local-ai/setup', '/local-ai/translate', '/local-ai/paragraph'}:
+        if self.path not in {'/youtube/transcript', '/youtube/extract', '/local-ai/setup', '/local-ai/translate', '/local-ai/paragraph', '/deepl/key', '/deepl/translate', '/deepl/usage'}:
             return self.send_content(403, b'Free mode: paid API requests are disabled.')
         def reply(code, data):
             self.send_content(code, json.dumps(data, ensure_ascii=False).encode(), 'application/json; charset=utf-8')
@@ -70,7 +71,7 @@ class FreeHandler(BaseHTTPRequestHandler):
             if self.headers.get('Transfer-Encoding'):
                 return reply(400, {'detail': '요청 크기를 확인하지 못했습니다.'})
             length = int(self.headers.get('Content-Length', '-1'))
-            limit = 128000 if self.path in {'/youtube/extract', '/local-ai/translate', '/local-ai/paragraph'} else 1024
+            limit = 128000 if self.path in {'/youtube/extract', '/local-ai/translate', '/local-ai/paragraph', '/deepl/translate'} else 1024
             if not 1 <= length <= limit:
                 return reply(413, {'detail': '자막 요청 크기가 올바르지 않습니다.'})
             payload = json.loads(self.rfile.read(length))
@@ -80,6 +81,15 @@ class FreeHandler(BaseHTTPRequestHandler):
                 return reply(400, {'detail': '영상 ID 하나만 요청할 수 있습니다.'})
         except (ValueError, UnicodeError):
             return reply(400, {'detail': '자막 요청 형식을 확인하세요.'})
+        if self.path.startswith('/deepl/'):
+            try:
+                if self.path == '/deepl/key':
+                    return reply(200, deepl_service.set_key(payload))
+                if self.path == '/deepl/usage':
+                    return reply(200, {**deepl_service.status(), 'usage': deepl_service.usage()})
+                return reply(200, deepl_service.translate(payload))
+            except deepl_service.DeepLError as exc:
+                return reply(422, {'detail': str(exc)})
         if self.path != '/youtube/transcript':
             try:
                 if self.path == '/local-ai/setup':
