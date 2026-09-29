@@ -28,7 +28,7 @@ START = "2016-09-01"   # 10년
 CFTC_URL = ("https://publicreporting.cftc.gov/resource/gpe5-46if.csv"
             "?$where=cftc_contract_market_code='20974%2B'"
             "&$order=report_date_as_yyyy_mm_dd&$limit=5000")
-FRED_URL = "https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQ100&cosd=2015-01-01"
+FRED_URL = "https://fred.stlouisfed.org/graph/fredgraph.csv?id=NASDAQ100&cosd=2009-01-01"
 FORWARD_WEEKS = [4, 13, 26]
 
 # 색 (밝은 배경 기준)
@@ -46,7 +46,7 @@ def set_korean_font():
     plt.rcParams["axes.unicode_minus"] = False
 
 
-def load_data():
+def load_data(start=START):
     cftc = pd.read_csv(CFTC_URL)
     cftc["date"] = pd.to_datetime(cftc["report_date_as_yyyy_mm_dd"])
     # 2023년 중반 전에는 $100 계약 기준, 이후는 $20(E-mini) 기준으로 계약 수를 셈
@@ -66,7 +66,7 @@ def load_data():
     df["net_pct_oi"] = (df["long_contracts"] - df["short_contracts"]) / df["oi"] * 100
     for w in FORWARD_WEEKS:
         df[f"ndx_next_{w}w"] = (df["ndx"].shift(-w) / df["ndx"] - 1) * 100
-    return df.loc[START:], ndx.loc[START:]
+    return df.loc[start:], ndx.loc[start:]
 
 
 def forward_table(df):
