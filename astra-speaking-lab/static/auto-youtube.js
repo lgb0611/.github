@@ -84,11 +84,26 @@ function importAutomatic(result,snapshot,engine){
  });
  return addYoutubeCards(items,{exposeAll:false});
 }
+// When sentence boundaries improve, cut pieces from an older extraction are no longer in the deck.
+// Remove only pieces that no record points to; anything reviewed, practised or queued is kept.
+function pruneReplacedChunks(videoId,saved){
+ const keep=new Set(saved.map(c=>c.id)),used=new Set(Object.keys(state.cards));
+ for(const list of [state.session?.ids||[],...state.attempts.map(a=>a.card_ids),...state.customExercises.map(e=>e.card_ids),state.bridge?.attempt.card_ids||[]])list.forEach(id=>used.add(id));
+ for(const id of [state.draft?.exerciseId,state.lastExerciseId,exercise?.id])if(id?.startsWith('single_'))used.add(id.slice(7));
+ const stale=state.customCards.filter(c=>c.media?.video_id===videoId&&c.chunk_kind&&c.source_cue_id&&!keep.has(c.id)&&!used.has(c.id));
+ if(!stale.length)return;
+ const gone=new Set(stale.map(c=>c.id));
+ state.customCards=state.customCards.filter(c=>!gone.has(c.id));
+ library.cards=library.cards.filter(c=>!gone.has(c.id));
+ for(const id of gone){cards.delete(id);delete state.translations[id];delete state.exposures[id];}
+ saveState();
+}
 function prepareAutomaticDeck(){
  const chosen=AutoLessons.pool(ytCues);
  if(!chosen.length)throw Error('영어 문장이 없습니다. 영어 자막을 불러오거나 다른 영상을 선택하세요.');
  const snapshot={video:{...ytVideo,title:$('ytTitle').value},cues:chosen};
  const saved=importAutomatic(AutoLessons.builtin(snapshot.video,chosen),snapshot,'builtin');
+ pruneReplacedChunks(snapshot.video.id,saved);
  autoLessonCards=saved;autoSourceCues=chosen;autoVisible=10;renderAutomaticCards();
  const excluded=ytCues.length-chosen.length;
  autoMessage('전체 '+saved.length+'개 문장 추출 완료 · 마지막 문장까지 준비했습니다. '+(excluded?'음악·박수 등 영어 발화가 아닌 자막 '+excluded+'개는 제외했습니다. ':'')+'한국어 뜻은 순서대로 준비합니다. 아래에서 듣고 말하거나 여러 문장을 골라 문단으로 연습하세요.');

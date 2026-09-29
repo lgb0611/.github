@@ -13,3 +13,16 @@ test('YouTube cards and their review history survive a fresh backup import',()=>
 test('ChatGPT expression import verifies video and exact source, ignores model timestamps',()=>{const xs=Y.cues(RAW),reply={video_id:ID,items:[{cue_id:xs[0].id,source_text:xs[0].text,expression:'thinking of',meaning_ko:'생각하다',start:800,end:820,new_task_ko:'휴가 계획을 말하세요.',new_sample_en:'I was thinking of taking a week off.'}]};const got=Y.importItems(JSON.stringify(reply),{id:ID},xs);assert.equal(got[0].card.media.start,xs[0].start);assert.ok(got[0].task);reply.items[0].source_text='Invented quote.';assert.throws(()=>Y.importItems(JSON.stringify(reply),{id:ID},xs));});
 
 test('adjacent subtitle fragments form one grounded phrase with the actual time span',()=>{const raw=Y.cues('00:00:10.100 --> 00:00:12.000\nI was thinking\n\n00:00:12.000 --> 00:00:14.300\nof taking a break.\n\n00:00:20.000 --> 00:00:22.000\nA different scene.');const merged=Y.studyCues(raw);assert.equal(raw.length,3);assert.equal(merged.length,2);assert.equal(merged[0].text,'I was thinking of taking a break.');assert.equal(merged[0].start,10.1);assert.equal(merged[0].end,14.3);assert.equal(Y.suggest(merged)[0].expression,'I was thinking of');assert.equal(Y.studyCues(Y.cues('Untimed phrase.\nAnother untimed phrase.')).length,2);});
+test('a caption piece cut mid-sentence is joined with the words that finish it',()=>{
+ const raw='7:20\nSo I want to ask you a question.\n7:33\nBut if you don\'t know why you do what you do, and people respond to why you do what you do, then how will you ever get people to vote for you, or buy something from you, or, more importantly, be loyal\n7:46\nand want to be a part of what it is that you do.\n7:50\nAgain, the goal is not just to sell.';
+ const out=Y.studyCues(Y.cues(raw));
+ assert.equal(out.length,3);assert.match(out[1].text,/be loyal and want to be a part of what it is that you do\.$/);assert.equal(out[1].chunk_kind,'sentence');
+ assert.equal(out[1].start,453);assert.equal(out[1].end,470);
+});
+test('joining stops at 90 words and never runs over a long pause or unpunctuated captions',()=>{
+ const long=Array.from({length:7},(_,i)=>Y.captionStamp(i*4)+'\n'+'we kept talking about the plan for the week and '.repeat(2).trim()).join('\n')+'\n0:28\nthen we stopped.';
+ assert.ok(Y.studyCues(Y.cues(long)).every(c=>c.text.split(/\s+/).length<=90));
+ const gap=Y.studyCues(Y.cues('0:00 --> 0:04\nI went to the market\n0:30 --> 0:34\nand bought some bread.'));assert.equal(gap.length,2);
+ const flat=Array.from({length:12},(_,i)=>Y.captionStamp(i*3)+'\nso we went to the store and then we talked about it for a while').join('\n');
+ assert.ok(Y.studyCues(Y.cues(flat)).every(c=>c.text.split(/\s+/).length<=60));
+});

@@ -741,3 +741,19 @@ test('DeepL key is sent to the local launcher only and the page shows connection
 test('DeepL settings are disabled when opened as a plain file',async t=>{
  const a=await app(t,{offline:true});a.click('settingsOpen');await tick();assert.equal(a.$('deeplSave').disabled,true);assert.match(a.$('deeplStatus').textContent,/start_youtube_windows/);
 });
+
+// v2.11.1: sentences cut by the caption joiner are whole again; unused old pieces are cleaned up safely.
+test('reopening a video rebuilds cut sentences whole and removes only unused old pieces',async t=>{
+ const a=await app(t);a.fill('ytUrl','https://youtu.be/M7lc1UVf-VE');a.click('ytLoad');
+ a.fill('ytTranscript',"7:33\nBut if you don't know why you do what you do, and people respond to why you do what you do, then how will you ever get people to vote for you, or buy something from you, or, more importantly, be loyal\n7:46\nand want to be a part of what it is that you do.");a.click('ytFromTranscript');await tick();
+ const saved=JSON.parse(a.w.localStorage.getItem(KEY)),whole=saved.customCards[0];
+ assert.equal(saved.customCards.length,1);assert.match(whole.expression,/be loyal and want to be a part/);
+ const piece=(id,text)=>({...whole,id,expression:text,source_quote:text,example_en:text,practice_sample_en:text,practice_task_ko:'예전 조각',meaning_ko:'예전 조각',source_cue_id:'cue_1'});
+ const unused=piece('yt_M7lc1UVf-VE_old_unused','and want to be a part of what it is that you do.'),reviewed=piece('yt_M7lc1UVf-VE_old_reviewed','But if you don\'t know why you do what you do');
+ saved.customCards.push(unused,reviewed);saved.cards[reviewed.id]={due:NOW+86400000,independent:1};saved.translations[unused.id]={source_en:unused.expression,korean_text:'그리고 당신이 하는 일의 일부가 되고 싶어 합니다.',engine:'browser'};
+ const b=await app(t,{state:saved});const s=b.w.LabTest.getState(),ids=s.customCards.map(c=>c.id);
+ assert.ok(!ids.includes(unused.id),'unused cut piece removed');assert.ok(!s.translations[unused.id]);
+ assert.ok(ids.includes(reviewed.id),'piece with review progress kept');assert.ok(ids.includes(whole.id));
+ assert.equal(b.d.querySelectorAll('.auto-expression-card').length,1);
+ const c=await app(t,{state:JSON.parse(b.w.localStorage.getItem(KEY))});assert.equal(c.$('storageNotice').textContent,'');
+});

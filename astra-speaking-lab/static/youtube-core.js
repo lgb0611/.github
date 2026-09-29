@@ -56,6 +56,7 @@ function sentenceParts(s){
  if(s.slice(from).trim())parts.push(s.slice(from).trim());
  return parts.filter(Boolean);
 }
+const MAX_CHUNK_WORDS=90;
 function studyCues(xs){
  // Join caption fragments, then split at sentence boundaries. Keep actual caption ranges.
  const joined=[];let pending=null;
@@ -71,10 +72,21 @@ function studyCues(xs){
    if(/[.!?]["'”’)]?$/.test(part))flush();
   }
  }
- flush();const out=[];
+ flush();
+ // Joining above stops at 40 words or 45 seconds even mid-sentence. When the captions are punctuated,
+ // glue such a cut piece back to the words that finish its sentence, so meaning and translation stay whole.
+ const ends=t=>/[.!?]["'”’)]?$/.test(t),words=t=>t.split(/\s+/).length,punctuated=joined.some(c=>ends(c.text)),whole=[];
  for(const cue of joined){
+  const prev=whole.at(-1),nearby=prev&&(prev.start===null&&cue.start===null||prev.start!==null&&cue.start!==null&&cue.start>=prev.start&&cue.start-prev.end<=3);
+  if(punctuated&&nearby&&!ends(prev.text)&&!/^\s*[\[(]/.test(cue.text)&&!/^\s*[\[(]/.test(prev.text)&&words(prev.text)+words(cue.text)<=MAX_CHUNK_WORDS&&prev.text.length+cue.text.length<1000){prev.text+=' '+cue.text;if(cue.end!==null)prev.end=Math.max(prev.end,cue.end);prev.estimated||=cue.estimated;}
+  else whole.push({...cue});
+ }
+ const out=[];
+ for(const cue of whole){
   let rest=cue.text,split=false;
-  while(rest.split(/\s+/).length>60||rest.length>1000){
+  // A whole punctuated sentence may run to 90 words; unpunctuated speech is still cut near 35 words.
+  const limit=punctuated&&ends(rest)?MAX_CHUNK_WORDS:60;
+  while(rest.split(/\s+/).length>limit||rest.length>1000){
    const words=[...rest.matchAll(/\S+/g)];let cut=words[Math.min(35,words.length-1)].index;
    if(!cut)break;
    for(let i=15;i<Math.min(40,words.length);i++)if(/^(?:but|because|although|when|then|so|and)$/i.test(words[i][0])||/[,;:]$/.test(words[i-1][0])){cut=words[i].index;break;}
