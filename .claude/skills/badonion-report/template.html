@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="나쁜양파 리포트 양식 템플릿. 예시 데이터로 모든 차트·도표 부품을 보여줌.">
+<title>리포트 제목 | 부제 — 나쁜양파</title>
+<!-- 차트 라이브러리: 원본과 같은 Plotly 3.3.1. 인터넷 없이 열어야 하면 make_offline.py 로 파일 안에 내장 -->
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@3.3.1/plotly.min.js"></script>
+<style>
+/* =========================================================
+   1) 색상 토큰 — 이 값들만 쓰고 새 색을 만들지 않음
+   ========================================================= */
+:root{
+  --bg:#08111F;        /* 페이지 바탕 */
+  --surface:#0F1B2D;   /* 카드·차트 바탕 */
+  --surface2:#16243A;  /* 표 머리글·버튼·강조 칸 */
+  --inset:#0B1728;     /* 카드 안의 안쪽 상자 */
+  --line:#2B3A52;      /* 테두리·격자선 */
+  --text:#F4F7FB;      /* 제목·굵은 글씨 */
+  --soft:#D8E0EB;      /* 본문 */
+  --muted:#A7B3C4;     /* 보조설명·출처·축 */
+  --cyan:#27C2D3;      /* 주인공: 핵심 수치·주 계열·링크 */
+  --amber:#F0AA3C;     /* 비교 대상·기준선·주의 */
+  --red:#EB5A65;       /* 하락·부정·대안 시나리오 */
+  --green:#37C977;     /* 상승·긍정·신규 */
+  --purple:#D8B4FE;    /* '조건부' 태그 전용 */
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:62px}
+body{margin:0;background:var(--bg);color:var(--soft);font-family:Pretendard,'Noto Sans KR','Malgun Gothic',Arial,sans-serif;font-size:14px;line-height:1.65;font-variant-numeric:tabular-nums;letter-spacing:0}
+a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}
+b,strong{font-weight:700;color:var(--text)}
+h1{color:var(--text);font-size:31px;line-height:1.32;margin:23px 0 10px;font-weight:750}
+h2{font-size:20px;line-height:1.45;margin:0;color:var(--text)}
+h3{font-size:14px;line-height:1.45;margin:0;color:var(--text)}
+h2,h3,h4{word-break:keep-all}
+button,select{font:inherit;background:var(--surface2);color:var(--soft);border:1px solid var(--line);padding:7px 12px;border-radius:4px;cursor:pointer}
+button:hover,select:hover{border-color:var(--cyan)}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+code{font-size:11px}
+
+/* =========================================================
+   2) 페이지 뼈대 — 머리글 / 고정 목차 / 섹션 / 바닥글
+   ========================================================= */
+header,main,footer{max-width:1140px;margin:auto;padding:0 28px}
+header{padding-top:35px;padding-bottom:23px;border-bottom:1px solid var(--line)}
+.brand{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px}
+.brand b{color:var(--cyan);font-size:14px}
+.brand>span{text-align:right}
+.dek{max-width:900px;margin:0;font-size:15px;color:var(--soft)}
+.meta-note{font-size:11px;color:var(--muted);margin-top:10px}
+nav{position:sticky;top:0;z-index:30;border-bottom:1px solid var(--line);background:var(--bg);overflow:auto;scrollbar-width:thin}
+nav .inner{max-width:1140px;margin:auto;display:flex;gap:23px;padding:11px 28px;white-space:nowrap;font-size:12px}
+nav a{color:var(--soft)}
+section{padding-top:30px;border-bottom:1px solid var(--line);padding-bottom:25px}
+.section-title{display:flex;align-items:flex-start;gap:13px;margin-bottom:17px}
+.section-title>span{font-size:13px;padding-top:3px;color:var(--cyan);font-weight:700}
+.sub{font-size:11px;color:var(--muted);line-height:1.5;margin-top:6px}
+footer{padding-top:18px;padding-bottom:30px;display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:10px}
+
+/* 머리글 요약 상자 (왼쪽: 핵심 숫자 4개 / 오른쪽: 결론) */
+.hero-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:18px;margin-top:22px}
+.hero-box{background:linear-gradient(145deg,var(--surface),var(--inset));border:1px solid var(--line);padding:18px}
+.hero-box h3{font-size:13px;color:var(--cyan);margin-bottom:9px}
+.hero-box p{margin:0 0 8px}
+.hero-list{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px}
+.hero-list b{display:block;font-size:18px}
+.hero-list span{font-size:11px;color:var(--muted)}
+
+/* KPI 줄 (세로선으로 나눈 숫자 4개) */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:0 0 20px}
+.kpi{padding:8px 18px;border-left:1px solid var(--line)}
+.kpi:first-child{border:0;padding-left:0}
+.kpi small{display:block;font-size:11px;color:var(--muted)}
+.kpi strong{display:block;color:var(--cyan);font-size:23px;line-height:1.4}
+.kpi span{display:block;font-size:11px;color:var(--muted)}
+
+/* =========================================================
+   3) 차트 카드 (figure) — 모든 차트는 이 틀 안에 넣음
+      제목(주장) → 부제(단위·기간·등급) → 차트 → 해설 → 주의 → 출처
+   ========================================================= */
+.figure{position:relative;background:var(--surface);border:1px solid var(--line);padding:15px 16px 13px;margin:0 0 17px;min-width:0;break-inside:avoid}
+.figure-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;min-height:30px}
+.figure-head>div{min-width:0}
+.plot{width:100%;min-width:0;margin:8px 0 7px;overflow:hidden}
+.figure figcaption{font-size:13px;line-height:1.72;padding-top:10px;border-top:1px solid var(--line);word-break:keep-all;overflow-wrap:anywhere}
+.chart-note{font-size:10px;color:var(--muted);margin-top:6px}
+.source{font-size:10.5px;line-height:1.6;color:var(--muted);margin-top:8px;overflow-wrap:anywhere}
+.ref-link{font-size:10px;white-space:nowrap;margin-left:5px}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px;margin-bottom:17px}
+.two>.figure{margin-bottom:0}
+.positive{color:var(--green)!important}
+.negative{color:var(--red)!important}
+
+/* =========================================================
+   4) 도표 부품 (차트가 아닌 그림)
+   ========================================================= */
+/* 흐름도: 단계 → 단계 (모바일에서는 ↓) */
+.flow-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;align-items:stretch;margin-bottom:17px}
+.flow-node{background:var(--surface);border:1px solid var(--line);padding:12px;text-align:center;position:relative}
+.flow-node:not(:last-child):after{content:'→';position:absolute;right:-13px;top:42%;color:var(--cyan);font-size:18px;z-index:2}
+.flow-node b{display:block}
+.flow-node small{color:var(--muted)}
+/* 매출 연결 사슬: 수요 → 제품 → 매출 (3칸) */
+.revenue-chain{display:flex;gap:24px;align-items:stretch;margin:7px 0 14px}
+.revenue-chain span{position:relative;flex:1;text-align:center;background:var(--surface2);border:1px solid var(--line);padding:8px 12px;font-size:12px;color:var(--text)}
+.revenue-chain span:not(:last-child):after{content:'→';position:absolute;right:-19px;color:var(--cyan)}
+/* 강조 상자 */
+.callout{border:1px solid var(--line);background:var(--inset);padding:13px 15px;margin:12px 0 17px}
+.callout>b{color:var(--cyan)}
+.callout p{font-size:12.5px;line-height:1.8;margin:7px 0}
+/* 조건 카드 3칸 (필수 조건 · 비교 방식 · 기준) */
+.cap-rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:14px}
+.cap-rule>div{padding:15px;background:var(--surface)}
+.cap-rule small,.cap-rule span{display:block;color:var(--muted);font-size:11px}
+.cap-rule b{display:block;font-size:16px;margin:5px 0}
+/* 범위·한계 공개 (호박색 왼쪽 선) */
+.coverage-note{border-left:3px solid var(--amber);padding:12px 15px;background:#241F1B;font-size:12px;margin:15px 0 20px;line-height:1.8}
+/* 요약 한 줄 (청록 왼쪽 선) */
+.scope-line{font-size:12px;line-height:1.8;background:var(--surface);border-left:3px solid var(--cyan);padding:12px 15px;margin:15px 0}
+/* 큰 숫자 4칸 (밑줄형) */
+.wide-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}
+.wide-stats>div{border-bottom:1px solid var(--line);padding:10px 0}
+.wide-stats b{display:block;font-size:21px;color:var(--cyan)}
+.wide-stats small{font-size:11px;color:var(--muted)}
+/* 태그(둥근 알약) · 칩(각진) · 수치 배지 */
+.tag{display:inline-block;border:1px solid var(--line);padding:2px 6px;border-radius:999px;font-size:10px;color:var(--muted);margin-right:5px}
+.tag.direct{color:var(--cyan);border-color:rgba(39,194,211,.5)}
+.tag.market{color:var(--amber);border-color:rgba(240,170,60,.5)}
+.tag.conditional{color:var(--purple);border-color:rgba(216,180,254,.5)}
+.chip{font-size:10px;padding:2px 6px;display:inline-block;border:1px solid var(--line);border-radius:3px}
+.chip.core{color:var(--cyan);border-color:var(--cyan)}
+.chip.theme{color:var(--cyan)}
+.chip.new{color:var(--green)}
+.chip.hold{color:var(--amber)}
+.chip.other,.chip.unreviewed{color:var(--muted)}
+.tech-levels{display:flex;flex-wrap:wrap;gap:6px}
+.tech-levels span{font-size:10px;border:1px solid var(--line);padding:3px 6px;white-space:nowrap}
+
+/* =========================================================
+   5) 섹션 안 소제목 · 기업 분석 카드
+   ========================================================= */
+.sector-heading{display:flex;gap:14px;align-items:flex-start;margin:38px 0 18px;border-top:2px solid var(--cyan);padding:18px 1px 0;scroll-margin-top:70px}
+.sector-heading>span{color:var(--cyan);font-size:12px;font-weight:700;white-space:nowrap;padding-top:3px}
+.sector-heading h3{font-size:21px}
+.sector-heading p{font-size:13px;line-height:1.9;max-width:1000px;margin:8px 0 0;word-break:keep-all}
+.company-block{border-left:3px solid var(--cyan);padding:22px 22px 16px;margin-bottom:27px;scroll-margin-top:62px}
+.winner-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.winner-head h3{font-size:17px}
+.company-name{color:var(--muted);font-size:12px;font-weight:400;margin-left:8px}
+.winner-meta{font-size:10.5px;color:var(--muted);text-align:right;min-width:175px;line-height:1.7}
+.investment-thesis{font-size:18px;line-height:1.55;font-weight:700;color:var(--text);margin:14px 0 3px;word-break:keep-all}
+.eyebrow{display:block;color:var(--cyan);font-size:10px;letter-spacing:.8px;font-weight:700;margin-bottom:5px}
+.business-intro{padding:11px 0 7px;margin-top:9px;border-top:1px solid var(--line)}
+.business-intro p{margin:0;font-size:13px;line-height:1.86}
+.winner-copy{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:14px 0 12px}
+.winner-copy>div+div{border-left:1px solid var(--line);padding-left:22px}
+.winner-copy>div>b{display:block;font-size:13px;line-height:1.5;color:var(--cyan);margin-bottom:8px}
+.winner-copy p{margin:0;font-size:13px;line-height:1.86;word-break:keep-all;overflow-wrap:anywhere}
+.specific-hinge{background:var(--inset);border-left:2px solid var(--amber);padding:10px 13px;margin:15px 0 8px}
+.specific-hinge>b{font-size:12px;color:var(--amber)}
+.specific-hinge p{font-size:12px;margin:5px 0 0;line-height:1.85;word-break:keep-all}
+.analysis-status{font-size:10px;color:var(--muted);margin:10px 0 15px}
+.integrated-tech{background:transparent;border:0;border-top:1px solid var(--line);padding:15px 0 0;margin:0!important}
+.tech-header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.tech-header h3{font-size:12px;color:var(--muted)}
+.chart-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:4px 0 12px}
+.chart-actions button{font-size:11px;padding:5px 9px}
+.chart-actions a{font-size:10px;margin-left:auto}
+
+/* =========================================================
+   6) 표 · 필터 · 방법론 · 출처 · 팝업
+   ========================================================= */
+.table-shell{overflow:auto;border:1px solid var(--line);scrollbar-width:thin;max-height:520px}
+table{border-collapse:collapse;width:100%;font-size:11px;white-space:nowrap}
+th{background:var(--surface2);color:var(--muted);font-weight:500;text-align:right;padding:10px 12px;position:sticky;top:0;z-index:2}
+td{padding:9px 12px;text-align:right;border-top:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+tbody tr:hover{background:var(--surface)}
+td small{display:block;font-size:9px;color:var(--muted);max-width:190px;white-space:normal}
+td:first-child b{font-size:13px}
+.row-hl{background:#10283A}
+.controls{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin:14px 0 12px}
+.controls label{display:flex;flex-direction:column;gap:5px;color:var(--muted);font-size:11px}
+.controls select,.controls input{height:36px;font-size:12px}
+.controls input{background:var(--surface2);border:1px solid var(--line);color:var(--text);border-radius:4px;padding:7px 10px;width:100%}
+.controls .grow{flex:1;min-width:145px}
+.table-meta{display:flex;justify-content:space-between;gap:15px;font-size:10.5px;color:var(--muted);margin:10px 0}
+.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:23px;background:var(--surface);border:1px solid var(--line);padding:20px;margin-bottom:18px}
+.method-grid dl{margin:9px 0 0;font-size:12px}
+.method-grid dt{font-weight:700;color:var(--soft);margin:9px 0 2px}
+.method-grid dd{margin:0;color:var(--muted);line-height:1.85}
+.source-list{border:1px solid var(--line);padding:13px 17px;background:var(--surface)}
+.source-list>summary{cursor:pointer;font-weight:700;color:var(--text)}
+.source-list summary span{font-size:11px;color:var(--muted);font-weight:400;margin-left:12px}
+.source-list ol{padding-left:22px;margin:14px 0 0;columns:2;column-gap:30px}
+.source-list li{padding:4px 0;font-size:11px;scroll-margin-top:90px;break-inside:avoid}
+.source-list small{display:block;color:var(--muted);font-size:10px}
+.source-list li:target{background:var(--surface2)}
+dialog{background:var(--surface);color:var(--soft);border:1px solid var(--line);border-radius:5px;width:min(1100px,96vw);max-height:90vh;padding:18px}
+dialog::backdrop{background:#000b}
+.dialog-head{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-bottom:12px}
+.dialog-head h3{font-size:15px}
+.js-plotly-plot .plotly .modebar{background:transparent!important}
+.js-plotly-plot .plotly .modebar-btn path{fill:#a7b3c4!important}
+noscript{display:block;background:#40202a;padding:15px;color:white}
+
+/* =========================================================
+   7) 모바일 (760px 이하) — 2칸 이상은 1칸으로
+   ========================================================= */
+@media(max-width:760px){
+  header,main,footer{padding-left:15px;padding-right:15px}
+  header{padding-top:22px}
+  .brand{font-size:10px}.brand b{font-size:12px}.brand>span{max-width:155px}
+  h1{font-size:26px;margin-top:18px}h2{font-size:18px}.dek{font-size:13px}
+  nav .inner{padding:10px 15px;gap:20px}
+  section{padding-top:24px}.section-title{gap:9px}
+  .hero-grid,.two,.method-grid,.winner-copy,.flow-grid,.cap-rule{grid-template-columns:1fr}
+  .kpis{grid-template-columns:repeat(2,1fr);gap:12px}.kpi{padding:4px 13px}.kpi:nth-child(3){border:0;padding-left:0}.kpi strong{font-size:21px}
+  .wide-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .figure{padding:12px 9px 11px}.figure figcaption{font-size:12.5px}
+  .flow-node:not(:last-child):after{content:'↓';right:50%;top:auto;bottom:-17px}
+  .revenue-chain{gap:18px}.revenue-chain span{padding:8px 5px;font-size:10px}.revenue-chain span:not(:last-child):after{right:-15px}
+  .company-block{padding:15px 11px 12px}.investment-thesis{font-size:16px}
+  .winner-head{flex-wrap:wrap}.winner-meta{text-align:left;min-width:0;flex-basis:100%}
+  .company-name{display:block;margin-left:0;margin-top:3px}
+  .winner-copy>div+div{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-top:13px}
+  .sector-heading{margin-top:29px;gap:10px}.sector-heading h3{font-size:18px}.sector-heading p{font-size:12px}
+  .controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .table-meta{display:block;line-height:1.8}
+  .source-list ol{columns:1}
+  .chart-actions a{margin-left:0}
+  footer{display:block}
+}
+/* 인쇄 (A4 세로) — 버튼·목차는 숨김, 어두운 배경 유지 */
+@media print{
+  body{font-size:10pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  nav,.controls,.chart-actions,.download-row{display:none}
+  header,main,footer{max-width:none;padding-left:0;padding-right:0}
+  h1{font-size:22pt}h2{font-size:14pt}
+  .figure,.winner-copy{break-inside:avoid}
+  .figure figcaption{font-size:8.7pt}.source{font-size:7.4pt}
+  .table-shell{max-height:none}
+  @page{size:A4 portrait;margin:12mm}
+}
+</style>
+</head>
+<body>
+<noscript>차트를 표시하려면 JavaScript가 허용된 브라우저에서 열어 주세요.</noscript>
+
+<!-- ============ 머리글 ============ -->
+<header>
+  <div class="brand"><b>나쁜양파 · Bad Onion</b><span>Sample Ripple Study<br>2026.09.29 · Asia/Seoul</span></div>
+  <h1>X 서비스 출시의 파급효과<br><span>공급망 주가·거래량으로 다시 본 시장 반응</span></h1>
+  <p class="dek">한 문단으로 이 보고서가 무엇을 분석하는지 적음. 무엇을 먼저 확인하고(정량 비교), 무엇을 나중에 판단하는지(기업별 사업 연결) 순서를 밝힘.</p>
+  <div class="hero-grid">
+    <div class="hero-box"><h3>최종 결과</h3>
+      <div class="hero-list">
+        <div><b>100개</b><span>비교 대상 · 가격/거래량 검증 완료</span></div>
+        <div><b>20 + 5거래일</b><span>직전 20일 평균과 이벤트 5일을 분리</span></div>
+        <div><b>핵심 3개</b><span>직접 공급 관계가 확인된 기업</span></div>
+        <div><b>관찰 2개</b><span>구조적 노출만 확인 · 추가 검토</span></div>
+      </div>
+    </div>
+    <div class="hero-box"><h3>결론</h3>
+      <p><b>결론 한두 문장을 굵게 먼저 씀.</b> 그다음 근거를 짧게 붙임.</p>
+      <p class="sub">ALPHA → BETA → GAMMA: 수혜 해석 순서<br>직접 고객 근거와 구조적 노출은 종목별로 구분</p>
+    </div>
+  </div>
+  <div class="meta-note"><b>예시 데이터 — 모든 수치·종목은 가상임. 작성일 2026-09-29 ≠ 시세 기준일.</b> 시세는 9/25 완성 거래일만 사용. <a href="#method">방법·출처</a></div>
+</header>
+
+<!-- ============ 고정 목차 ============ -->
+<nav><div class="inner"><a href="#impact">01 파급</a><a href="#screen">02 비교 스크린</a><a href="#companies">03 기업 분석</a><a href="#method">04 방법·출처</a></div></nav>
+
+<main>
+<!-- ============ 01 ============ -->
+<section id="impact">
+  <div class="section-title"><span>01</span><div><h2>섹션 제목은 “무엇이 중요한가”를 한 문장으로</h2><div class="sub">부제: 사건 순서나 범위를 한 줄로 · 9/8 출시 → 9/21~25 시장 재평가</div></div></div>
+
+  <div class="kpis">
+    <div class="kpi"><small>누적 다운로드</small><strong>3.4M</strong><span>9/24 · Estimate</span></div>
+    <div class="kpi"><small>DAU 증가</small><strong>약 10×</strong><span>9/10 → 9/20</span></div>
+    <div class="kpi"><small>평균 수익률</small><strong class="positive">+6.2%</strong><span>핵심 3개 · 5거래일</span></div>
+    <div class="kpi"><small>거래량 배수</small><strong>1.6×</strong><span>직전 20일 평균 대비</span></div>
+  </div>
+
+  <div class="two">
+    <figure class="figure"><div class="figure-head"><div><h3>초기 다운로드는 출시 16일 안에 3M대를 넘김</h3><div class="sub">누적 다운로드 · 백만 건 · Estimate</div></div></div>
+      <div class="plot" id="c-line"></div>
+      <figcaption><b>첫 12일 2.8M, 9/24 기준 3.4M으로 추정.</b> 서로 다른 집계기관·시점이므로 동일 코호트는 아니지만, 채택 속도가 빠르다는 방향은 일치함.</figcaption>
+      <div class="chart-note">출시일 0건을 관측값으로 가정하지 않음.</div>
+      <div class="source">예시 출처 A 9/22 · 예시 출처 B 9/25 · Estimate</div>
+    </figure>
+    <figure class="figure"><div class="figure-head"><div><h3>출시 이벤트 전후 사용 강도도 추가 상승</h3><div class="sub">상대 변화율 · Estimate</div></div></div>
+      <div class="plot" id="c-bar2"></div>
+      <figcaption><b>다운로드 일평균 +55%, 이벤트 다음날 DAU +27%로 추정.</b> 설치 수뿐 아니라 실제 사용 활성도가 다시 올라간 것이 시장 재평가 시점과 겹침.</figcaption>
+      <div class="source">예시 출처 B · Estimate</div>
+    </figure>
+  </div>
+
+  <div class="flow-grid">
+    <div class="flow-node"><b>대화</b><small>질문·답변</small></div>
+    <div class="flow-node"><b>계획</b><small>long-horizon task</small></div>
+    <div class="flow-node"><b>실행</b><small>browser·forms·apps</small></div>
+    <div class="flow-node"><b>거래/통신</b><small>checkout·email</small></div>
+    <div class="flow-node"><b>반복 사용</b><small>background agent</small></div>
+  </div>
+  <div class="callout"><b>핵심 변화 한 줄을 청록 굵은 글씨로</b>
+    <p>설명 문단. 전문용어는 처음 나올 때 괄호로 풀어 씀 — 예: <b>KV cache(이전 문맥 계산을 재사용하는 저장 공간)</b>.<a class="ref-link" href="#src-1">[근거 1]</a></p>
+    <p><b>분석상 의미:</b> 이 사실이 결론에 어떻게 연결되는지, 그리고 어디까지는 말할 수 없는지를 함께 적음.<a class="ref-link" href="#src-2">[근거 2]</a></p>
+  </div>
+
+  <div class="two">
+    <figure class="figure"><h3>외부 추정 규모: 7GW → 14GW</h3>
+      <div class="plot" id="c-bar1"></div>
+      <figcaption><b>2026→2027 규모가 2배라는 외부 추정.</b> 회사 확정 가이던스가 아니므로 방향만 참고함.</figcaption>
+      <div class="source">예시 리포트 · Estimate</div>
+    </figure>
+    <figure class="figure"><h3>효율 개선은 수요 증가를 상쇄하지 못할 수 있음</h3>
+      <div class="plot" id="c-neg"></div>
+      <figcaption><b>이전 버전 대비 도구 호출 약 −20%, 토큰 약 −25%.</b> 줄어든 것이 ‘좋은 일’이므로 음수여도 초록색으로 칠함 — 색은 부호가 아니라 의미를 따름.</figcaption>
+      <div class="source">예시 회사 발표 · Company-reported</div>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ 02 ============ -->
+<section id="screen">
+  <div class="section-title"><span>02</span><div><h2>비교 대상을 먼저 정하고, 가격과 거래량을 확인</h2><div class="sub">9/18 종가 → 9/25 종가, 실제 5거래일. 주가 상승 순위와 수혜 여부를 같은 것으로 취급하지 않음.</div></div></div>
+
+  <div class="cap-rule">
+    <div><small>필수 조건</small><b>시가총액 ≥ 10조원</b><span>환율 기준을 여기 적음</span></div>
+    <div><small>가격 비교</small><b>9/18 종가 → 9/25 종가</b><span>9/21 · 22 · 23 · 24 · 25, 실제 5거래일</span></div>
+    <div><small>거래량 기준</small><b>이벤트 전 20거래일 고정</b><span>8/21~9/18 평균과 비교</span></div>
+  </div>
+  <div class="coverage-note" role="note"><b>분석 범위 공개</b> · 전체 목록 130개 중 자료를 확보한 <b>100개</b>만 계산함. <b>자료 미확인 30개는 ‘조건 미달’로 처리하지 않았으며</b>, 전수 결과라고 표기하지 않음.</div>
+  <div class="wide-stats" id="c-stats"></div>
+
+  <figure class="figure"><div class="figure-head"><div><h3>비교 대상 전체 · 가격 × 거래량</h3><div class="sub">회색은 관련성 미검토 종목. 이름표가 없다고 분석에서 제외한 것은 아님.</div></div></div>
+    <div class="plot" id="c-scatter"></div>
+    <figcaption><b>오른쪽 위는 주가와 거래량이 함께 증가한 영역임.</b> 이것만으로 수혜를 판정하지 않음. 세로축은 거래량 배수의 로그 눈금이며 점에 마우스를 올리면 정확한 값이 표시됨.</figcaption>
+    <div class="source">예시 시세 공급자 · 동일 거래일 창 · 분류는 작성자의 사업 해석</div>
+  </figure>
+
+  <div class="two">
+    <figure class="figure"><div class="figure-head"><div><h3>실제로 많이 오른 종목</h3><div class="sub">상승률 상위 10개 · 색은 분류(관련성)</div></div></div>
+      <div class="plot" id="c-rank"></div>
+      <figcaption><b>상승률 상위와 수혜 우선순위는 다를 수 있음.</b> 관련성 미검토 종목도 순위에서 삭제하지 않음.</figcaption>
+    </figure>
+    <figure class="figure"><div class="figure-head"><div><h3>본주와 비교 ETF · 거래량 반응만 비교</h3><div class="sub">각자 직전 20거래일 평균 대비 배수 · 점선 = 1배</div></div></div>
+      <div class="plot" id="c-group"></div>
+      <figcaption><b>세 쌍 모두 1배 위.</b> ETF 거래량은 ETF 자체 거래량일 뿐 기초주식 주문량이 아님.</figcaption>
+      <div class="source">예시 시세 공급자 · Calculated</div>
+    </figure>
+  </div>
+
+  <figure class="figure"><h3>비교 대상 전체 표</h3>
+    <div class="controls">
+      <label>정렬<select id="t-sort"><option value="ret">구간 상승률 높은 순</option><option value="volx">거래량 배수 높은 순</option><option value="cap">시총 큰 순</option></select></label>
+      <label>보기<select id="t-mode"><option value="all">전체</option><option value="rise">상승 + 거래량 증가</option><option value="reviewed">분류된 종목만</option></select></label>
+      <label class="grow">검색<input id="t-search" type="search" placeholder="티커·회사" autocomplete="off"></label>
+      <button id="t-csv" type="button">표 CSV 저장</button>
+    </div>
+    <div class="table-meta"><span id="t-count"></span><span>순위는 전체 기준 상승률 순위이며 필터를 바꿔도 유지함.</span></div>
+    <div class="table-shell"><table><thead><tr><th>순위 · 종목</th><th>시총 (조원)</th><th>구간 수익률</th><th>구간 거래량</th><th>분류 / 근거</th></tr></thead><tbody id="t-rows"></tbody></table></div>
+    <div class="chart-note">‘관련성 미검토’는 사업 분석을 아직 하지 않았다는 뜻이며 비수혜 판정이 아님.</div>
+  </figure>
+</section>
+
+<!-- ============ 03 ============ -->
+<section id="companies">
+  <div class="section-title"><span>03</span><div><h2>기업별 수혜 논리와 본주 기술적 분석</h2><div class="sub">회사·제품 → 매출 연결 → 캔들·거래량 → 조건부 경로</div></div></div>
+  <div class="scope-line"><b>검토한 기업을 같은 분석 흐름으로 정리함.</b> 관련성 미검토 종목은 제외. 보류 판정은 그대로 유지함.</div>
+
+  <div class="sector-heading" id="sector-a"><span>03.01</span><div><h3>섹터 이름</h3><p><b>섹터 한 줄 결론을 굵게.</b> 이어서 이 섹터 기업들을 어떤 기준으로 나눠 보는지 설명함.<a class="ref-link" href="#src-3">[근거 3]</a></p></div></div>
+
+  <article class="figure company-block" id="co-ALPHA">
+    <div class="winner-head">
+      <div><h3>ALPHA <span class="company-name">Alpha Systems (가상)</span></h3>
+        <div><span class="tag direct">공급관계 확인</span><span class="tag">GPU + CPU</span><span class="tag conditional">조건부</span></div></div>
+      <div class="winner-meta" id="alpha-meta"></div>
+    </div>
+    <h4 class="investment-thesis">투자 논지 한 문장: 이 회사가 앞서는 이유는 A뿐 아니라 B에도 있음</h4>
+    <div class="business-intro"><span class="eyebrow">무슨 회사인가</span>
+      <p><b>제품 이름과 그것이 하는 일</b>을 한두 문장으로. 매출이 어디서 생기는지와, 헷갈리기 쉬운 점(“랙 가격 전체가 이 회사 매출은 아님”)을 함께 적음.<a class="ref-link" href="#src-1">[회사 자료]</a></p></div>
+    <div class="revenue-chain"><span>수요: 여러 도구의 동시 실행</span><span>제품: GPU + 고밀도 CPU</span><span>매출: 기존 고객의 세대 전환</span></div>
+    <div class="winner-copy">
+      <div><b>경쟁사 B보다 앞서는 논거</b><p>근거 문단. 핵심 구절은 <b>굵게</b>. 마지막에 “이는 ~가 검증됐다는 뜻은 아님”처럼 한계를 붙임.<a class="ref-link" href="#src-2">[근거 2]</a></p></div>
+      <div><b>경쟁사 C보다 앞서는 논거</b><p>두 번째 비교 논거. 같은 강점을 경쟁사도 가졌다면 그것만으로는 우위를 설명할 수 없다고 먼저 인정하고, 실제 차이를 제시함.<a class="ref-link" href="#src-3">[근거 3]</a></p></div>
+    </div>
+    <div class="specific-hinge"><b>주의: 물량 확대와 주당 이익은 나눠 봐야 함</b><p>리스크·단서 조항. 이미 발표된 계약을 이번 이벤트의 새 주문으로 더하지 않는 등, 과대해석을 막는 문장을 씀.</p></div>
+    <div class="analysis-status">공급관계 확인 · 산업 분석을 이번 사건에 적용</div>
+
+    <figure class="figure integrated-tech">
+      <div class="tech-header"><div><h3>본주 가격·거래량 · 조건부 경로</h3><div class="sub">2026-09-03 ~ 2026-09-25 · 일봉 · USD · 가격/거래량 Actual · 지표 Calculated · 경로 Scenario</div></div>
+        <div class="tech-levels" id="alpha-levels"></div></div>
+      <div class="plot" id="c-candle"></div>
+      <div class="chart-actions"><button type="button" id="alpha-raw">원자료 보기</button><button type="button" id="alpha-csv">이 차트의 OHLCV CSV</button><a href="#method">공통 차트 기준</a></div>
+      <figcaption><b>돌파 후 지지 전환:</b> 109.00–110.50 지지 구간 위에서 안착하는지가 핵심임. 이 구간을 내주면 SMA20까지의 조정 가능성을 분리해 봄.</figcaption>
+      <div class="source">캔들·거래량: 예시 공급자 EOD · 지표: 같은 공급자로 계산 · 공급자를 섞지 않음</div>
+    </figure>
+  </article>
+</section>
+
+<!-- ============ 04 ============ -->
+<section id="method">
+  <div class="section-title"><span>04</span><div><h2>방법·원자료·출처</h2><div class="sub">원본을 보존하고, Actual / Calculated / Estimate / Forecast / Scenario를 분리</div></div></div>
+  <div class="method-grid">
+    <div><h3>거래일과 계산</h3><dl>
+      <dt>시세 기준일</dt><dd>작성일과 시세 기준일을 따로 적음. 휴장일을 제외한 실제 거래일만 사용함.</dd>
+      <dt>RVOL20</dt><dd>V(t) ÷ mean[V(t−20), …, V(t−1)]. t는 달력 날짜가 아닌 실제 거래일 순서임.</dd>
+      <dt>차트 축</dt><dd>실제 관측값에만 연속 거래일 번호를 부여함. 주말·휴장일에 빈 봉이나 0 거래량을 넣지 않음.</dd></dl></div>
+    <div><h3>데이터 등급과 해석 범위</h3><dl>
+      <dt>등급 표기</dt><dd>Actual(관측) · Calculated(관측값으로 계산) · Estimate(외부 추정) · Company claim(회사 주장) · Scenario(조건부 작도).</dd>
+      <dt>공급자 구분</dt><dd>분자와 분모를 서로 다른 공급자 자료로 섞지 않음.</dd>
+      <dt>해석의 범위</dt><dd>가격 상승과 거래량 증가는 인과효과나 신규 계약을 입증하지 않음.</dd></dl></div>
+  </div>
+  <details class="source-list" open><summary>출처 <span>공식·리포트·시장데이터</span></summary>
+    <ol>
+      <li id="src-1">예시 회사 보도자료 — 제품 발표<small>2026-09-08 · 공식 · 링크를 여기에</small></li>
+      <li id="src-2">예시 증권사 리포트 — 산업 분석<small>2026-06-24 · 외부 분석</small></li>
+      <li id="src-3">예시 데이터 공급자 — 시세<small>2026-09-25 조회 · Actual</small></li>
+    </ol>
+  </details>
+</section>
+</main>
+
+<footer>Bad Onion Research · Sample study · 작성 2026-09-29 <span>시장 반응 ≠ 신규 수주 · 조건부 경로 ≠ 수익률 예측</span></footer>
+
+<dialog id="raw-dialog" aria-labelledby="raw-title"><div class="dialog-head"><h3 id="raw-title">원자료</h3><button type="button" id="raw-close" aria-label="닫기">닫기 ×</button></div>
+  <p class="sub" id="raw-sub"></p>
+  <div class="table-shell"><table><thead><tr><th>실제 거래일</th><th>시가</th><th>고가</th><th>저가</th><th>종가</th><th>거래량 (주)</th></tr></thead><tbody id="raw-rows"></tbody></table></div>
+</dialog>
+
+<!-- =========================================================
+     데이터 — 새 보고서를 만들 때는 이 블록의 값만 바꾸면 됨
+     (아래 숫자는 전부 가상의 예시임)
+     ========================================================= -->
+<script>
+// 예시용 가짜 종목 생성기 — 실제 보고서에서는 필요 없음
+function sampleCloud(n){let s=7;const r=()=>(s=(s*16807)%2147483647)/2147483647,g=()=>(r()+r()+r()-1.5)*2;
+  return Array.from({length:n},(_,i)=>({ticker:'S'+String(i+1).padStart(3,'0'),name:'예시 종목 '+(i+1),cap:+(10+r()*90).toFixed(1),
+    ret:+(g()*3.2).toFixed(2),volx:+Math.exp(g()*0.22).toFixed(2),group:'unreviewed',note:'관련성 미검토'}));}
+const REPORT = {
+  line:   {x:['9/20 집계','9/24 집계'], y:[2.8,3.4], yTitle:'누적 다운로드 (백만 건)', hover:'%{x}<br>%{y:.1f}M · 외부 추정'},
+  bar2:   {x:['다운로드<br>일평균 전일 대비','이벤트 다음날<br>DAU 전일 대비'], y:[55,27], text:['+55%','+27%'], colors:['cyan','amber'], yTitle:'변화율 (%)'},
+  bar1:   {x:['2026E','2027E'], y:[7,14], text:['7 GW','14 GW'], colors:['cyan','cyan'], yTitle:'규모 (GW)'},
+  neg:    {x:['도구 호출','토큰'], y:[-20,-25], text:['−20%','−25%'], colors:['green','green'], yTitle:'이전 버전 대비 (%)'},
+  group:  {categories:['ALPHA / ALPU','BETA / BETL','GAMMA / GAMW'],
+           series:[{name:'본주', values:[1.83,1.39,1.24], color:'cyan'},{name:'비교 ETF', values:[1.32,1.31,1.54], color:'amber'}],
+           yTitle:'직전 20일 평균 대비 (배)', ref:1},
+  // 분류(group) 이름 → 범례 이름. 순서 = 범례 순서
+  groups: {unreviewed:'관련성 미검토', other:'별도 업종', theme:'구조적 노출', core:'직접 연결', new:'추가 관찰', hold:'편입 보류'},
+  // 비교 대상 종목: ticker, name, cap(조원), ret(%), volx(배), group, note, pos(이름표 위치·선택)
+  stocks: [
+    {ticker:'ALPHA',name:'Alpha Systems',cap:512.3,ret:12.65,volx:1.39,group:'core',note:'공급관계 확인'},
+    {ticker:'BETA',name:'Beta Holdings',cap:198.4,ret:12.59,volx:2.16,group:'core',note:'공동개발 확인'},
+    {ticker:'GAMMA',name:'Gamma Corp',cap:140.2,ret:13.26,volx:1.24,group:'theme',note:'기존 x86 기반'},
+    {ticker:'DELTA',name:'Delta Memory',cap:31.8,ret:20.05,volx:1.12,group:'core',note:'메모리 인터페이스',pos:'middle right'},
+    {ticker:'EPSLN',name:'Epsilon Labs',cap:44.1,ret:20.24,volx:1.28,group:'theme',note:'고속 연결'},
+    {ticker:'ZETA',name:'Zeta Power',cap:22.7,ret:26.60,volx:1.62,group:'new',note:'전력변환 · 추가 관찰'},
+    {ticker:'ETA',name:'Eta Wire',cap:35.2,ret:19.94,volx:1.08,group:'new',note:'AEC · 추가 관찰',pos:'bottom left'},
+    {ticker:'THETA',name:'Theta Edge',cap:28.9,ret:9.02,volx:3.10,group:'hold',note:'근거 부족 · 보류'},
+    {ticker:'IOTA',name:'Iota Bio',cap:19.6,ret:29.11,volx:0.85,group:'other',note:'별도 업종'},
+    {ticker:'KAPPA',name:'Kappa Media',cap:61.0,ret:11.00,volx:5.40,group:'other',note:'별도 업종 · M&A 이슈'},
+    ...sampleCloud(90)   // ← 예시용 회색 점(관련성 미검토). 실제 보고서에서는 이 줄을 지우고 실제 종목을 넣음
+  ],
+  // 캔들: [날짜, 시가, 고가, 저가, 종가, 거래량]
+  candle: {
+    ticker:'ALPHA', currency:'USD', provider:'예시 공급자 EOD', eventDate:'2026-09-08',
+    bars:[
+      ['2026-09-03',100.0,101.2,98.6,99.1,12100000],['2026-09-04',99.3,102.4,99.0,101.8,14000000],
+      ['2026-09-08',102.0,104.9,101.5,104.2,21500000],['2026-09-09',104.5,106.0,103.1,103.6,17200000],
+      ['2026-09-10',103.4,105.3,102.8,105.0,15800000],['2026-09-11',105.2,105.9,103.0,103.5,13900000],
+      ['2026-09-14',103.6,106.8,103.2,106.4,16400000],['2026-09-15',106.2,107.1,104.9,105.3,14100000],
+      ['2026-09-16',105.5,108.8,105.2,108.3,18800000],['2026-09-17',108.6,111.0,108.0,110.4,22600000],
+      ['2026-09-18',110.2,111.4,108.7,109.1,19000000],['2026-09-21',109.5,114.8,109.3,114.1,31200000],
+      ['2026-09-22',114.4,116.9,113.6,116.2,27500000],['2026-09-23',116.0,116.8,113.9,114.5,20300000],
+      ['2026-09-24',114.8,118.6,114.2,118.0,24900000],['2026-09-25',118.3,119.1,116.4,117.2,18600000]],
+    sma20:104.80, sma50:100.90, rsi14:68.2,
+    resistance:[120.50,122.00], support:[109.00,110.50],
+    base:[117.2,111.5,123.0],   // 조건부 기본 경로: 첫 값 = 마지막 실제 종가
+    alt: [117.2,111.5,106.0],   // 조건부 대안 경로
+    baseLabel:'조건부 기본', altLabel:'조건부 대안'
+  }
+};
+</script>
+
+<!-- =========================================================
+     차트 도구 — 여기는 고치지 않고 그대로 복사해서 씀
+     ========================================================= -->
+<script>
+'use strict';
+const C={bg:'#08111F',surface:'#0F1B2D',line:'#2B3A52',text:'#F4F7FB',soft:'#D8E0EB',muted:'#A7B3C4',cyan:'#27C2D3',amber:'#F0AA3C',red:'#EB5A65',green:'#37C977'};
+const FONT="Pretendard, 'Noto Sans KR', 'Malgun Gothic', Arial, sans-serif";
+const CFG={responsive:true,displaylogo:false,scrollZoom:false,modeBarButtonsToRemove:['lasso2d','select2d'],toImageButtonOptions:{format:'png',scale:2}};
+const narrow=()=>window.innerWidth<650;
+const pending=[];
+const col=c=>C[c]||c;  // 'cyan' 같은 이름 또는 #hex 둘 다 허용
+
+function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function fmt(v,d=2){return v==null||!Number.isFinite(v)?'—':Number(v).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});}
+function pct(v){return v==null?'—':(v>0?'+':'')+fmt(v,2)+'%';}
+function mul(v){return v==null?'—':fmt(v,2)+'×';}
+
+// 모든 차트의 공통 모양
+function plotLayout(h=300){return {height:h,autosize:true,margin:{l:60,r:28,t:30,b:50},paper_bgcolor:C.surface,plot_bgcolor:C.surface,
+  font:{family:FONT,color:C.soft,size:11},xaxis:{gridcolor:C.line,zeroline:false,automargin:true},yaxis:{gridcolor:C.line,zeroline:false,automargin:true},
+  legend:{orientation:'h',y:1.17,x:0,font:{size:10}},hoverlabel:{bgcolor:C.bg,font:{color:C.text,size:11}},hovermode:'x unified'};}
+function draw(id,traces,layout){const el=document.getElementById(id);if(!el)return;el.style.height=layout.height+'px';pending.push(Plotly.newPlot(el,traces,layout,CFG));}
+// 막대 위 숫자가 잘리지 않도록 위·아래 20% 여유
+function padRange(vals){const hi=Math.max(0,...vals),lo=Math.min(0,...vals),pad=(hi-lo)*0.2;return [lo<0?lo-pad:0,hi>0?hi+pad:pad*0.25];}
+// 기준선 (예: 1배, 0%)
+function refLine(axis,v,color=C.muted){return axis==='y'?{type:'line',xref:'paper',x0:0,x1:1,y0:v,y1:v,line:{color,dash:'dot',width:1}}:{type:'line',yref:'paper',y0:0,y1:1,x0:v,x1:v,line:{color,dash:'dot',width:1}};}
+
+// ① 꺾은선: 점이 적은 추세 (2~12개)
+function lineChart(id,{x,y,yTitle,hover,height=300}){
+  draw(id,[{type:'scatter',mode:'lines+markers',x,y,line:{width:3,color:C.cyan},marker:{size:8},hovertemplate:(hover||'%{x}<br>%{y}')+'<extra></extra>'}],
+    {...plotLayout(height),xaxis:{type:'category'},yaxis:{...plotLayout().yaxis,title:{text:yTitle},rangemode:'tozero'},showlegend:false});}
+// ② 세로 막대: 항목 2~6개 비교. 막대 위에 값 표시
+function barChart(id,{x,y,text,colors,yTitle,range,hover,height=290}){
+  draw(id,[{type:'bar',x,y,text,textposition:'outside',cliponaxis:false,marker:{color:(colors||['cyan']).map(col)},hovertemplate:(hover||'%{x}<br>%{text}')+'<extra></extra>'}],
+    {...plotLayout(height),yaxis:{...plotLayout().yaxis,title:{text:yTitle},range:range||padRange(y)},showlegend:false});}
+// ③ 묶음 막대: 두 계열 비교 + 기준 점선
+function groupedBar(id,{categories,series,yTitle,ref,format=mul,height=300}){
+  const all=series.flatMap(s=>s.values);
+  draw(id,series.map(s=>({type:'bar',x:categories,y:s.values,name:s.name,marker:{color:col(s.color)},text:s.values.map(format),textposition:'outside',cliponaxis:false,hovertemplate:'%{x}<br>'+s.name+' %{text}<extra></extra>'})),
+    {...plotLayout(height),barmode:'group',yaxis:{...plotLayout().yaxis,title:{text:yTitle},range:padRange(all)},shapes:ref==null?[]:[refLine('y',ref)]});}
+// ④ 가로 순위 막대: 상위 N개, 분류별 색
+const GROUP_STYLE={core:{color:C.cyan,symbol:'circle'},theme:{color:C.cyan,symbol:'circle-open'},new:{color:C.green,symbol:'square'},hold:{color:C.amber,symbol:'diamond'},other:{color:C.muted,symbol:'circle'},unreviewed:{color:C.muted,symbol:'circle'}};
+function rankBar(id,{rows,xTitle,n=10,height}){
+  const top=rows.slice().sort((a,b)=>b.ret-a.ret).slice(0,n).reverse();
+  const l=plotLayout(height||Math.max(300,top.length*28+80));l.margin={l:80,r:60,t:15,b:48};l.yaxis={type:'category',automargin:true};
+  l.xaxis={...l.xaxis,title:{text:xTitle},rangemode:'tozero'};l.showlegend=false;l.hovermode='closest';
+  draw(id,[{type:'bar',orientation:'h',y:top.map(r=>r.ticker),x:top.map(r=>r.ret),text:top.map(r=>pct(r.ret)),textposition:'outside',cliponaxis:false,
+    marker:{color:top.map(r=>GROUP_STYLE[r.group].color)},customdata:top.map(r=>[r.name,REPORT.groups[r.group]]),
+    hovertemplate:'<b>%{y} · %{customdata[0]}</b><br>수익률 %{x:.2f}%<br>%{customdata[1]}<extra></extra>'}],l);}
+// ⑤ 사분면 산점도: x=수익률, y=거래량 배수(로그), 기준선 x=0 · y=1
+function quadrantScatter(id,{rows,groups,label=r=>r.group!=='unreviewed'}){
+  const traces=[];
+  for(const [g,name] of Object.entries(groups)){
+    const a=rows.filter(r=>r.group===g);if(!a.length)continue;const st=GROUP_STYLE[g],bg=g==='unreviewed';
+    traces.push({type:'scatter',mode:'markers+text',x:a.map(r=>r.ret),y:a.map(r=>r.volx),name,
+      text:a.map(r=>narrow()||!label(r)?'':r.ticker),textposition:a.map(r=>r.pos||'top center'),textfont:{size:10,color:st.color},
+      marker:{size:bg?5:9,color:st.color,symbol:st.symbol,opacity:bg?.38:.95,line:{width:bg?0:(st.symbol.endsWith('open')?1.6:.5),color:st.symbol.endsWith('open')?st.color:C.bg}},
+      customdata:a.map(r=>[r.ticker,r.name,r.cap,r.note||name]),
+      hovertemplate:'<b>%{customdata[0]} · %{customdata[1]}</b><br>시총 %{customdata[2]:,.1f}조원<br>구간 수익률 %{x:+.2f}%<br>구간 거래량 %{y:.2f}×<br>%{customdata[3]}<extra></extra>'});}
+  const l=plotLayout(narrow()?440:490);l.hovermode='closest';l.legend={orientation:'h',x:0,y:1.18,font:{size:9}};
+  l.xaxis={...l.xaxis,title:{text:'구간 수익률 (%)'}};
+  l.yaxis={...l.yaxis,type:'log',title:{text:'구간 거래량 배수 · 로그 눈금'},tickvals:[.1,.2,.5,1,2,5,10,20],ticktext:['0.1×','0.2×','0.5×','1×','2×','5×','10×','20×']};
+  l.shapes=[refLine('y',1,C.amber),refLine('x',0)];draw(id,traces,l);}
+// ⑥ 캔들 + 거래량 + 조건부 경로
+function axisSessions(rows,steps){
+  const n=rows.length,interval=window.innerWidth<600?4:2,ticks=[];for(let i=0;i<n;i+=interval)ticks.push(i);if(!ticks.includes(n-1))ticks.push(n-1);
+  const labels=ticks.map(i=>rows[i][0].slice(5).replace('-','/'));
+  for(let k=1;k<=steps;k++){ticks.push(n-1+k*2.5);labels.push(window.innerWidth<600?['①','②','③','④'][k-1]:'조건 '+k);}
+  return {type:'linear',tickmode:'array',tickvals:ticks,ticktext:labels,range:[-0.65,n-1+(steps?steps*2.5+0.8:0.65)],showgrid:false,zeroline:false,rangeslider:{visible:false},automargin:true,tickfont:{size:10}};}
+function candleChart(id,T){
+  const bars=T.bars,n=bars.length,x=bars.map((_,i)=>i),steps=Math.max((T.base||[]).length,(T.alt||[]).length,1)-1,p=v=>fmt(v,2);
+  const tr=[{type:'candlestick',x,open:bars.map(r=>r[1]),high:bars.map(r=>r[2]),low:bars.map(r=>r[3]),close:bars.map(r=>r[4]),name:T.ticker+' 본주 OHLC',
+      increasing:{line:{color:C.green},fillcolor:C.green},decreasing:{line:{color:C.red},fillcolor:C.red},
+      hovertext:bars.map(r=>`${r[0]}<br>시가 ${p(r[1])} · 고가 ${p(r[2])}<br>저가 ${p(r[3])} · 종가 ${p(r[4])}`),hoverinfo:'text',yaxis:'y'},
+    {type:'bar',x,y:bars.map(r=>r[5]),name:'거래량',yaxis:'y2',marker:{color:bars.map(r=>r[4]>=r[1]?C.green:C.red)},opacity:.5,customdata:bars.map(r=>r[0]),hovertemplate:'%{customdata}<br>거래량 %{y:,.0f}주<extra></extra>'}];
+  for(const [key,name,color,dash] of [['base',T.baseLabel||'조건부 기본',C.cyan,'dash'],['alt',T.altLabel||'조건부 대안',C.red,'dot']]){
+    const ps=T[key];if(!ps)continue;
+    tr.push({type:'scatter',x:ps.map((_,i)=>n-1+i*2.5),y:ps,mode:'lines+markers',name,line:{color,width:2.3,dash},marker:{size:5,symbol:'diamond'},yaxis:'y',
+      customdata:ps.map((_,i)=>i===0?bars.at(-1)[0]+' 실제 종가':'조건 '+i+' · 날짜/시점 미지정'),hovertemplate:'%{customdata}<br>시나리오 참조 가격 %{y:,.2f}<br>실제 미래 체결값 아님<extra></extra>'});}
+  const l=plotLayout(window.innerWidth<600?440:470);l.margin={l:65,r:20,t:38,b:45};l.hovermode='closest';
+  l.legend=narrow()?{orientation:'h',x:0,y:1.02,yanchor:'bottom',entrywidth:.5,entrywidthmode:'fraction',font:{size:10}}:{orientation:'h',x:0,y:1.18,font:{size:10}};
+  l.xaxis={...axisSessions(bars,steps),anchor:'y2',title:{text:window.innerWidth<600?'실제 거래일 | ①②는 조건부 단계':'왼쪽: 실제 거래일  |  오른쪽: 조건부 단계 (기간 아님)',font:{size:10}}};
+  l.yaxis={...l.yaxis,domain:[.31,1],title:{text:T.currency},tickfont:{size:10}};
+  l.yaxis2={domain:[0,.19],title:{text:'거래량 (주)',font:{size:10}},showgrid:false,zeroline:false,tickformat:'.2s',tickfont:{size:10},automargin:true};
+  l.shapes=[{type:'rect',x0:n-.6,x1:n-1+steps*2.5+.8,yref:'paper',y0:0,y1:1,line:{width:0},fillcolor:'rgba(240,170,60,.05)',layer:'below'},
+    {type:'line',x0:n-.6,x1:n-.6,yref:'paper',y0:0,y1:1,line:{color:C.amber,width:1,dash:'dot'}}];
+  const ei=bars.findIndex(r=>r[0]===T.eventDate);if(ei>=0)l.shapes.push({type:'line',x0:ei,x1:ei,yref:'paper',y0:0,y1:1,line:{color:C.muted,dash:'dot',width:1}});
+  for(const [v,color] of [[T.sma20,C.amber],[T.sma50,C.muted]])if(v!=null)l.shapes.push({type:'line',xref:'paper',x0:0,x1:1,y0:v,y1:v,line:{color,dash:'dot',width:1}});
+  if(T.resistance)l.shapes.push({type:'rect',xref:'paper',x0:0,x1:1,y0:T.resistance[0],y1:T.resistance[1],fillcolor:'rgba(235,90,101,.06)',line:{color:'rgba(235,90,101,.4)',width:1},layer:'below'});
+  if(T.support)l.shapes.push({type:'rect',xref:'paper',x0:0,x1:1,y0:T.support[0],y1:T.support[1],fillcolor:'rgba(55,201,119,.05)',line:{color:'rgba(55,201,119,.35)',width:1},layer:'below'});
+  // 모바일에서는 범례와 겹치므로 생략 (x축 제목이 같은 내용을 설명함)
+  l.annotations=narrow()?[]:[{xref:'paper',yref:'paper',x:1,y:1.03,text:'조건부 시나리오 · 시점 미지정',showarrow:false,xanchor:'right',font:{size:9,color:C.amber}}];
+  if(T.sma20!=null)l.annotations.push({xref:'paper',x:1,y:T.sma20,text:'기준일 SMA20 '+p(T.sma20),showarrow:false,xanchor:'right',font:{size:9,color:C.amber},bgcolor:C.surface});
+  if(T.sma50!=null)l.annotations.push({xref:'paper',x:1,y:T.sma50,text:'기준일 SMA50 '+p(T.sma50),showarrow:false,xanchor:'right',font:{size:9,color:C.muted},bgcolor:C.surface});
+  // 두 이동평균 값이 2% 이내로 붙어 있으면 이름표만 위아래로 벌림 (선 위치는 그대로)
+  if(T.sma20!=null&&T.sma50!=null&&Math.abs(T.sma20-T.sma50)/bars.at(-1)[4]<.02){l.annotations.at(-2).yshift=10;l.annotations.at(-1).yshift=-10;}
+  draw(id,tr,l);}
+// CSV 저장 (엑셀에서 한글이 깨지지 않도록 BOM 포함)
+function saveCSV(rows,name){const body='﻿'+rows.map(r=>r.map(c=>'"'+String(c??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');
+  const url=URL.createObjectURL(new Blob([body],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+</script>
+
+<!-- =========================================================
+     그리기 — 어느 칸(id)에 어떤 차트를 그릴지 연결
+     ========================================================= -->
+<script>
+'use strict';
+const R=REPORT;
+lineChart('c-line',{...R.line});
+barChart('c-bar2',{...R.bar2,height:300});
+barChart('c-bar1',{...R.bar1});
+barChart('c-neg',{...R.neg});
+quadrantScatter('c-scatter',{rows:R.stocks,groups:R.groups});
+rankBar('c-rank',{rows:R.stocks,xTitle:'9/18 → 9/25 수익률 (%)'});
+groupedBar('c-group',{...R.group});
+candleChart('c-candle',R.candle);
+
+// 큰 숫자 4칸
+const S=R.stocks,rise=S.filter(r=>r.ret>0&&r.volx>1),strong=S.filter(r=>r.ret>=5&&r.volx>1),rv=S.map(r=>r.ret).sort((a,b)=>a-b),
+  median=rv.length%2?rv[(rv.length-1)/2]:(rv[rv.length/2-1]+rv[rv.length/2])/2;
+document.getElementById('c-stats').innerHTML=`<div><b>${S.length}</b><small>비교 대상 · 가격/거래량 검증 완료</small></div><div><b>${rise.length}</b><small>상승 + 구간 거래량 증가</small></div><div><b>${strong.length}</b><small>+5% 이상 + 구간 거래량 증가</small></div><div><b>${pct(median)}</b><small>구간 수익률 중앙값</small></div>`;
+
+// 기업 카드 상단 수치 · 기술 지표 배지
+const T=R.candle,last=T.bars.at(-1),first=T.bars[0],alpha=S.find(r=>r.ticker===T.ticker);
+document.getElementById('alpha-meta').innerHTML=`구간 수익률 <b>${pct(alpha.ret)}</b> · 구간 거래량 ${mul(alpha.volx)}<br>${last[0]} 종가 <b>${fmt(last[4])}</b>`;
+document.getElementById('alpha-levels').innerHTML=[`종가 ${fmt(last[4])}`,`SMA20 ${fmt(T.sma20)}`,`SMA50 ${fmt(T.sma50)}`,`RSI14 ${fmt(T.rsi14,1)}`,`관찰 저항 ${fmt(T.resistance[0])}–${fmt(T.resistance[1])}`].map(s=>`<span>${s}</span>`).join('');
+
+// 표 (정렬·필터·검색·CSV)
+const rank=new Map(S.slice().sort((a,b)=>b.ret-a.ret).map((r,i)=>[r.ticker,i+1]));
+function tableRows(){const sort=document.getElementById('t-sort').value,mode=document.getElementById('t-mode').value,q=document.getElementById('t-search').value.trim().toLowerCase();
+  return S.filter(r=>(!q||(r.ticker+' '+r.name).toLowerCase().includes(q))&&(mode==='all'||mode==='rise'&&r.ret>0&&r.volx>1||mode==='reviewed'&&!['unreviewed','other'].includes(r.group))).sort((a,b)=>b[sort]-a[sort]);}
+function renderTable(){const a=tableRows();
+  document.getElementById('t-rows').innerHTML=a.map(r=>`<tr class="${r.group==='core'?'row-hl':''}"><td><small>#${rank.get(r.ticker)}</small><b>${esc(r.ticker)}</b><small>${esc(r.name)}</small></td><td>${fmt(r.cap,1)}</td><td class="${r.ret>=0?'positive':'negative'}">${pct(r.ret)}</td><td class="${r.volx>1?'positive':''}">${mul(r.volx)}</td><td><span class="chip ${r.group}">${esc(R.groups[r.group])}</span><small>${esc(r.note)}</small></td></tr>`).join('')||'<tr><td colspan="5">현재 조건에 맞는 종목이 없음.</td></tr>';
+  document.getElementById('t-count').textContent=`검색 결과 ${a.length} / 전체 ${S.length}개`;}
+['t-sort','t-mode'].forEach(id=>document.getElementById(id).addEventListener('change',renderTable));
+document.getElementById('t-search').addEventListener('input',renderTable);
+document.getElementById('t-csv').addEventListener('click',()=>saveCSV([['rank','ticker','name','cap_krw_trillion','return_pct','volume_multiple','group','note'],...tableRows().map(r=>[rank.get(r.ticker),r.ticker,r.name,r.cap,r.ret,r.volx,r.group,r.note])],'report_table.csv'));
+renderTable();
+
+// 원자료 팝업 · 캔들 CSV
+document.getElementById('alpha-raw').addEventListener('click',()=>{document.getElementById('raw-title').textContent=T.ticker+' | 실제 이벤트 OHLCV';
+  document.getElementById('raw-sub').textContent=`${T.provider} · ${T.currency} · ${first[0]} ~ ${last[0]} · ${T.bars.length}거래일`;
+  document.getElementById('raw-rows').innerHTML=T.bars.slice().reverse().map(r=>'<tr><td>'+r[0]+'</td>'+r.slice(1).map((v,i)=>'<td>'+fmt(v,i===4?0:2)+'</td>').join('')+'</tr>').join('');
+  document.getElementById('raw-dialog').showModal();});
+document.getElementById('raw-close').addEventListener('click',()=>document.getElementById('raw-dialog').close());
+document.getElementById('alpha-csv').addEventListener('click',()=>saveCSV([['ticker','date','open','high','low','close','volume','provider'],...T.bars.map(r=>[T.ticker,...r,T.provider])],T.ticker+'_OHLCV.csv'));
+
+// 완료 신호 · 창 크기 변경 대응
+Promise.all(pending).then(()=>{window.REPORT_READY=true;}).catch(err=>{console.error(err);window.REPORT_ERROR=String(err);});
+let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>document.querySelectorAll('.js-plotly-plot').forEach(el=>Plotly.Plots.resize(el)),100);});
+</script>
+</body>
+</html>
