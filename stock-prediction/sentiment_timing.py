@@ -1,5 +1,5 @@
 """
-공포·공매도·포지션 지표로 나스닥100 매수 타이밍 잡기: 어떤 지표가 통했나?
+공포·공매도·포지션·설문 지표로 나스닥100 매수 타이밍 잡기: 어떤 지표가 통했나?
 
 지표 (모두 무료 공개 데이터)
 - VIX: S&P500 옵션으로 계산한 공포지수 (FRED VIXCLS, 1990~)
@@ -8,6 +8,8 @@
 - 공매도잔고: FINRA. QQQ(나스닥100 ETF)와 나스닥 상장 종목 전체 (2017.12~)
   공매도잔고 ÷ 하루 평균 거래량 = '며칠치 거래량만큼 공매도가 쌓였나'(days to cover)
 - 헤지펀드 선물 순포지션: CFTC (19·20부와 같은 데이터, 2010~)
+- AAII 투자자 심리조사: 미국 개인투자자협회 회원에게 매주 "앞으로 6개월 주가가 오를까/그대로/내릴까"를 묻는 설문 (1987~)
+  매주 목요일 발표. 강세-약세 차이 = 오른다 % - 내린다 %
 
 방법 (20부와 같음)
 - 매주 금요일까지 발표된 값으로 신호 판단 → 다음 거래일(월요일) 종가에 나스닥100 매수
@@ -18,7 +20,7 @@
 
 실행: python sentiment_timing.py   (처음에는 나스닥 공매도잔고를 받느라 약 20분, 이후 data_us/에 저장된 파일 사용)
 """
-import json
+import io
 import os
 import time
 
@@ -39,6 +41,7 @@ FRED_URL = "https://fred.stlouisfed.org/graph/fredgraph.csv?id={}"
 DIX_URL = "https://squeezemetrics.com/monitor/static/DIX.csv"
 PC_URL = "https://cdn.cboe.com/resources/options/volume_and_call_put_ratios/equitypc.csv"
 FINRA_URL = "https://api.finra.org/data/group/otcMarket/name/consolidatedShortInterest"
+AAII_URL = "https://www.aaii.com/files/surveys/sentiment.xls"
 SI_LAG_DAYS = 12
 RANK_WEEKS = 104
 START = "1990-06-01"
@@ -107,6 +110,25 @@ def load_put_call():
     return pc["P/C Ratio"].astype(float).rolling(10).mean().dropna()
 
 
+def load_aaii():
+    """AAII 설문 엑셀 파일 (브라우저처럼 접속해야 받아짐). 못 받으면 data_us/에 저장해 둔 파일 사용."""
+    path = os.path.join(DATA_DIR, "aaii_sentiment.csv")
+    try:
+        r = requests.get(AAII_URL, timeout=60, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                         "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36"})
+        r.raise_for_status()
+        x = pd.read_excel(io.BytesIO(r.content), header=None, usecols=range(4))
+        x.columns = ["date", "bullish", "neutral", "bearish"]
+        x["date"] = pd.to_datetime(x["date"], errors="coerce", format="mixed")
+        x = x.dropna(subset=["date"]).set_index("date").apply(pd.to_numeric, errors="coerce").dropna()
+        os.makedirs(DATA_DIR, exist_ok=True)
+        x.to_csv(path)
+    except Exception as e:   # 사이트가 막히면 예전에 받은 파일로
+        print(f"   AAII 다운로드 실패({e}) → {path} 사용")
+        x = pd.read_csv(path, parse_dates=["date"], index_col="date")
+    return x.sort_index()
+
+
 def to_weekly(s, fridays, max_age_days):
     """매주 금요일 기준으로 그때까지 알려진 마지막 값. 너무 오래된 값(데이터가 끊김)은 비움."""
     s = s.dropna().sort_index()
@@ -131,6 +153,7 @@ def build_panel():
     qqq = load_qqq_short()
     nas = load_nasdaq_short(list(qqq.index))
     cftc, _ = C.load_data("2010-01-01")
+    aaii = load_aaii()
 
     fridays = pd.date_range(START, ndx.index[-1], freq="W-FRI")
     W = pd.DataFrame(index=fridays)
@@ -145,6 +168,8 @@ def build_panel():
     net = cftc["net_pct_oi"].copy()
     net.index = net.index + pd.Timedelta(days=3)   # 화요일 기준 → 금요일 발표
     W["헤지펀드 순포지션"] = to_weekly(net, fridays, 10)
+    W["AAII 약세"] = to_weekly(aaii["bearish"] * 100, fridays, 10)
+    W["AAII 강세-약세"] = to_weekly((aaii["bullish"] - aaii["bearish"]) * 100, fridays, 10)
     for col in list(W.columns):
         W[col + " 순위"] = rank_2y(W[col]).reindex(fridays)
 
@@ -167,6 +192,9 @@ SIGNALS = [
     ("GEX 0 미만 (딜러 감마 마이너스)", "GEX", False, lambda W: W["GEX"] < 0),
     ("DIX 0.45 이상 (다크풀 공매도 비율 높음)", "DIX", False, lambda W: W["DIX"] >= 0.45),
     ("풋콜 비율 2년 중 상위 10%", "풋콜", True, lambda W: W["풋콜 순위"] >= 90),
+    ("AAII 약세 응답 50% 이상", "AAII 약세", False, lambda W: W["AAII 약세"] >= 50),
+    ("AAII 강세-약세 -20%p 이하", "AAII 강세-약세", False, lambda W: W["AAII 강세-약세"] <= -20),
+    ("AAII 강세-약세 2년 중 하위 10%", "AAII 강세-약세", True, lambda W: W["AAII 강세-약세 순위"] <= 10),
     ("QQQ 공매도잔고 2년 중 상위 10%", "QQQ 공매도", True, lambda W: W["QQQ 공매도 순위"] >= 90),
     ("나스닥 공매도잔고 2년 중 상위 10%", "나스닥 공매도", True, lambda W: W["나스닥 공매도 순위"] >= 90),
     ("헤지펀드 선물 순포지션 -20% 이하", "헤지펀드 순포지션", False, lambda W: W["헤지펀드 순포지션"] <= -20),
@@ -201,7 +229,7 @@ def evaluate(W):
 
 def draw(W, ndx, table):
     C.set_korean_font()
-    fig = plt.figure(figsize=(13, 12), facecolor=C.SURFACE)
+    fig = plt.figure(figsize=(13, 13.5), facecolor=C.SURFACE)
     gs = fig.add_gridspec(2, 2, height_ratios=[0.8, 1.2], hspace=0.3, wspace=0.08)
     ax_t, ax_m, ax_h = fig.add_subplot(gs[0, :]), fig.add_subplot(gs[1, 0]), fig.add_subplot(gs[1, 1])
     for ax in (ax_t, ax_m, ax_h):
@@ -263,7 +291,7 @@ def draw(W, ndx, table):
     ax_m.legend(loc="lower right", frameon=False, fontsize=9, labelcolor=C.INK2)
 
     fig.text(0.02, 0.035, "괄호 = 독립 구간 수, * = 우연일 확률 5% 미만. 금요일 신호 → 다음 거래일 종가 매수. "
-             "자료: FRED(VIX, NASDAQ100), SqueezeMetrics(DIX, GEX), CBOE(풋콜), FINRA(공매도잔고), CFTC.",
+             "자료: FRED(VIX, NASDAQ100), SqueezeMetrics(DIX, GEX), CBOE(풋콜), AAII, FINRA(공매도잔고), CFTC.",
              color=C.MUTED, fontsize=9)
     plt.savefig(os.path.join(C.RESULT_DIR, "sentiment_timing.png"), dpi=110, bbox_inches="tight", facecolor=C.SURFACE)
     plt.close()
