@@ -51,6 +51,8 @@ def main():
     y = out["success"].to_numpy()
     year = p["date"].dt.year.to_numpy()
     valid = ok & ~np.isnan(y)
+    if W.CAP_MIN:
+        valid &= (p["mcap"] >= W.CAP_MIN).to_numpy()
 
     picks = pd.read_csv(os.path.join(S.RESULT_DIR, "ml_win_picks.csv"), dtype={"code": str}, parse_dates=["date"])
     picks = picks[picks["rank_day"] <= 3]
@@ -97,7 +99,15 @@ def main():
         name = " + ".join(x for x in [f"하루 변동폭 {a:.0%} 이상" if a else "", f"20일 수익률 +{b:.0%} 이상" if b else ""] if x)
         rules[name] = (rng >= a if a else True) & (r20 >= b if b else True)
     rules["매일 하루 변동폭 1~3위"] = rk <= 3
-    hh, box = X["gap_hh250"].to_numpy(), X["box60"].to_numpy()          # 폭락 후 반등형 (40일 +30% 모델이 고른 모양)
+    hh, box = X["gap_hh250"].to_numpy(), X["box60"].to_numpy()
+    tvr, bull, tt = X["tv_rank"].to_numpy(), X["bull"].to_numpy() > 0, X["trend_template"].to_numpy() > 0
+    nh52, nhall, gap20 = X["new_high_52w"].to_numpy() > 0, X["new_high_all"].to_numpy() > 0, X["gap_ma20"].to_numpy()
+    rules["52주 신고가 돌파"] = nh52
+    rules["52주 신고가 + 거래대금 상위 30위 + 상승장"] = nh52 & (tvr <= 30) & bull
+    rules["역사적 신고가 돌파"] = nhall
+    rules["역사적 신고가 + 거래대금 상위 10위 + 상승장"] = nhall & (tvr <= 10) & bull
+    rules["역사적 신고가 + 이격 20% 이하 + 트렌드 템플릿 + 상승장"] = nhall & (gap20 <= 0.2) & tt & bull
+    rules["트렌드 템플릿 + 상승장"] = tt & bull          # 폭락 후 반등형 (40일 +30% 모델이 고른 모양)
     rules["하루 변동폭 8% 이상 + 52주 고점 -60% 이하 + 60일 박스 150% 이상"] = (rng >= 0.08) & (hh <= -0.6) & (box >= 1.5)
     rules["하루 변동폭 10% 이상 + 52주 고점 -70% 이하 + 60일 박스 150% 이상"] = (rng >= 0.10) & (hh <= -0.7) & (box >= 1.5)
     out_rows = []

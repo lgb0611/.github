@@ -10,6 +10,7 @@
 
 실행: python ml_win.py   /   MARKET=us python ml_win.py
 성공 기준 바꾸기: TARGET=0.30 WINDOW=40 RESULT_DIR=results_t30w40 python ml_win.py  (40일 안 +30%)
+대형주만: CAP_MIN=1e12 (한국 1조 원) / CAP_MIN=1e10 (미국 100억 달러) — 학습·예측 모두 이 종목들로만
 """
 import os
 
@@ -26,10 +27,12 @@ import vcp_test as V
 
 TEST_YEARS = [2023, 2024, 2025, 2026]
 EMBARGO = 20
+CAP_MIN = float(os.environ.get("CAP_MIN", 0))          # 추정 시가총액 하한 (0이면 조건 없음)
 EXITS = {
     f"+{S.TARGET:.0%} 익절 / {S.WINDOW}일 청산": [(1, dict(tp=S.TARGET, time=S.WINDOW))],
     "손절 -10% + 25일선 50% / 60일선 50%": [(0.5, dict(ma="ma25", sl=-0.10)), (0.5, dict(ma="ma60", sl=-0.10))],
     "손절 -10% + 60일 보유": [(1, dict(time=60, sl=-0.10))],
+    "손절 -10% + 고점 대비 -15% 추적": [(1, dict(trail=0.15, sl=-0.10))],
 }
 PARAMS = dict(objective="binary", learning_rate=0.05, num_leaves=63, min_child_samples=1000,
               feature_fraction=0.8, bagging_fraction=0.7, bagging_freq=1, lambda_l2=10, verbose=-1, seed=0)
@@ -88,8 +91,9 @@ def main():
     y = out["success"].to_numpy()
     year = p["date"].dt.year.to_numpy()
     didx = p["date_idx"].to_numpy()
-    rows = np.where(ok & ~np.isnan(y))[0]
-    print(f"   학습 가능한 행 {len(rows):,}개, 특징 {X.shape[1]}개, 전체 승률 {np.nanmean(y[rows]):.1%}")
+    big = (p["mcap"] >= CAP_MIN).to_numpy() if CAP_MIN else np.ones(len(p), bool)
+    rows = np.where(ok & ~np.isnan(y) & big)[0]
+    print(f"   시가총액 하한 {CAP_MIN:,.0f}, 학습 가능한 행 {len(rows):,}개, 특징 {X.shape[1]}개, 전체 승률 {np.nanmean(y[rows]):.1%}")
 
     preds = pd.Series(np.nan, index=p.index)
     importances = []
