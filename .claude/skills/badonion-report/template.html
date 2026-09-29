@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="color-scheme" content="dark">
+<meta name="color-scheme" content="light">
 <meta name="description" content="나쁜양파 리포트 양식 템플릿. 예시 데이터로 모든 차트·도표 부품을 보여줌.">
 <title>리포트 제목 | 부제 — 나쁜양파</title>
 <!-- 차트 라이브러리: 원본과 같은 Plotly 3.3.1. 인터넷 없이 열어야 하면 make_offline.py 로 파일 안에 내장 -->
@@ -13,19 +13,22 @@
    1) 색상 토큰 — 이 값들만 쓰고 새 색을 만들지 않음
    ========================================================= */
 :root{
-  --bg:#08111F;        /* 페이지 바탕 */
-  --surface:#0F1B2D;   /* 카드·차트 바탕 */
-  --surface2:#16243A;  /* 표 머리글·버튼·강조 칸 */
-  --inset:#0B1728;     /* 카드 안의 안쪽 상자 */
-  --line:#2B3A52;      /* 테두리·격자선 */
-  --text:#F4F7FB;      /* 제목·굵은 글씨 */
-  --soft:#D8E0EB;      /* 본문 */
-  --muted:#A7B3C4;     /* 보조설명·출처·축 */
-  --cyan:#27C2D3;      /* 주인공: 핵심 수치·주 계열·링크 */
-  --amber:#F0AA3C;     /* 비교 대상·기준선·주의 */
-  --red:#EB5A65;       /* 하락·부정·대안 시나리오 */
-  --green:#37C977;     /* 상승·긍정·신규 */
-  --purple:#D8B4FE;    /* '조건부' 태그 전용 */
+  color-scheme:light;
+  --bg:#F3F6FB;        /* 페이지 바탕 (옅은 회청색) */
+  --surface:#FFFFFF;   /* 카드·차트 바탕 */
+  --surface2:#EAF0F7;  /* 표 머리글·버튼·강조 칸 */
+  --inset:#F5F8FC;     /* 카드 안의 안쪽 상자 */
+  --line:#CCD7E5;      /* 테두리·격자선 */
+  --text:#15263F;      /* 제목·굵은 글씨 */
+  --soft:#293B52;      /* 본문 */
+  --muted:#52657D;     /* 보조설명·출처·축 */
+  --cyan:#007589;      /* 주인공: 핵심 수치·주 계열·링크 (진한 청록) */
+  --amber:#A65400;     /* 비교 대상·기준선·주의 (진한 주황) */
+  --red:#C0344E;       /* 하락·부정·대안 시나리오 */
+  --green:#14734E;     /* 상승·긍정·신규 */
+  --purple:#7155B7;    /* '조건부' 태그 전용 */
+  --note-bg:#FFF5E8;   /* 범위 공개 상자 바탕 */
+  --row-hl:#E7F3F6;    /* 표 강조 행 */
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:62px}
@@ -117,7 +120,7 @@ footer{padding-top:18px;padding-bottom:30px;display:flex;justify-content:space-b
 .cap-rule small,.cap-rule span{display:block;color:var(--muted);font-size:11px}
 .cap-rule b{display:block;font-size:16px;margin:5px 0}
 /* 범위·한계 공개 (호박색 왼쪽 선) */
-.coverage-note{border-left:3px solid var(--amber);padding:12px 15px;background:#241F1B;font-size:12px;margin:15px 0 20px;line-height:1.8}
+.coverage-note{border-left:3px solid var(--amber);padding:12px 15px;background:var(--note-bg);font-size:12px;margin:15px 0 20px;line-height:1.8}
 /* 요약 한 줄 (청록 왼쪽 선) */
 .scope-line{font-size:12px;line-height:1.8;background:var(--surface);border-left:3px solid var(--cyan);padding:12px 15px;margin:15px 0}
 /* 큰 숫자 4칸 (밑줄형) */
@@ -127,9 +130,9 @@ footer{padding-top:18px;padding-bottom:30px;display:flex;justify-content:space-b
 .wide-stats small{font-size:11px;color:var(--muted)}
 /* 태그(둥근 알약) · 칩(각진) · 수치 배지 */
 .tag{display:inline-block;border:1px solid var(--line);padding:2px 6px;border-radius:999px;font-size:10px;color:var(--muted);margin-right:5px}
-.tag.direct{color:var(--cyan);border-color:rgba(39,194,211,.5)}
-.tag.market{color:var(--amber);border-color:rgba(240,170,60,.5)}
-.tag.conditional{color:var(--purple);border-color:rgba(216,180,254,.5)}
+.tag.direct{color:var(--cyan);border-color:rgba(0,117,137,.45)}
+.tag.market{color:var(--amber);border-color:rgba(166,84,0,.4)}
+.tag.conditional{color:var(--purple);border-color:rgba(113,85,183,.4)}
 .chip{font-size:10px;padding:2px 6px;display:inline-block;border:1px solid var(--line);border-radius:3px}
 .chip.core{color:var(--cyan);border-color:var(--cyan)}
 .chip.theme{color:var(--cyan)}
@@ -181,7 +184,7 @@ th:first-child,td:first-child{text-align:left}
 tbody tr:hover{background:var(--surface)}
 td small{display:block;font-size:9px;color:var(--muted);max-width:190px;white-space:normal}
 td:first-child b{font-size:13px}
-.row-hl{background:#10283A}
+.row-hl{background:var(--row-hl)}
 .controls{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin:14px 0 12px}
 .controls label{display:flex;flex-direction:column;gap:5px;color:var(--muted);font-size:11px}
 .controls select,.controls input{height:36px;font-size:12px}
@@ -200,12 +203,12 @@ td:first-child b{font-size:13px}
 .source-list small{display:block;color:var(--muted);font-size:10px}
 .source-list li:target{background:var(--surface2)}
 dialog{background:var(--surface);color:var(--soft);border:1px solid var(--line);border-radius:5px;width:min(1100px,96vw);max-height:90vh;padding:18px}
-dialog::backdrop{background:#000b}
+dialog::backdrop{background:rgba(21,38,63,.35)}
 .dialog-head{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-bottom:12px}
 .dialog-head h3{font-size:15px}
 .js-plotly-plot .plotly .modebar{background:transparent!important}
-.js-plotly-plot .plotly .modebar-btn path{fill:#a7b3c4!important}
-noscript{display:block;background:#40202a;padding:15px;color:white}
+.js-plotly-plot .plotly .modebar-btn path{fill:#52657D!important}
+noscript{display:block;background:#FDECEF;padding:15px;color:var(--red)}
 
 /* =========================================================
    7) 모바일 (760px 이하) — 2칸 이상은 1칸으로
@@ -234,7 +237,7 @@ noscript{display:block;background:#40202a;padding:15px;color:white}
   .chart-actions a{margin-left:0}
   footer{display:block}
 }
-/* 인쇄 (A4 세로) — 버튼·목차는 숨김, 어두운 배경 유지 */
+/* 인쇄 (A4 세로) — 버튼·목차는 숨김, 바탕색 유지 */
 @media print{
   body{font-size:10pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
   nav,.controls,.chart-actions,.download-row{display:none}
@@ -494,7 +497,11 @@ const REPORT = {
      ========================================================= -->
 <script>
 'use strict';
-const C={bg:'#08111F',surface:'#0F1B2D',line:'#2B3A52',text:'#F4F7FB',soft:'#D8E0EB',muted:'#A7B3C4',cyan:'#27C2D3',amber:'#F0AA3C',red:'#EB5A65',green:'#37C977'};
+// 차트 색은 위 CSS 색 토큰(:root)에서 읽음 → 색을 바꿀 때 :root 한 곳만 고치면 됨
+const cssVars=getComputedStyle(document.documentElement);
+const C=Object.fromEntries(['bg','surface','line','text','soft','muted','cyan','amber','red','green'].map(k=>[k,cssVars.getPropertyValue('--'+k).trim()]));
+// 옅은 영역 칠하기용: 토큰 색 + 투명도
+const tint=(hex,a)=>{const n=parseInt(hex.slice(1),16);return `rgba(${n>>16},${n>>8&255},${n&255},${a})`;};
 const FONT="Pretendard, 'Noto Sans KR', 'Malgun Gothic', Arial, sans-serif";
 const CFG={responsive:true,displaylogo:false,scrollZoom:false,modeBarButtonsToRemove:['lasso2d','select2d'],toImageButtonOptions:{format:'png',scale:2}};
 const narrow=()=>window.innerWidth<650;
@@ -509,7 +516,7 @@ function mul(v){return v==null?'—':fmt(v,2)+'×';}
 // 모든 차트의 공통 모양
 function plotLayout(h=300){return {height:h,autosize:true,margin:{l:60,r:28,t:30,b:50},paper_bgcolor:C.surface,plot_bgcolor:C.surface,
   font:{family:FONT,color:C.soft,size:11},xaxis:{gridcolor:C.line,zeroline:false,automargin:true},yaxis:{gridcolor:C.line,zeroline:false,automargin:true},
-  legend:{orientation:'h',y:1.17,x:0,font:{size:10}},hoverlabel:{bgcolor:C.bg,font:{color:C.text,size:11}},hovermode:'x unified'};}
+  legend:{orientation:'h',y:1.17,x:0,font:{size:10}},hoverlabel:{bgcolor:C.surface,bordercolor:C.line,font:{color:C.text,size:11}},hovermode:'x unified'};}
 function draw(id,traces,layout){const el=document.getElementById(id);if(!el)return;el.style.height=layout.height+'px';pending.push(Plotly.newPlot(el,traces,layout,CFG));}
 // 막대 위 숫자가 잘리지 않도록 위·아래 20% 여유
 function padRange(vals){const hi=Math.max(0,...vals),lo=Math.min(0,...vals),pad=(hi-lo)*0.2;return [lo<0?lo-pad:0,hi>0?hi+pad:pad*0.25];}
@@ -573,12 +580,12 @@ function candleChart(id,T){
   l.xaxis={...axisSessions(bars,steps),anchor:'y2',title:{text:window.innerWidth<600?'실제 거래일 | ①②는 조건부 단계':'왼쪽: 실제 거래일  |  오른쪽: 조건부 단계 (기간 아님)',font:{size:10}}};
   l.yaxis={...l.yaxis,domain:[.31,1],title:{text:T.currency},tickfont:{size:10}};
   l.yaxis2={domain:[0,.19],title:{text:'거래량 (주)',font:{size:10}},showgrid:false,zeroline:false,tickformat:'.2s',tickfont:{size:10},automargin:true};
-  l.shapes=[{type:'rect',x0:n-.6,x1:n-1+steps*2.5+.8,yref:'paper',y0:0,y1:1,line:{width:0},fillcolor:'rgba(240,170,60,.05)',layer:'below'},
+  l.shapes=[{type:'rect',x0:n-.6,x1:n-1+steps*2.5+.8,yref:'paper',y0:0,y1:1,line:{width:0},fillcolor:tint(C.amber,.06),layer:'below'},
     {type:'line',x0:n-.6,x1:n-.6,yref:'paper',y0:0,y1:1,line:{color:C.amber,width:1,dash:'dot'}}];
   const ei=bars.findIndex(r=>r[0]===T.eventDate);if(ei>=0)l.shapes.push({type:'line',x0:ei,x1:ei,yref:'paper',y0:0,y1:1,line:{color:C.muted,dash:'dot',width:1}});
   for(const [v,color] of [[T.sma20,C.amber],[T.sma50,C.muted]])if(v!=null)l.shapes.push({type:'line',xref:'paper',x0:0,x1:1,y0:v,y1:v,line:{color,dash:'dot',width:1}});
-  if(T.resistance)l.shapes.push({type:'rect',xref:'paper',x0:0,x1:1,y0:T.resistance[0],y1:T.resistance[1],fillcolor:'rgba(235,90,101,.06)',line:{color:'rgba(235,90,101,.4)',width:1},layer:'below'});
-  if(T.support)l.shapes.push({type:'rect',xref:'paper',x0:0,x1:1,y0:T.support[0],y1:T.support[1],fillcolor:'rgba(55,201,119,.05)',line:{color:'rgba(55,201,119,.35)',width:1},layer:'below'});
+  if(T.resistance)l.shapes.push({type:'rect',xref:'paper',x0:0,x1:1,y0:T.resistance[0],y1:T.resistance[1],fillcolor:tint(C.red,.06),line:{color:tint(C.red,.4),width:1},layer:'below'});
+  if(T.support)l.shapes.push({type:'rect',xref:'paper',x0:0,x1:1,y0:T.support[0],y1:T.support[1],fillcolor:tint(C.green,.06),line:{color:tint(C.green,.35),width:1},layer:'below'});
   // 모바일에서는 범례와 겹치므로 생략 (x축 제목이 같은 내용을 설명함)
   l.annotations=narrow()?[]:[{xref:'paper',yref:'paper',x:1,y:1.03,text:'조건부 시나리오 · 시점 미지정',showarrow:false,xanchor:'right',font:{size:9,color:C.amber}}];
   if(T.sma20!=null)l.annotations.push({xref:'paper',x:1,y:T.sma20,text:'기준일 SMA20 '+p(T.sma20),showarrow:false,xanchor:'right',font:{size:9,color:C.amber},bgcolor:C.surface});
