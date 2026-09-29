@@ -9,6 +9,7 @@
 - 평가: 매일 확률 상위 K종목의 승률, 확률 기준별 승률, 매도 방식별 손익·계좌(최대 10종목)
 
 실행: python ml_win.py   /   MARKET=us python ml_win.py
+성공 기준 바꾸기: TARGET=0.30 WINDOW=40 RESULT_DIR=results_t30w40 python ml_win.py  (40일 안 +30%)
 """
 import os
 
@@ -26,7 +27,7 @@ import vcp_test as V
 TEST_YEARS = [2023, 2024, 2025, 2026]
 EMBARGO = 20
 EXITS = {
-    "+15% 익절 / 20일 청산": [(1, dict(tp=0.15, time=20))],
+    f"+{S.TARGET:.0%} 익절 / {S.WINDOW}일 청산": [(1, dict(tp=S.TARGET, time=S.WINDOW))],
     "손절 -10% + 25일선 50% / 60일선 50%": [(0.5, dict(ma="ma25", sl=-0.10)), (0.5, dict(ma="ma60", sl=-0.10))],
     "손절 -10% + 60일 보유": [(1, dict(time=60, sl=-0.10))],
 }
@@ -112,7 +113,7 @@ def main():
     df["rank_day"] = df.groupby("date")["prob"].rank(ascending=False, method="first")
     print(f"\n2) 시험 기간(2023~2026) 전체 AUC {roc_auc_score(df['y'], df['prob']):.3f}, 아무 종목·아무 날 승률 {df['y'].mean():.1%}")
 
-    print("\n[매일 확률 상위 K종목을 샀을 때 승률 (20일 안에 +15%)]")
+    print(f"\n[매일 확률 상위 K종목을 샀을 때 승률 ({S.WINDOW}일 안에 +{S.TARGET:.0%})]")
     lines = []
     for k in [1, 3, 5, 10, 20]:
         s = df[df["rank_day"] <= k]
@@ -134,9 +135,9 @@ def main():
 
     # ---- 손익: 매일 확률 상위 3종목 (같은 종목 20일 안 중복 매수 제외) ----
     pick = df[df["rank_day"] <= 3].sort_values("date")
-    last_buy, keep = {}, []
+    last_buy, keep = {}, []            # 같은 종목은 성공 판정 기간 안에 다시 사지 않음
     for r, code, d in zip(pick["row"], pick["code"], p["date_idx"].to_numpy()[pick["row"]]):
-        if code in last_buy and d - last_buy[code] < S.COOLDOWN:
+        if code in last_buy and d - last_buy[code] < max(S.COOLDOWN, S.WINDOW):
             continue
         last_buy[code] = d
         keep.append(r)
@@ -145,7 +146,7 @@ def main():
     idx = pd.read_parquet(os.path.join(S.DATA_DIR, "index.parquet")).pivot(index="date", columns="index", values="close")
     bench = idx[S.BENCH].dropna()
     bench = bench[bench.index >= pd.Timestamp("2023-01-01")]
-    print(f"\n[매일 확률 상위 3종목 매수 (20일 안 중복 제외) — {len(keep)}건, 승률 {np.mean(y[keep]):.1%}]")
+    print(f"\n[매일 확률 상위 3종목 매수 ({max(S.COOLDOWN, S.WINDOW)}일 안 중복 제외) — {len(keep)}건, 승률 {np.mean(y[keep]):.1%}]")
     print(f"   비교: {S.BENCH} 지수 2023~2026 연평균 {B.curve_stats(bench)['연평균수익률']:+.1%}, "
           f"최대낙폭 {B.curve_stats(bench)['최대낙폭']:.0%}")
     res = []

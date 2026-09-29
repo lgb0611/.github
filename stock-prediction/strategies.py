@@ -29,8 +29,8 @@ RESULT_DIR = os.environ.get("RESULT_DIR") or os.path.join(BASE, "results" if MAR
 BENCH = {"kr": "KOSPI", "us": "NASDAQ"}[MARKET]   # 차트·연도별 비교용 지수
 KRW_PER_USD = 1400       # 미국은 원화 기준을 달러로 바꿔 같은 크기로 맞춤
 
-TARGET = 0.15            # 성공 기준: +15%
-WINDOW = 20              # 성공 판정 기간: 20거래일
+TARGET = float(os.environ.get("TARGET", 0.15))   # 성공 기준: +15% (환경변수 TARGET으로 바꿀 수 있음)
+WINDOW = int(os.environ.get("WINDOW", 20))       # 성공 판정 기간: 20거래일 (환경변수 WINDOW)
 COOLDOWN = 20            # 같은 신호 중복 제외 기간
 COST = 0.0025            # 왕복 거래비용 (수수료 + 거래세 + 슬리피지)
 MIN_TRADING_VALUE = 1e9  # 20일 평균 거래대금 10억 원 이상
