@@ -1,1581 +1,1587 @@
 
-> astra-speaking-lab@2.10.0 test
+> astra-speaking-lab@2.10.1 test
 > node --max-old-space-size=4096 --test tests/test_core.js tests/test_speech_check.js tests/test_youtube_core.js tests/test_auto_lessons.js tests/test_korean_core.js tests/test_materials.js tests/test_catalog.js tests/test_ui.cjs
 
 TAP version 13
 # Subtest: all caption sentences stay whole, including short replies and unpunctuated tails
 ok 1 - all caption sentences stay whole, including short replies and unpunctuated tails
   ---
-  duration_ms: 10.365949
+  duration_ms: 10.370449
   type: 'test'
   ...
 # Subtest: unknown phrases still produce sentence practice without invented translations
 ok 2 - unknown phrases still produce sentence practice without invented translations
   ---
-  duration_ms: 1.289207
+  duration_ms: 1.254427
   type: 'test'
   ...
 # Subtest: whole video returns all 623 sentences without the old batch and JSON limits
 ok 3 - whole video returns all 623 sentences without the old batch and JSON limits
   ---
-  duration_ms: 44.759185
+  duration_ms: 34.686809
   type: 'test'
   ...
 # Subtest: repeated utterances keep their separate source positions and non-speech labels are excluded
 ok 4 - repeated utterances keep their separate source positions and non-speech labels are excluded
   ---
-  duration_ms: 0.74748
+  duration_ms: 0.583518
   type: 'test'
   ...
 # Subtest: source recall prompt and complete sentence survive backup restore
 ok 5 - source recall prompt and complete sentence survive backup restore
   ---
-  duration_ms: 1.488742
+  duration_ms: 2.382639
   type: 'test'
   ...
 # Subtest: untimed sentences preserve missing positions
 ok 6 - untimed sentences preserve missing positions
   ---
-  duration_ms: 0.284428
+  duration_ms: 0.340143
   type: 'test'
   ...
 # Subtest: sentence splitter preserves abbreviations and decimal values
 ok 7 - sentence splitter preserves abbreviations and decimal values
   ---
-  duration_ms: 0.255016
+  duration_ms: 0.197668
   type: 'test'
   ...
 # Subtest: multiple sentences share their actual subtitle interval, not guessed word times
 ok 8 - multiple sentences share their actual subtitle interval, not guessed word times
   ---
-  duration_ms: 0.177425
+  duration_ms: 0.178536
   type: 'test'
   ...
 # Subtest: long unpunctuated captions produce bounded long speech chunks without added words
 ok 9 - long unpunctuated captions produce bounded long speech chunks without added words
   ---
-  duration_ms: 0.808057
+  duration_ms: 0.801895
   type: 'test'
   ...
 # Subtest: sixty-card session survives reload with unique queue and saved position
 ok 10 - sixty-card session survives reload with unique queue and saved position
   ---
-  duration_ms: 4.410847
+  duration_ms: 4.880345
   type: 'test'
   ...
 # Subtest: a full 623-card speaking queue and translations survive backup round-trip
 ok 11 - a full 623-card speaking queue and translations survive backup round-trip
   ---
-  duration_ms: 52.591671
+  duration_ms: 55.964087
   type: 'test'
   ...
 # Subtest: catalog covers all 26 bundled materials and all 3381 learning items exactly once
 ok 12 - catalog covers all 26 bundled materials and all 3381 learning items exactly once
   ---
-  duration_ms: 24.793594
+  duration_ms: 25.150563
   type: 'test'
   ...
 # Subtest: catalog exposes all 35 existing sources including KPOP script and all lecture captures
 ok 13 - catalog exposes all 35 existing sources including KPOP script and all lecture captures
   ---
-  duration_ms: 21.555459
+  duration_ms: 20.499107
   type: 'test'
   ...
 # Subtest: search combines category, Korean names, English expressions and empty results
 ok 14 - search combines category, Korean names, English expressions and empty results
   ---
-  duration_ms: 14.518997
+  duration_ms: 14.051501
   type: 'test'
   ...
 # Subtest: saved video cards and current draft form distinct material entries, merging a bundled video by ID
 ok 15 - saved video cards and current draft form distinct material entries, merging a bundled video by ID
   ---
-  duration_ms: 21.151686
+  duration_ms: 21.670679
   type: 'test'
   ...
 # Subtest: exact material filtering never mixes other speeches or other saved videos
 ok 16 - exact material filtering never mixes other speeches or other saved videos
   ---
-  duration_ms: 10.739778
+  duration_ms: 6.150731
   type: 'test'
   ...
 # Subtest: catalog derivation preserves input state and rejects non-source links and invalid video IDs
 ok 17 - catalog derivation preserves input state and rejects non-source links and invalid video IDs
   ---
-  duration_ms: 46.899722
+  duration_ms: 34.290631
   type: 'test'
   ...
 # Subtest: HTML escapes script-bearing user content
 ok 18 - HTML escapes script-bearing user content
   ---
-  duration_ms: 1.98048
+  duration_ms: 1.092771
   type: 'test'
   ...
 # Subtest: valid initial state round-trips and migrates v1
 ok 19 - valid initial state round-trips and migrates v1
   ---
-  duration_ms: 3.790819
+  duration_ms: 2.428132
   type: 'test'
   ...
 # Subtest: backup rejects NaN dates, arrays, null attempts, unknown cards
 ok 20 - backup rejects NaN dates, arrays, null attempts, unknown cards
   ---
-  duration_ms: 7.43639
+  duration_ms: 4.606261
   type: 'test'
   ...
 # Subtest: prototype keys in card/exposure maps are rejected
 ok 21 - prototype keys in card/exposure maps are rejected
   ---
-  duration_ms: 0.33315
+  duration_ms: 0.27908
   type: 'test'
   ...
 # Subtest: duplicate attempt IDs and malformed exercises are rejected
 ok 22 - duplicate attempt IDs and malformed exercises are rejected
   ---
-  duration_ms: 3.631521
+  duration_ms: 3.414485
   type: 'test'
   ...
 # Subtest: first cold success is due tomorrow
 ok 23 - first cold success is due tomorrow
   ---
-  duration_ms: 0.351945
+  duration_ms: 0.279303
   type: 'test'
   ...
 # Subtest: same-day success never moves due forward
 ok 24 - same-day success never moves due forward
   ---
-  duration_ms: 0.252376
+  duration_ms: 0.188179
   type: 'test'
   ...
 # Subtest: early successes several days later do not bypass scheduled spacing
 ok 25 - early successes several days later do not bypass scheduled spacing
   ---
-  duration_ms: 0.117481
+  duration_ms: 0.096482
   type: 'test'
   ...
 # Subtest: planned intervals are 1,3,7,14,30 days
 ok 26 - planned intervals are 1,3,7,14,30 days
   ---
-  duration_ms: 0.469876
+  duration_ms: 1.318744
   type: 'test'
   ...
 # Subtest: error resets evidence and schedules ten minutes
 ok 27 - error resets evidence and schedules ten minutes
   ---
-  duration_ms: 0.37432
+  duration_ms: 0.699182
   type: 'test'
   ...
 # Subtest: immediate aided success does not erase a ten-minute relearning check
 ok 28 - immediate aided success does not erase a ten-minute relearning check
   ---
-  duration_ms: 0.170477
+  duration_ms: 0.315197
   type: 'test'
   ...
 # Subtest: success shortly after lapse is practice, not independent recall
 ok 29 - success shortly after lapse is practice, not independent recall
   ---
-  duration_ms: 0.125691
+  duration_ms: 0.111341
   type: 'test'
   ...
 # Subtest: retry stage cannot manufacture retention
 ok 30 - retry stage cannot manufacture retention
   ---
-  duration_ms: 0.077092
+  duration_ms: 0.085831
   type: 'test'
   ...
 # Subtest: three due cold successes plus novel transfer confer operational mastery
 ok 31 - three due cold successes plus novel transfer confer operational mastery
   ---
-  duration_ms: 0.09476
+  duration_ms: 0.124111
   type: 'test'
   ...
 # Subtest: revisited scene and first-ever transfer cannot manufacture mastery
 ok 32 - revisited scene and first-ever transfer cannot manufacture mastery
   ---
-  duration_ms: 0.062201
+  duration_ms: 0.078484
   type: 'test'
   ...
 # Subtest: hints cannot count as transfer evidence
 ok 33 - hints cannot count as transfer evidence
   ---
-  duration_ms: 0.071327
+  duration_ms: 0.088238
   type: 'test'
   ...
 # Subtest: exposure expires at 24h and survives serialization
 ok 34 - exposure expires at 24h and survives serialization
   ---
-  duration_ms: 0.128197
+  duration_ms: 0.194071
   type: 'test'
   ...
 # Subtest: due ordering prioritizes oldest regardless of exercise coverage
 ok 35 - due ordering prioritizes oldest regardless of exercise coverage
   ---
-  duration_ms: 0.334673
+  duration_ms: 0.360464
   type: 'test'
   ...
 # Subtest: no due phrase means no unrelated review exercise
 ok 36 - no due phrase means no unrelated review exercise
   ---
-  duration_ms: 0.17524
+  duration_ms: 0.171766
   type: 'test'
   ...
 # Subtest: daily session prioritizes due cards and caps new items at three
 ok 37 - daily session prioritizes due cards and caps new items at three
   ---
-  duration_ms: 3.942909
+  duration_ms: 3.071957
   type: 'test'
   ...
 # Subtest: large backlog suppresses new cards and honors the eight-item limit
 ok 38 - large backlog suppresses new cards and honors the eight-item limit
   ---
-  duration_ms: 15.472503
+  duration_ms: 12.66632
   type: 'test'
   ...
 # Subtest: all reference cards can be practiced without an authored paragraph
 ok 39 - all reference cards can be practiced without an authored paragraph
   ---
-  duration_ms: 13.202612
+  duration_ms: 12.907762
   type: 'test'
   ...
 # Subtest: import accepts aligned exercise and rejects unknown ID or fabricated evidence
 ok 40 - import accepts aligned exercise and rejects unknown ID or fabricated evidence
   ---
-  duration_ms: 0.80899
+  duration_ms: 1.15033
   type: 'test'
   ...
 # Subtest: task keys separate single-card attempts, not presentation-only keyword mode
 ok 41 - task keys separate single-card attempts, not presentation-only keyword mode
   ---
-  duration_ms: 0.129701
+  duration_ms: 0.229082
   type: 'test'
   ...
 # Subtest: 30 new short contexts cover all recent lesson cards with exact alignment
 ok 42 - 30 new short contexts cover all recent lesson cards with exact alignment
   ---
-  duration_ms: 0.810797
+  duration_ms: 1.168571
   type: 'test'
   ...
 # Subtest: word count counts contractions as one word
 ok 43 - word count counts contractions as one word
   ---
-  duration_ms: 0.227971
+  duration_ms: 0.559314
   type: 'test'
   ...
 # Subtest: nested corrupted feedback is rejected before the history view can crash
 ok 44 - nested corrupted feedback is rejected before the history view can crash
   ---
-  duration_ms: 5.874227
+  duration_ms: 3.320777
   type: 'test'
   ...
 # Subtest: manual ChatGPT feedback accepts fenced JSON and pending request survives backup
 ok 45 - manual ChatGPT feedback accepts fenced JSON and pending request survives backup
   ---
-  duration_ms: 1.934636
+  duration_ms: 3.235378
   type: 'test'
   ...
 # Subtest: manual feedback rejects another request or phrase ID
 ok 46 - manual feedback rejects another request or phrase ID
   ---
-  duration_ms: 0.496057
+  duration_ms: 0.578232
   type: 'test'
   ...
 # Subtest: manual feedback rejects fabricated sentence and correction evidence
 ok 47 - manual feedback rejects fabricated sentence and correction evidence
   ---
-  duration_ms: 3.861247
+  duration_ms: 0.627967
   type: 'test'
   ...
 # Subtest: manual feedback cannot omit the last sentence or non-Latin speech
 ok 48 - manual feedback cannot omit the last sentence or non-Latin speech
   ---
-  duration_ms: 0.433149
+  duration_ms: 0.377863
   type: 'test'
   ...
 # Subtest: manual feedback rejects changed words called correct and inconsistent final text
 ok 49 - manual feedback rejects changed words called correct and inconsistent final text
   ---
-  duration_ms: 1.66515
+  duration_ms: 1.59663
   type: 'test'
   ...
 # Subtest: manual feedback rejects malformed omissions and excessive payloads
 ok 50 - manual feedback rejects malformed omissions and excessive payloads
   ---
-  duration_ms: 0.347359
+  duration_ms: 0.167845
   type: 'test'
   ...
 # Subtest: Korean cache is bound to the exact English sentence and survives backup
 ok 51 - Korean cache is bound to the exact English sentence and survives backup
   ---
-  duration_ms: 5.652318
+  duration_ms: 4.146239
   type: 'test'
   ...
 # Subtest: untranslated captions cannot masquerade as a Korean sentence version
 ok 52 - untranslated captions cannot masquerade as a Korean sentence version
   ---
-  duration_ms: 0.55844
+  duration_ms: 0.444758
   type: 'test'
   ...
 # Subtest: whole-sentence AI meaning replaces an old generic situation instruction
 ok 53 - whole-sentence AI meaning replaces an old generic situation instruction
   ---
-  duration_ms: 0.221886
+  duration_ms: 0.186017
   type: 'test'
   ...
 # Subtest: source paragraph combines all Korean sentences and aligns the English sample
 ok 54 - source paragraph combines all Korean sentences and aligns the English sample
   ---
-  duration_ms: 1.988655
+  duration_ms: 1.721633
   type: 'test'
   ...
 # Subtest: paragraph requires multiple distinct sentences with actual Korean versions
 ok 55 - paragraph requires multiple distinct sentences with actual Korean versions
   ---
-  duration_ms: 0.354506
+  duration_ms: 0.199721
   type: 'test'
   ...
 # Subtest: paragraph alignment rejects missing cards invented source phrases and foreign examples
 ok 56 - paragraph alignment rejects missing cards invented source phrases and foreign examples
   ---
-  duration_ms: 0.529673
+  duration_ms: 0.592789
   type: 'test'
   ...
 # Subtest: transcript translations persist without a learning-card ID and match exact source text
 ok 57 - transcript translations persist without a learning-card ID and match exact source text
   ---
-  duration_ms: 0.518219
+  duration_ms: 0.402938
   type: 'test'
   ...
 # Subtest: invalid and duplicated transcript meanings cannot enter a restored backup
 ok 58 - invalid and duplicated transcript meanings cannot enter a restored backup
   ---
-  duration_ms: 0.309972
+  duration_ms: 0.277993
   type: 'test'
   ...
 # Subtest: transcript cache replaces exact matches and bounds retained text without changing the new meaning
 ok 59 - transcript cache replaces exact matches and bounds retained text without changing the new meaning
   ---
-  duration_ms: 25.527189
+  duration_ms: 16.740115
   type: 'test'
   ...
 # Subtest: PDF materials cover all worksheet items and 39 interview sections with stable source files
 ok 60 - PDF materials cover all worksheet items and 39 interview sections with stable source files
   ---
-  duration_ms: 6.585205
+  duration_ms: 247.721929
   type: 'test'
   ...
 # Subtest: every PDF row has matching offline Korean and a valid single speaking exercise
 ok 61 - every PDF row has matching offline Korean and a valid single speaking exercise
   ---
-  duration_ms: 4.629806
+  duration_ms: 3.386603
   type: 'test'
   ...
 # Subtest: authored paragraphs use several source sentences with exact bilingual alignment
 ok 62 - authored paragraphs use several source sentences with exact bilingual alignment
   ---
-  duration_ms: 3.889743
+  duration_ms: 3.079474
   type: 'test'
   ...
 # Subtest: editorial narration and future timeline labels remain distinct from quoted dialogue
 ok 63 - editorial narration and future timeline labels remain distinct from quoted dialogue
   ---
-  duration_ms: 0.504828
+  duration_ms: 0.414123
   type: 'test'
   ...
 # Subtest: saved video metadata identifies the requested public video without bundling an unverified transcript
 ok 64 - saved video metadata identifies the requested public video without bundling an unverified transcript
   ---
-  duration_ms: 1.855252
+  duration_ms: 1.157759
   type: 'test'
   ...
 # Subtest: Harvard PDF has 84 prepared Korean units and 9 topics with summaries distinct from attributed speech
 ok 65 - Harvard PDF has 84 prepared Korean units and 9 topics with summaries distinct from attributed speech
   ---
-  duration_ms: 0.403336
+  duration_ms: 0.421429
   type: 'test'
   ...
 # Subtest: word comparison keeps the example text and marks said and missing words in order
 ok 66 - word comparison keeps the example text and marks said and missing words in order
   ---
-  duration_ms: 3.005875
+  duration_ms: 2.816816
   type: 'test'
   ...
 # Subtest: contractions, number words and verb endings count as the same words
 ok 67 - contractions, number words and verb endings count as the same words
   ---
-  duration_ms: 1.398382
+  duration_ms: 0.72499
   type: 'test'
   ...
 # Subtest: short unrelated words are not stretched into matches
 ok 68 - short unrelated words are not stretched into matches
   ---
-  duration_ms: 3.121234
+  duration_ms: 0.221668
   type: 'test'
   ...
 # Subtest: comparison stays bounded for very long spoken input
 ok 69 - comparison stays bounded for very long spoken input
   ---
-  duration_ms: 80.421552
+  duration_ms: 55.011881
   type: 'test'
   ...
 # Subtest: target expressions are found through tense changes and placeholders
 ok 70 - target expressions are found through tense changes and placeholders
   ---
-  duration_ms: 11.205793
+  duration_ms: 6.543895
   type: 'test'
   ...
 # Subtest: missing, nearly-said and unusable expressions are reported honestly
 ok 71 - missing, nearly-said and unusable expressions are reported honestly
   ---
-  duration_ms: 4.26438
+  duration_ms: 0.559649
   type: 'test'
   ...
 # Subtest: dictation keeps words across automatic restarts, pause and resume
 ok 72 - dictation keeps words across automatic restarts, pause and resume
   ---
-  duration_ms: 4.369453
+  duration_ms: 1.297867
   type: 'test'
   ...
 # Subtest: stop falls back to the heard text when the browser never ends the session
 ok 73 - stop falls back to the heard text when the browser never ends the session
   ---
-  duration_ms: 0.507483
+  duration_ms: 0.313178
   type: 'test'
   ...
 # Subtest: fatal errors are reported once and stop restarts; silence is not an error
 ok 74 - fatal errors are reported once and stop restarts; silence is not an error
   ---
-  duration_ms: 2.660801
+  duration_ms: 2.116517
   type: 'test'
   ...
 # Subtest: a browser that ends instantly is not restarted forever
 ok 75 - a browser that ends instantly is not restarted forever
   ---
-  duration_ms: 0.666785
+  duration_ms: 0.817595
   type: 'test'
   ...
 # Subtest: start failures and abort leave no stale words
 ok 76 - start failures and abort leave no stale words
   ---
-  duration_ms: 0.481026
+  duration_ms: 0.609054
   type: 'test'
   ...
 # Subtest: dictation never calls the on-device availability check
 ok 77 - dictation never calls the on-device availability check
   ---
-  duration_ms: 0.222142
+  duration_ms: 0.201038
   type: 'test'
   ...
 # Subtest: saved dictation preference must be a boolean
 ok 78 - saved dictation preference must be a boolean
   ---
-  duration_ms: 0.700408
+  duration_ms: 0.863847
   type: 'test'
   ...
 # Subtest: standalone offline app starts with real content and no network calls
 ok 79 - standalone offline app starts with real content and no network calls
   ---
-  duration_ms: 1723.90831
+  duration_ms: 1642.170747
   type: 'test'
   ...
 # Subtest: v1 progress migrates while original v1 storage is retained
 ok 80 - v1 progress migrates while original v1 storage is retained
   ---
-  duration_ms: 1060.618637
+  duration_ms: 1147.812773
   type: 'test'
   ...
 # Subtest: corrupt backup remains intact and visible save warning persists
 ok 81 - corrupt backup remains intact and visible save warning persists
   ---
-  duration_ms: 994.906203
+  duration_ms: 1104.007389
   type: 'test'
   ...
 # Subtest: cold answer snapshot remains unassisted even after comparing the model
 ok 82 - cold answer snapshot remains unassisted even after comparing the model
   ---
-  duration_ms: 978.279466
+  duration_ms: 1010.766509
   type: 'test'
   ...
 # Subtest: another answer after self-check cannot manufacture independent retrieval
 ok 83 - another answer after self-check cannot manufacture independent retrieval
   ---
-  duration_ms: 922.144979
+  duration_ms: 1278.346289
   type: 'test'
   ...
 # Subtest: hint history survives lesson-stage toggles and single-drill entry
 ok 84 - hint history survives lesson-stage toggles and single-drill entry
   ---
-  duration_ms: 894.960292
+  duration_ms: 1306.295597
   type: 'test'
   ...
 # Subtest: stored hint history survives reload
 ok 85 - stored hint history survives reload
   ---
-  duration_ms: 892.51098
+  duration_ms: 853.440625
   type: 'test'
   ...
 # Subtest: oldest reference item can be reviewed offline without a paragraph
 ok 86 - oldest reference item can be reviewed offline without a paragraph
   ---
-  duration_ms: 996.644895
+  duration_ms: 841.661584
   type: 'test'
   ...
 # Subtest: review list keeps English answers hidden until explicitly revealed
 ok 87 - review list keeps English answers hidden until explicitly revealed
   ---
-  duration_ms: 927.40853
+  duration_ms: 773.906629
   type: 'test'
   ...
 # Subtest: session queue requires saved evaluation before proceeding
 ok 88 - session queue requires saved evaluation before proceeding
   ---
-  duration_ms: 1010.796204
+  duration_ms: 828.049779
   type: 'test'
   ...
 # Subtest: session skip does not change the skipped item schedule
 ok 89 - session skip does not change the skipped item schedule
   ---
-  duration_ms: 1200.736808
+  duration_ms: 1080.321268
   type: 'test'
   ...
 # Subtest: recording remains locked until asynchronous stop finalizes
 ok 90 - recording remains locked until asynchronous stop finalizes
   ---
-  duration_ms: 1015.974612
+  duration_ms: 1150.306082
   type: 'test'
   ...
 # Subtest: pending microphone permission locks exercise changes
 ok 91 - pending microphone permission locks exercise changes
   ---
-  duration_ms: 880.399045
+  duration_ms: 1227.480467
   type: 'test'
   ...
 # Subtest: unsupported microphone explains fallback and does not lock app
 ok 92 - unsupported microphone explains fallback and does not lock app
   ---
-  duration_ms: 993.54326
+  duration_ms: 737.108559
   type: 'test'
   ...
 # Subtest: recording pause and resume remain local actions
 ok 93 - recording pause and resume remain local actions
   ---
-  duration_ms: 901.322468
+  duration_ms: 714.240709
   type: 'test'
   ...
 # Subtest: model speech respects selected pace and marks assistance
 ok 94 - model speech respects selected pace and marks assistance
   ---
-  duration_ms: 956.746736
+  duration_ms: 886.089614
   type: 'test'
   ...
 # Subtest: grade requires transcript confirmation and an API key
 ok 95 - grade requires transcript confirmation and an API key
   ---
-  duration_ms: 1025.522099
+  duration_ms: 886.694205
   type: 'test'
   ...
 # Subtest: transcription is explicit and its text is not automatically graded
 ok 96 - transcription is explicit and its text is not automatically graded
   ---
-  duration_ms: 1285.115146
+  duration_ms: 819.317248
   type: 'test'
   ...
 # Subtest: failed API grade retains answer and produces no invented evaluation
 ok 97 - failed API grade retains answer and produces no invented evaluation
   ---
-  duration_ms: 1346.571771
+  duration_ms: 806.069452
   type: 'test'
   ...
 # Subtest: new situation favors an unseen short variant and labels a repeat accurately
 ok 98 - new situation favors an unseen short variant and labels a repeat accurately
   ---
-  duration_ms: 1494.743499
+  duration_ms: 731.969306
   type: 'test'
   ...
 # Subtest: external exercise import rejects invented alignment without mutation
 ok 99 - external exercise import rejects invented alignment without mutation
   ---
-  duration_ms: 1682.748381
+  duration_ms: 1149.784853
   type: 'test'
   ...
 # Subtest: external exercise import escapes markup and remembers answer exposure
 ok 100 - external exercise import escapes markup and remembers answer exposure
   ---
-  duration_ms: 1149.893549
+  duration_ms: 1232.210647
   type: 'test'
   ...
 # Subtest: quota failure cannot be reported as a successfully saved schedule
 ok 101 - quota failure cannot be reported as a successfully saved schedule
   ---
-  duration_ms: 1112.194383
+  duration_ms: 863.478196
   type: 'test'
   ...
 # Subtest: cross-tab updates stop this tab from overwriting newer data
 ok 102 - cross-tab updates stop this tab from overwriting newer data
   ---
-  duration_ms: 1086.691722
+  duration_ms: 717.6425
   type: 'test'
   ...
 # Subtest: copy-to-ChatGPT preserves actual words and English-only recap
 ok 103 - copy-to-ChatGPT preserves actual words and English-only recap
   ---
-  duration_ms: 1151.425284
+  duration_ms: 720.657013
   type: 'test'
   ...
 # Subtest: successful fixture grade preserves submission-time hint state and populates error notebook
 ok 104 - successful fixture grade preserves submission-time hint state and populates error notebook
   ---
-  duration_ms: 1026.700056
+  duration_ms: 798.212438
   type: 'test'
   ...
 # Subtest: malformed imported progress does not replace working state
 ok 105 - malformed imported progress does not replace working state
   ---
-  duration_ms: 1017.368349
+  duration_ms: 752.359707
   type: 'test'
   ...
 # Subtest: single-card exercise survives export and fresh-start restore
 ok 106 - single-card exercise survives export and fresh-start restore
   ---
-  duration_ms: 2609.994358
+  duration_ms: 2199.559423
   type: 'test'
   ...
 # Subtest: free mode blocks paid requests even with stored consent and a connected key
 ok 107 - free mode blocks paid requests even with stored consent and a connected key
   ---
-  duration_ms: 1086.91925
+  duration_ms: 878.052303
   type: 'test'
   ...
 # Subtest: audio-only self-check stores a genuine self-rating without fabricated transcript
 ok 108 - audio-only self-check stores a genuine self-rating without fabricated transcript
   ---
-  duration_ms: 1422.612644
+  duration_ms: 1206.942369
   type: 'test'
   ...
 # Subtest: empty self-check cannot create a practice record
 ok 109 - empty self-check cannot create a practice record
   ---
-  duration_ms: 1285.873407
+  duration_ms: 1184.396187
   type: 'test'
   ...
 # Subtest: ChatGPT bridge imports reviewed feedback and error notebook without any API calls
 ok 110 - ChatGPT bridge imports reviewed feedback and error notebook without any API calls
   ---
-  duration_ms: 1415.155333
+  duration_ms: 1210.962042
   type: 'test'
   ...
 # Subtest: bridge rejects mismatched current text and restores original submission before import
 ok 111 - bridge rejects mismatched current text and restores original submission before import
   ---
-  duration_ms: 1579.934753
+  duration_ms: 1180.430776
   type: 'test'
   ...
 # Subtest: pending ChatGPT request survives a reload and copied snapshot stays immutable
 ok 112 - pending ChatGPT request survives a reload and copied snapshot stays immutable
   ---
-  duration_ms: 2985.335285
+  duration_ms: 2116.907919
   type: 'test'
   ...
 # Subtest: late imported correction cannot overwrite a newer review schedule
 ok 113 - late imported correction cannot overwrite a newer review schedule
   ---
-  duration_ms: 897.021506
+  duration_ms: 783.705316
   type: 'test'
   ...
 # Subtest: free launcher config disables the paid-mode switch
 ok 114 - free launcher config disables the paid-mode switch
   ---
-  duration_ms: 943.277247
+  duration_ms: 871.743859
   type: 'test'
   ...
 # Subtest: device speech never silently selects an online voice
 ok 115 - device speech never silently selects an online voice
   ---
-  duration_ms: 1006.522311
+  duration_ms: 981.15916
   type: 'test'
   ...
 # Subtest: learning shows Korean immediately while English stays hidden
 ok 116 - learning shows Korean immediately while English stays hidden
   ---
-  duration_ms: 915.751025
+  duration_ms: 775.364399
   type: 'test'
   ...
 # Subtest: YouTube source selection and phrase practice work without paid API calls
 ok 117 - YouTube source selection and phrase practice work without paid API calls
   ---
-  duration_ms: 1089.556488
+  duration_ms: 913.592998
   type: 'test'
   ...
 # Subtest: saved YouTube card restores in a fresh app and remains available for review
 ok 118 - saved YouTube card restores in a fresh app and remains available for review
   ---
-  duration_ms: 2150.121596
+  duration_ms: 1437.846746
   type: 'test'
   ...
 # Subtest: YouTube extraction rejects invented expression before altering saved records
 ok 119 - YouTube extraction rejects invented expression before altering saved records
   ---
-  duration_ms: 922.116132
+  duration_ms: 774.894537
   type: 'test'
   ...
 # Subtest: manual YouTube ChatGPT extraction adds an independently labelled transfer exercise
 ok 120 - manual YouTube ChatGPT extraction adds an independently labelled transfer exercise
   ---
-  duration_ms: 1070.22649
+  duration_ms: 854.768656
   type: 'test'
   ...
 # Subtest: caption fetch keeps sub-second timing and never automatically displays answers
 ok 121 - caption fetch keeps sub-second timing and never automatically displays answers
   ---
-  duration_ms: 1092.647068
+  duration_ms: 1275.133622
   type: 'test'
   ...
 # Subtest: a blocked caption request keeps the pasted transcript and gives a manual continuation
 ok 122 - a blocked caption request keeps the pasted transcript and gives a manual continuation
   ---
-  duration_ms: 1281.723248
+  duration_ms: 1281.314289
   type: 'test'
   ...
 # Subtest: online device voice is allowed only after user opts in
 ok 123 - online device voice is allowed only after user opts in
   ---
-  duration_ms: 1942.82127
+  duration_ms: 1267.671764
   type: 'test'
   ...
 # Subtest: microphone starts without loading a blocked YouTube iframe
 ok 124 - microphone starts without loading a blocked YouTube iframe
   ---
-  duration_ms: 1453.648451
+  duration_ms: 1211.893743
   type: 'test'
   ...
 # Subtest: saved video expressions appear in the default library and new daily session
 ok 125 - saved video expressions appear in the default library and new daily session
   ---
-  duration_ms: 1616.632136
+  duration_ms: 1353.402935
   type: 'test'
   ...
 # Subtest: late voice loading refreshes selection and a test sentence does not count as an expression hint
 ok 126 - late voice loading refreshes selection and a test sentence does not count as an expression hint
   ---
-  duration_ms: 1819.453329
+  duration_ms: 1242.394723
   type: 'test'
   ...
 # Subtest: screenshot creates a whole sentence without handwritten fields or tiny duplicate cards
 ok 127 - screenshot creates a whole sentence without handwritten fields or tiny duplicate cards
   ---
-  duration_ms: 1939.887738
+  duration_ms: 1429.357015
   type: 'test'
   ...
 # Subtest: all 223 sentences are extracted and translated at once, with display paging only
 ok 128 - all 223 sentences are extracted and translated at once, with display paging only
   ---
-  duration_ms: 3932.671423
+  duration_ms: 3405.677091
   type: 'test'
   ...
 # Subtest: new deck and sequence survive reopening without loss of recorded review
 ok 129 - new deck and sequence survive reopening without loss of recorded review
   ---
-  duration_ms: 2558.399761
+  duration_ms: 2066.6855
   type: 'test'
   ...
 # Subtest: same transcript extraction does not duplicate sentences or reset schedule
 ok 130 - same transcript extraction does not duplicate sentences or reset schedule
   ---
-  duration_ms: 1374.444869
+  duration_ms: 800.32501
   type: 'test'
   ...
 # Subtest: local AI adds full sentence meaning and a separately aligned transfer exercise
 ok 131 - local AI adds full sentence meaning and a separately aligned transfer exercise
   ---
-  duration_ms: 1166.852368
+  duration_ms: 893.821369
   type: 'test'
   ...
 # Subtest: cancelled enrichment ignores a late model answer while retaining immediately usable sentences
 ok 132 - cancelled enrichment ignores a late model answer while retaining immediately usable sentences
   ---
-  duration_ms: 1187.926183
+  duration_ms: 822.819016
   type: 'test'
   ...
 # Subtest: pending meaning cannot attach to changed captions
 ok 133 - pending meaning cannot attach to changed captions
   ---
-  duration_ms: 1095.009283
+  duration_ms: 919.268755
   type: 'test'
   ...
 # Subtest: AI is optional for unknown sentences and unavailable AI keeps the deck usable
 ok 134 - AI is optional for unknown sentences and unavailable AI keeps the deck usable
   ---
-  duration_ms: 1185.739386
+  duration_ms: 907.895062
   type: 'test'
   ...
 # Subtest: enrichment batches a large deck and preserves successful batches on later failure
 ok 135 - enrichment batches a large deck and preserves successful batches on later failure
   ---
-  duration_ms: 1467.224643
+  duration_ms: 1031.337421
   type: 'test'
   ...
 # Subtest: untimed sentence listening uses device speech and keeps original time explicitly unknown
 ok 136 - untimed sentence listening uses device speech and keeps original time explicitly unknown
   ---
-  duration_ms: 1144.200718
+  duration_ms: 913.65971
   type: 'test'
   ...
 # Subtest: a YouTube link loads captions and prepares sentence study in one action
 ok 137 - a YouTube link loads captions and prepares sentence study in one action
   ---
-  duration_ms: 1212.655012
+  duration_ms: 909.996954
   type: 'test'
   ...
 # Subtest: source buttons expose canonical timestamp links and no blocked embedding request
 ok 138 - source buttons expose canonical timestamp links and no blocked embedding request
   ---
-  duration_ms: 1132.244307
+  duration_ms: 879.528952
   type: 'test'
   ...
 # Subtest: sentence speech and hide toggle work without marking an unrelated lesson as heard
 ok 139 - sentence speech and hide toggle work without marking an unrelated lesson as heard
   ---
-  duration_ms: 1156.385243
+  duration_ms: 1046.08726
   type: 'test'
   ...
 # Subtest: local source file seeks subtitle bounds, pauses at end and stops before recording without upload
 ok 140 - local source file seeks subtitle bounds, pauses at end and stops before recording without upload
   ---
-  duration_ms: 1226.920045
+  duration_ms: 997.758149
   type: 'test'
   ...
 # Subtest: local source repeat restarts at source start and rejects out-of-range files
 ok 141 - local source repeat restarts at source start and rejects out-of-range files
   ---
-  duration_ms: 1278.27672
+  duration_ms: 1065.753466
   type: 'test'
   ...
 # Subtest: changing video releases source file and edited captions invalidate the previous deck
 ok 142 - changing video releases source file and edited captions invalidate the previous deck
   ---
-  duration_ms: 1440.204659
+  duration_ms: 1255.301926
   type: 'test'
   ...
 # Subtest: reopening a saved sentence deck and viewing English counts as a current hint
 ok 143 - reopening a saved sentence deck and viewing English counts as a current hint
   ---
-  duration_ms: 3093.32054
+  duration_ms: 2750.944757
   type: 'test'
   ...
 # Subtest: each audio button speaks only its own complete sentence and cancels the previous sentence
 ok 144 - each audio button speaks only its own complete sentence and cancels the previous sentence
   ---
-  duration_ms: 1648.923081
+  duration_ms: 1420.396995
   type: 'test'
   ...
 # Subtest: sentence audio honors the voice and speed chosen beside the extracted cards
 ok 145 - sentence audio honors the voice and speed chosen beside the extracted cards
   ---
-  duration_ms: 1524.646588
+  duration_ms: 1578.821516
   type: 'test'
   ...
 # Subtest: a sentence exercise starts with its complete Korean version and hidden English answer
 ok 146 - a sentence exercise starts with its complete Korean version and hidden English answer
   ---
-  duration_ms: 1709.075131
+  duration_ms: 1660.191874
   type: 'test'
   ...
 # Subtest: on-device Korean preparation makes no paid request and cached versions survive reopening
 ok 147 - on-device Korean preparation makes no paid request and cached versions survive reopening
   ---
-  duration_ms: 3831.441557
+  duration_ms: 2980.009822
   type: 'test'
   ...
 # Subtest: source paragraph uses all selected sentences with Korean first and matching English comparison
 ok 148 - source paragraph uses all selected sentences with Korean first and matching English comparison
   ---
-  duration_ms: 2500.19068
+  duration_ms: 2903.474454
   type: 'test'
   ...
 # Subtest: paragraph selection uses the requested cards instead of silently practicing only the first
 ok 149 - paragraph selection uses the requested cards instead of silently practicing only the first
   ---
-  duration_ms: 1211.584971
+  duration_ms: 1091.44821
   type: 'test'
   ...
 # Subtest: a local AI paragraph reuses learned sentence structures and compares the aligned new situation
 ok 150 - a local AI paragraph reuses learned sentence structures and compares the aligned new situation
   ---
-  duration_ms: 1328.677138
+  duration_ms: 1164.685374
   type: 'test'
   ...
 # Subtest: an invalid generated paragraph falls back to grounded source content without saving the invalid answer
 ok 151 - an invalid generated paragraph falls back to grounded source content without saving the invalid answer
   ---
-  duration_ms: 1143.295275
+  duration_ms: 1181.050938
   type: 'test'
   ...
 # Subtest: missing translation engines give an explicit setup state without an invented Korean version
 ok 152 - missing translation engines give an explicit setup state without an invented Korean version
   ---
-  duration_ms: 1117.647408
+  duration_ms: 895.882179
   type: 'test'
   ...
 # Subtest: translation cancellation preserves finished sentences and ignores a late translated result
 ok 153 - translation cancellation preserves finished sentences and ignores a late translated result
   ---
-  duration_ms: 1059.20139
+  duration_ms: 1083.670891
   type: 'test'
   ...
 # Subtest: caption changes while translating cannot attach a late Korean result to the changed source
 ok 154 - caption changes while translating cannot attach a late Korean result to the changed source
   ---
-  duration_ms: 1273.996188
+  duration_ms: 891.144174
   type: 'test'
   ...
 # Subtest: library selection of multiple learned sentences creates one Korean paragraph
 ok 155 - library selection of multiple learned sentences creates one Korean paragraph
   ---
-  duration_ms: 1235.201495
+  duration_ms: 1049.837171
   type: 'test'
   ...
 # Subtest: without browser translation the free local translator supplies exact Korean versions automatically
 ok 156 - without browser translation the free local translator supplies exact Korean versions automatically
   ---
-  duration_ms: 1449.907934
+  duration_ms: 1000.460657
   type: 'test'
   ...
 # Subtest: YouTube online-only voices offer a visible permission and resume exactly the pending sentence
 ok 157 - YouTube online-only voices offer a visible permission and resume exactly the pending sentence
   ---
-  duration_ms: 2889.624496
+  duration_ms: 1692.328749
   type: 'test'
   ...
 # Subtest: voice permission only replays the latest blocked sentence and stop clears that request
 ok 158 - voice permission only replays the latest blocked sentence and stop clears that request
   ---
-  duration_ms: 1820.938863
+  duration_ms: 1013.11332
   type: 'test'
   ...
 # Subtest: leaving the video clears pending permission playback and does not speak an old sentence
 ok 159 - leaving the video clears pending permission playback and does not speak an old sentence
   ---
-  duration_ms: 1431.651661
+  duration_ms: 1037.799336
   type: 'test'
   ...
 # Subtest: late online voices appear in the YouTube selector after permission without a settings detour
 ok 160 - late online voices appear in the YouTube selector after permission without a settings detour
   ---
-  duration_ms: 1294.9725
+  duration_ms: 1209.643677
   type: 'test'
   ...
 # Subtest: a speech request that never starts produces an actionable message and ignores late events
 ok 161 - a speech request that never starts produces an actionable message and ignores late events
   ---
-  duration_ms: 1125.420562
+  duration_ms: 1140.454374
   type: 'test'
   ...
 # Subtest: paragraph checkboxes immediately show selected cards and a working bottom start action
 ok 162 - paragraph checkboxes immediately show selected cards and a working bottom start action
   ---
-  duration_ms: 1117.039313
+  duration_ms: 1197.521466
   type: 'test'
   ...
 # Subtest: paragraph chips and clear action keep the checkboxes, highlight and selected IDs in sync
 ok 163 - paragraph chips and clear action keep the checkboxes, highlight and selected IDs in sync
   ---
-  duration_ms: 1057.690067
+  duration_ms: 1024.815044
   type: 'test'
   ...
 # Subtest: a sixth paragraph selection is rejected with feedback beside the start button
 ok 164 - a sixth paragraph selection is rejected with feedback beside the start button
   ---
-  duration_ms: 1144.358337
+  duration_ms: 1027.000138
   type: 'test'
   ...
 # Subtest: paragraph preparation shows progress and can be cancelled directly from the selection bar
 ok 165 - paragraph preparation shows progress and can be cancelled directly from the selection bar
   ---
-  duration_ms: 1340.63527
+  duration_ms: 1010.320028
   type: 'test'
   ...
 # Subtest: Korean meanings appear below English immediately per completed sentence without rebuilding cards
 ok 166 - Korean meanings appear below English immediately per completed sentence without rebuilding cards
   ---
-  duration_ms: 1461.551526
+  duration_ms: 985.318652
   type: 'test'
   ...
 # Subtest: opening a saved video automatically fills only missing Korean meanings without a prepare click
 ok 167 - opening a saved video automatically fills only missing Korean meanings without a prepare click
   ---
-  duration_ms: 3062.631686
+  duration_ms: 2770.685839
   type: 'test'
   ...
 # Subtest: saved Korean meanings show on the first render even when no translation engine is available
 ok 168 - saved Korean meanings show on the first render even when no translation engine is available
   ---
-  duration_ms: 3029.71988
+  duration_ms: 3456.388186
   type: 'test'
   ...
 # Subtest: showing more saved sentences automatically resumes missing meanings when translation becomes available
 ok 169 - showing more saved sentences automatically resumes missing meanings when translation becomes available
   ---
-  duration_ms: 1320.296479
+  duration_ms: 1056.621497
   type: 'test'
   ...
 # Subtest: the link click prepares browser translation before delayed caption retrieval loses user activation
 ok 170 - the link click prepares browser translation before delayed caption retrieval loses user activation
   ---
-  duration_ms: 1074.11697
+  duration_ms: 1027.881639
   type: 'test'
   ...
 # Subtest: one failed browser translation does not leave all later sentences without Korean meanings
 ok 171 - one failed browser translation does not leave all later sentences without Korean meanings
   ---
-  duration_ms: 1122.969757
+  duration_ms: 1028.96819
   type: 'test'
   ...
 # Subtest: full transcript playback and extracted cards include all 65 sentences in source order
 ok 172 - full transcript playback and extracted cards include all 65 sentences in source order
   ---
-  duration_ms: 2810.8036
+  duration_ms: 2944.957006
   type: 'test'
   ...
 # Subtest: transcript-only playback preserves short answers, repeated sentences and final fragments without learning cards
 ok 173 - transcript-only playback preserves short answers, repeated sentences and final fragments without learning cards
   ---
-  duration_ms: 1053.092979
+  duration_ms: 1019.152732
   type: 'test'
   ...
 # Subtest: inclusive range repeats exactly three times and ignores duplicate or stale end events
 ok 174 - inclusive range repeats exactly three times and ignores duplicate or stale end events
   ---
-  duration_ms: 1068.576164
+  duration_ms: 917.273989
   type: 'test'
   ...
 # Subtest: infinite single sentence repeat stops immediately and rejects late callbacks
 ok 175 - infinite single sentence repeat stops immediately and rejects late callbacks
   ---
-  duration_ms: 1071.587731
+  duration_ms: 993.449267
   type: 'test'
   ...
 # Subtest: pause and resume keep the current sentence; an end received while paused advances only on resume
 ok 176 - pause and resume keep the current sentence; an end received while paused advances only on resume
   ---
-  duration_ms: 1204.293379
+  duration_ms: 997.866112
   type: 'test'
   ...
 # Subtest: repeat gap applies between complete ranges and retains the remaining gap across pause
 ok 177 - repeat gap applies between complete ranges and retains the remaining gap across pause
   ---
-  duration_ms: 1294.006243
+  duration_ms: 1023.049761
   type: 'test'
   ...
 # Subtest: previous and next respect range bounds and moving while paused waits for resume
 ok 178 - previous and next respect range bounds and moving while paused waits for resume
   ---
-  duration_ms: 1175.180011
+  duration_ms: 951.663836
   type: 'test'
   ...
 # Subtest: learning-card repeat selects its full source sentence and uses the configured repeat count
 ok 179 - learning-card repeat selects its full source sentence and uses the configured repeat count
   ---
-  duration_ms: 1438.789473
+  duration_ms: 1000.80202
   type: 'test'
   ...
 # Subtest: online voice permission resumes the complete pending range and stop clears a pending full play
 ok 180 - online voice permission resumes the complete pending range and stop clears a pending full play
   ---
-  duration_ms: 1256.886724
+  duration_ms: 999.697126
   type: 'test'
   ...
 # Subtest: card audio and starting microphone permission cancel transcript loops with no later restart
 ok 181 - card audio and starting microphone permission cancel transcript loops with no later restart
   ---
-  duration_ms: 1256.459737
+  duration_ms: 1072.977335
   type: 'test'
   ...
 # Subtest: source edits clear old repeat settings; extraction range never truncates the complete transcript
 ok 182 - source edits clear old repeat settings; extraction range never truncates the complete transcript
   ---
-  duration_ms: 1211.657957
+  duration_ms: 967.749276
   type: 'test'
   ...
 # Subtest: reopening a previously heard transcript restores meanings and playback without translation requests
 ok 183 - reopening a previously heard transcript restores meanings and playback without translation requests
   ---
-  duration_ms: 2732.792017
+  duration_ms: 2337.16892
   type: 'test'
   ...
 # Subtest: caption fetch and automatic extraction populate the full player and restore its controls
 ok 184 - caption fetch and automatic extraction populate the full player and restore its controls
   ---
-  duration_ms: 1294.104901
+  duration_ms: 1319.846208
   type: 'test'
   ...
 # Subtest: speech failure or failure to start ends playback without advancing or retrying indefinitely
 ok 185 - speech failure or failure to start ends playback without advancing or retrying indefinitely
   ---
-  duration_ms: 1378.67256
+  duration_ms: 1057.829355
   type: 'test'
   ...
 # Subtest: changing voice or speed cancels the active sequence and the next play uses the new choice
 ok 186 - changing voice or speed cancels the active sequence and the next play uses the new choice
   ---
-  duration_ms: 2305.452304
+  duration_ms: 1126.697974
   type: 'test'
   ...
 # Subtest: manual transcript paging and range endpoints support sentences beyond the first 40
 ok 187 - manual transcript paging and range endpoints support sentences beyond the first 40
   ---
-  duration_ms: 2415.236256
+  duration_ms: 2138.41534
   type: 'test'
   ...
 # Subtest: navigation and a new source invalidate pending callbacks and remove the old transcript range
 ok 188 - navigation and a new source invalidate pending callbacks and remove the old transcript range
   ---
-  duration_ms: 2520.059242
+  duration_ms: 2128.52365
   type: 'test'
   ...
 # Subtest: starting translation stops the current transcript and does not resurrect it when translation finishes
 ok 189 - starting translation stops the current transcript and does not resurrect it when translation finishes
   ---
-  duration_ms: 1474.632824
+  duration_ms: 1084.545555
   type: 'test'
   ...
 # Subtest: sentence 55 of 116 gets its own Korean meaning before audio without adding a learning card
 ok 190 - sentence 55 of 116 gets its own Korean meaning before audio without adding a learning card
   ---
-  duration_ms: 1476.916276
+  duration_ms: 1163.153858
   type: 'test'
   ...
 # Subtest: the next sentence is prefetched and waits for its own meaning instead of showing a blank or the previous translation
 ok 191 - the next sentence is prefetched and waits for its own meaning instead of showing a blank or the previous translation
   ---
-  duration_ms: 1225.501108
+  duration_ms: 1101.724987
   type: 'test'
   ...
 # Subtest: Korean finishing while paused updates the current sentence without starting audio
 ok 192 - Korean finishing while paused updates the current sentence without starting audio
   ---
-  duration_ms: 1127.841237
+  duration_ms: 994.831922
   type: 'test'
   ...
 # Subtest: stopping or changing source during translation rejects late meaning and audio
 ok 193 - stopping or changing source during translation rejects late meaning and audio
   ---
-  duration_ms: 1174.890098
+  duration_ms: 972.189743
   type: 'test'
   ...
 # Subtest: jumping ahead while translation is pending cannot attach an earlier meaning to the new sentence
 ok 194 - jumping ahead while translation is pending cannot attach an earlier meaning to the new sentence
   ---
-  duration_ms: 1156.547751
+  duration_ms: 954.885897
   type: 'test'
   ...
 # Subtest: local free translation supplies a non-card current sentence with exact source binding
 ok 195 - local free translation supplies a non-card current sentence with exact source binding
   ---
-  duration_ms: 1113.987676
+  duration_ms: 899.772229
   type: 'test'
   ...
 # Subtest: unavailable translation keeps a visible explanation and retry supplies the meaning before playback
 ok 196 - unavailable translation keeps a visible explanation and retry supplies the meaning before playback
   ---
-  duration_ms: 1116.066485
+  duration_ms: 996.768983
   type: 'test'
   ...
 # Subtest: a mismatched local translation is never displayed or cached as the current Korean meaning
 ok 197 - a mismatched local translation is never displayed or cached as the current Korean meaning
   ---
-  duration_ms: 1100.065219
+  duration_ms: 997.559725
   type: 'test'
   ...
 # Subtest: repeat and later replay reuse transcript meanings without another translation call
 ok 198 - repeat and later replay reuse transcript meanings without another translation call
   ---
-  duration_ms: 2339.141009
+  duration_ms: 1895.416693
   type: 'test'
   ...
 # Subtest: translation engine is primed under the playback click even when the first sentences already have card meanings
 ok 199 - translation engine is primed under the playback click even when the first sentences already have card meanings
   ---
-  duration_ms: 1524.414232
+  duration_ms: 1143.80505
   type: 'test'
   ...
 # Subtest: a failed sentence translation does not prevent the next sentence from receiving its Korean meaning
 ok 200 - a failed sentence translation does not prevent the next sentence from receiving its Korean meaning
   ---
-  duration_ms: 1352.761333
+  duration_ms: 1038.867231
   type: 'test'
   ...
 # Subtest: translation timeout stays visible and retry recovers without a late translation replacing the meaning
 ok 201 - translation timeout stays visible and retry recovers without a late translation replacing the meaning
   ---
-  duration_ms: 1325.726536
+  duration_ms: 910.644485
   type: 'test'
   ...
 # Subtest: stopped translation does not pretend to keep loading and retry while paused never starts audio
 ok 202 - stopped translation does not pretend to keep loading and retry while paused never starts audio
   ---
-  duration_ms: 1231.787882
+  duration_ms: 963.850797
   type: 'test'
   ...
 # Subtest: PDFs open offline with Korean on every visible card and one shared audio transport
 ok 203 - PDFs open offline with Korean on every visible card and one shared audio transport
   ---
-  duration_ms: 1472.422209
+  duration_ms: 1165.34302
   type: 'test'
   ...
 # Subtest: PDF playback keeps the right Korean on current, next, paused and stopped sentences
 ok 204 - PDF playback keeps the right Korean on current, next, paused and stopped sentences
   ---
-  duration_ms: 1302.751311
+  duration_ms: 1107.594841
   type: 'test'
   ...
 # Subtest: switching PDF sources cancels stale playback and never marks the other material as seen
 ok 205 - switching PDF sources cancels stale playback and never marks the other material as seen
   ---
-  duration_ms: 1521.011717
+  duration_ms: 1372.908438
   type: 'test'
   ...
 # Subtest: PDF source switching preserves the complete YouTube draft and restores its player
 ok 206 - PDF source switching preserves the complete YouTube draft and restores its player
   ---
-  duration_ms: 1941.893285
+  duration_ms: 1651.493155
   type: 'test'
   ...
 # Subtest: PDF sentence ranges repeat exact text with prepared meanings without translation
 ok 207 - PDF sentence ranges repeat exact text with prepared meanings without translation
   ---
-  duration_ms: 2025.025162
+  duration_ms: 2389.163631
   type: 'test'
   ...
 # Subtest: PDF topic filters retain whole playback and reach the final source sentence
 ok 208 - PDF topic filters retain whole playback and reach the final source sentence
   ---
-  duration_ms: 1802.611233
+  duration_ms: 1753.812842
   type: 'test'
   ...
 # Subtest: PDF single practice starts with Korean and keeps English hidden until requested
 ok 209 - PDF single practice starts with Korean and keeps English hidden until requested
   ---
-  duration_ms: 1321.288365
+  duration_ms: 1067.496975
   type: 'test'
   ...
 # Subtest: PDF selected sentences become a Korean paragraph without any AI service
 ok 210 - PDF selected sentences become a Korean paragraph without any AI service
   ---
-  duration_ms: 1186.954128
+  duration_ms: 1045.427475
   type: 'test'
   ...
 # Subtest: PDF selections have a five-sentence cap and topic changes clear the selection
 ok 211 - PDF selections have a five-sentence cap and topic changes clear the selection
   ---
-  duration_ms: 1184.136578
+  duration_ms: 1061.266453
   type: 'test'
   ...
 # Subtest: PDF batches start a 20-item speaking session and authored paragraph exercises stay separate
 ok 212 - PDF batches start a 20-item speaking session and authored paragraph exercises stay separate
   ---
-  duration_ms: 1353.191385
+  duration_ms: 1189.867603
   type: 'test'
   ...
 # Subtest: PDF material cards and exercises survive saved-state restoration and remain available in the library
 ok 213 - PDF material cards and exercises survive saved-state restoration and remain available in the library
   ---
-  duration_ms: 2320.619812
+  duration_ms: 1980.897456
   type: 'test'
   ...
 # Subtest: online voice permission remains visible on PDF materials and resumes only the requested sentence
 ok 214 - online voice permission remains visible on PDF materials and resumes only the requested sentence
   ---
-  duration_ms: 1217.389402
+  duration_ms: 992.602486
   type: 'test'
   ...
 # Subtest: saved video appears in the materials, YouTube catalog and lesson picker without an external load
 ok 215 - saved video appears in the materials, YouTube catalog and lesson picker without an external load
   ---
-  duration_ms: 1279.588248
+  duration_ms: 973.73006
   type: 'test'
   ...
 # Subtest: selecting a saved video loads its captions and prepares all 25 Korean speaking cards with no paid API calls
 ok 216 - selecting a saved video loads its captions and prepares all 25 Korean speaking cards with no paid API calls
   ---
-  duration_ms: 1512.518291
+  duration_ms: 1288.893026
   type: 'test'
   ...
 # Subtest: the saved-video lesson selector opens the video workflow instead of an empty expression library
 ok 217 - the saved-video lesson selector opens the video workflow instead of an empty expression library
   ---
-  duration_ms: 1562.546155
+  duration_ms: 1201.48868
   type: 'test'
   ...
 # Subtest: declining replacement of another video draft preserves inputs, caption text and current view
 ok 218 - declining replacement of another video draft preserves inputs, caption text and current view
   ---
-  duration_ms: 1327.824328
+  duration_ms: 1064.122432
   type: 'test'
   ...
 # Subtest: reopening a prepared saved video reuses its caption draft and meanings without duplicate cards
 ok 219 - reopening a prepared saved video reuses its caption draft and meanings without duplicate cards
   ---
-  duration_ms: 1802.592623
+  duration_ms: 1580.141196
   type: 'test'
   ...
 # Subtest: failed saved-video captions show an actionable error without invented cards and permit another source
 ok 220 - failed saved-video captions show an actionable error without invented cards and permit another source
   ---
-  duration_ms: 1268.111303
+  duration_ms: 1125.317127
   type: 'test'
   ...
 # Subtest: a standalone saved-video click explains the free caption launcher without attempting a paid request
 ok 221 - a standalone saved-video click explains the free caption launcher without attempting a paid request
   ---
-  duration_ms: 1103.113672
+  duration_ms: 1013.126156
   type: 'test'
   ...
 # Subtest: recording blocks a saved-video launch and leaves the active recording intact
 ok 222 - recording blocks a saved-video launch and leaves the active recording intact
   ---
-  duration_ms: 1510.815361
+  duration_ms: 994.969172
   type: 'test'
   ...
 # Subtest: saved-video buttons recover after reopening a deck whose Korean preparation was still pending
 ok 223 - saved-video buttons recover after reopening a deck whose Korean preparation was still pending
   ---
-  duration_ms: 3289.498906
+  duration_ms: 2009.665891
   type: 'test'
   ...
 # Subtest: unified catalog lists every sidebar material without opening a PDF or marking it as studied
 ok 224 - unified catalog lists every sidebar material without opening a PDF or marking it as studied
   ---
-  duration_ms: 1475.13076
+  duration_ms: 1946.174793
   type: 'test'
   ...
 # Subtest: catalog search and category counts narrow the list and return to all materials
 ok 225 - catalog search and category counts narrow the list and return to all materials
   ---
-  duration_ms: 1410.375485
+  duration_ms: 1098.86997
   type: 'test'
   ...
 # Subtest: every existing lecture, KPOP and speech opens only its own expressions and resets stale search filters
 ok 226 - every existing lecture, KPOP and speech opens only its own expressions and resets stale search filters
   ---
-  duration_ms: 4701.44806
+  duration_ms: 3499.194602
   type: 'test'
   ...
 # Subtest: catalog lecture and KPOP paragraph actions start the matching Korean exercise without API calls
 ok 227 - catalog lecture and KPOP paragraph actions start the matching Korean exercise without API calls
   ---
-  duration_ms: 1508.560216
+  duration_ms: 1338.780488
   type: 'test'
   ...
 # Subtest: speech study actions use its source example and Korean meaning and the sidebar no longer opens all speeches
 ok 228 - speech study actions use its source example and Korean meaning and the sidebar no longer opens all speeches
   ---
-  duration_ms: 1114.53403
+  duration_ms: 1039.193529
   type: 'test'
   ...
 # Subtest: PDF back button restores catalog filters and does not erase the selected topic or YouTube draft
 ok 229 - PDF back button restores catalog filters and does not erase the selected topic or YouTube draft
   ---
-  duration_ms: 1563.594987
+  duration_ms: 1333.967315
   type: 'test'
   ...
 # Subtest: restored personal video cards appear separately, stay scoped offline and do not replace another draft
 ok 230 - restored personal video cards appear separately, stay scoped offline and do not replace another draft
   ---
-  duration_ms: 2394.238769
+  duration_ms: 1938.320822
   type: 'test'
   ...
 # Subtest: a transcript draft with no saved cards is visible and a prepared bundled video appears only once
 ok 231 - a transcript draft with no saved cards is visible and a prepared bundled video appears only once
   ---
-  duration_ms: 1574.277442
+  duration_ms: 1567.695064
   type: 'test'
   ...
 # Subtest: catalog navigation cannot interrupt recording or discard a declined written answer
 ok 232 - catalog navigation cannot interrupt recording or discard a declined written answer
   ---
-  duration_ms: 1208.289402
+  duration_ms: 1057.15703
   type: 'test'
   ...
 # Subtest: Harvard PDF opens from the searchable catalog offline with all Korean and source labels
 ok 233 - Harvard PDF opens from the searchable catalog offline with all Korean and source labels
   ---
-  duration_ms: 1596.710584
+  duration_ms: 1205.488778
   type: 'test'
   ...
 # Subtest: Harvard PDF playback crosses all 84 units with persistent Korean and no translation requests
 ok 234 - Harvard PDF playback crosses all 84 units with persistent Korean and no translation requests
   ---
-  duration_ms: 3118.805024
+  duration_ms: 3197.321604
   type: 'test'
   ...
 # Subtest: Harvard topic practice includes the final source sentence and exact two-unit repetition
 ok 235 - Harvard topic practice includes the final source sentence and exact two-unit repetition
   ---
-  duration_ms: 1373.118912
+  duration_ms: 1219.107611
   type: 'test'
   ...
 # Subtest: Harvard selected units and five authored paragraphs start Korean-first without an API
 ok 236 - Harvard selected units and five authored paragraphs start Korean-first without an API
   ---
-  duration_ms: 2300.077628
+  duration_ms: 2155.313065
   type: 'test'
   ...
 # Subtest: Harvard Korean-first practice and review survive saved-state restoration
 ok 237 - Harvard Korean-first practice and review survive saved-state restoration
   ---
-  duration_ms: 3747.980611
+  duration_ms: 3409.206304
   type: 'test'
   ...
 # Subtest: an older 20-card draft fills all 65 sentences automatically while retaining IDs, translation and review position
 ok 238 - an older 20-card draft fills all 65 sentences automatically while retaining IDs, translation and review position
   ---
-  duration_ms: 2857.23277
+  duration_ms: 2628.530231
   type: 'test'
   ...
 # Subtest: all short and repeated source sentences have stable cards on extraction and reopening
 ok 239 - all short and repeated source sentences have stable cards on extraction and reopening
   ---
-  duration_ms: 2512.196556
+  duration_ms: 2180.20521
   type: 'test'
   ...
 # Subtest: a 623-sentence video crosses the previous 100-item import and 500-card storage bounds without truncation
 ok 240 - a 623-sentence video crosses the previous 100-item import and 500-card storage bounds without truncation
   ---
-  duration_ms: 14704.479553
+  duration_ms: 11631.55601
   type: 'test'
   ...
 # Subtest: manual source range cannot restrict the automatic whole-transcript deck
 ok 241 - manual source range cannot restrict the automatic whole-transcript deck
   ---
-  duration_ms: 1854.860264
+  duration_ms: 1326.540874
   type: 'test'
   ...
 # Subtest: a capacity error leaves the old deck intact instead of claiming partial extraction is complete
 ok 242 - a capacity error leaves the old deck intact instead of claiming partial extraction is complete
   ---
-  duration_ms: 1587.604257
+  duration_ms: 1127.500186
   type: 'test'
   ...
 # Subtest: caption file import also extracts every sentence without another button press
 ok 243 - caption file import also extracts every sentence without another button press
   ---
-  duration_ms: 2384.758431
+  duration_ms: 2036.778232
   type: 'test'
   ...
 # Subtest: the complete deck exists before translation finishes and survives cancellation and retry
 ok 244 - the complete deck exists before translation finishes and survives cancellation and retry
   ---
-  duration_ms: 2409.495699
+  duration_ms: 2199.058465
   type: 'test'
   ...
 # Subtest: without browser speech recognition the dictation switch is disabled and self-check stays as before
 ok 245 - without browser speech recognition the dictation switch is disabled and self-check stays as before
   ---
-  duration_ms: 1215.487598
+  duration_ms: 973.597885
   type: 'test'
   ...
 # Subtest: dictation starts only after opting in and fills the answer without confirming it
 ok 246 - dictation starts only after opting in and fills the answer without confirming it
   ---
-  duration_ms: 1277.619718
+  duration_ms: 1159.193121
   type: 'test'
   ...
 # Subtest: declining the dictation notice keeps it off and recording stays local
 ok 247 - declining the dictation notice keeps it off and recording stays local
   ---
-  duration_ms: 1315.627412
+  duration_ms: 1047.768276
   type: 'test'
   ...
 # Subtest: dictation follows pause and resume and survives the browser ending a silent session
 ok 248 - dictation follows pause and resume and survives the browser ending a silent session
   ---
-  duration_ms: 2283.353865
+  duration_ms: 1557.064212
   type: 'test'
   ...
 # Subtest: a dictation error keeps the recording and leaves the answer for the learner
 ok 249 - a dictation error keeps the recording and leaves the answer for the learner
   ---
-  duration_ms: 1148.533245
+  duration_ms: 1531.31034
   type: 'test'
   ...
 # Subtest: typed words are never replaced by a later dictation result
 ok 250 - typed words are never replaced by a later dictation result
   ---
-  duration_ms: 1247.748678
+  duration_ms: 908.191479
   type: 'test'
   ...
 # Subtest: self-check marks the example words, finds the target expression and escapes learner text
 ok 251 - self-check marks the example words, finds the target expression and escapes learner text
   ---
-  duration_ms: 1068.289042
+  duration_ms: 950.332006
   type: 'test'
   ...
 # Subtest: sentence cards rely on the word comparison instead of an expression check
 ok 252 - sentence cards rely on the word comparison instead of an expression check
   ---
-  duration_ms: 1333.10166
+  duration_ms: 1223.07812
+  type: 'test'
+  ...
+# Subtest: situation-only, Korean paragraph, new-situation and cover-and-speak buttons are not shown
+ok 253 - situation-only, Korean paragraph, new-situation and cover-and-speak buttons are not shown
+  ---
+  duration_ms: 1077.851587
   type: 'test'
   ...
 # Subtest: YouTube links normalize common formats and reject foreign or executable URLs
-ok 253 - YouTube links normalize common formats and reject foreign or executable URLs
+ok 254 - YouTube links normalize common formats and reject foreign or executable URLs
   ---
-  duration_ms: 6.807137
+  duration_ms: 5.143404
   type: 'test'
   ...
 # Subtest: caption times preserve fractions and reject invalid ranges
-ok 254 - caption times preserve fractions and reject invalid ranges
+ok 255 - caption times preserve fractions and reject invalid ranges
   ---
-  duration_ms: 1.433099
+  duration_ms: 1.067241
   type: 'test'
   ...
 # Subtest: SRT, VTT and copied YouTube captions preserve grounded source lines
-ok 255 - SRT, VTT and copied YouTube captions preserve grounded source lines
+ok 256 - SRT, VTT and copied YouTube captions preserve grounded source lines
   ---
-  duration_ms: 0.743066
+  duration_ms: 0.781752
   type: 'test'
   ...
 # Subtest: untimed text never gets fabricated source timestamps
-ok 256 - untimed text never gets fabricated source timestamps
+ok 257 - untimed text never gets fabricated source timestamps
   ---
-  duration_ms: 0.705546
+  duration_ms: 0.969735
   type: 'test'
   ...
 # Subtest: rule candidates are actual source substrings and cannot invent expression matches
-ok 257 - rule candidates are actual source substrings and cannot invent expression matches
+ok 258 - rule candidates are actual source substrings and cannot invent expression matches
   ---
-  duration_ms: 2.909707
+  duration_ms: 4.919063
   type: 'test'
   ...
 # Subtest: custom YouTube cards reject unsafe links and fabricated quotes
-ok 258 - custom YouTube cards reject unsafe links and fabricated quotes
+ok 259 - custom YouTube cards reject unsafe links and fabricated quotes
   ---
-  duration_ms: 0.626428
+  duration_ms: 0.627049
   type: 'test'
   ...
 # Subtest: YouTube cards and their review history survive a fresh backup import
-ok 259 - YouTube cards and their review history survive a fresh backup import
+ok 260 - YouTube cards and their review history survive a fresh backup import
   ---
-  duration_ms: 1.25503
+  duration_ms: 1.331945
   type: 'test'
   ...
 # Subtest: ChatGPT expression import verifies video and exact source, ignores model timestamps
-ok 260 - ChatGPT expression import verifies video and exact source, ignores model timestamps
+ok 261 - ChatGPT expression import verifies video and exact source, ignores model timestamps
   ---
-  duration_ms: 0.697807
+  duration_ms: 0.731582
   type: 'test'
   ...
 # Subtest: adjacent subtitle fragments form one grounded phrase with the actual time span
-ok 261 - adjacent subtitle fragments form one grounded phrase with the actual time span
+ok 262 - adjacent subtitle fragments form one grounded phrase with the actual time span
   ---
-  duration_ms: 1.49534
+  duration_ms: 1.43584
   type: 'test'
   ...
-1..261
-# tests 261
+1..262
+# tests 262
 # suites 0
-# pass 261
+# pass 262
 # fail 0
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 282771.319924
+# duration_ms 239925.740664
 exit=0

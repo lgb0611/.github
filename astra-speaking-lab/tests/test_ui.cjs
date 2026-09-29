@@ -693,3 +693,8 @@ test('sentence cards rely on the word comparison instead of an expression check'
  a.fill('answerInput','I did not know');a.click('selfCheck');const box=a.$('feedbackContent').querySelector('.word-compare');
  assert.ok(box.querySelectorAll('mark.missed').length>0);assert.ok(box.querySelectorAll('mark.said').length>0);assert.equal(box.querySelector('.expression-checks'),null);
 });
+test('situation-only, Korean paragraph, new-situation and cover-and-speak buttons are not shown',async t=>{
+ const a=await app(t,{state:cold()});
+ for(const id of ['situationOnly','combinedPractice','newSituation','beginRecall'])assert.equal(a.w.getComputedStyle(a.$(id)).display,'none',id);
+ for(const id of ['sampleToggle','recordBtn','selfCheck'])assert.notEqual(a.w.getComputedStyle(a.$(id)).display,'none',id);
+});

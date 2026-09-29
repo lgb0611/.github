@@ -115,3 +115,5 @@ button:disabled{cursor:not-allowed;opacity:.55}.input-options select{width:auto;
 .compare-meter{margin:0 0 8px}.meter{height:8px;background:#e5ebe6;border-radius:99px;overflow:hidden;margin-bottom:12px}.meter i{display:block;height:100%;background:#4f8a5b;border-radius:99px}
 .word-compare .compare-sample{background:#fff;border:1px solid var(--line)}mark.said{background:#cdebbf;color:inherit;border-radius:3px}mark.missed{background:#ffdcb8;color:inherit;border-radius:3px;text-decoration:underline dotted #9a5320}
 .expression-checks{list-style:none;margin:0;padding:0}.expression-checks li{padding:8px 0;border-top:1px solid var(--line);font-size:14px;overflow-wrap:anywhere}.expression-checks li.found span{color:#2f7a3e}.expression-checks li.missing span{color:#9a5320}
+/* v2.10.1 removed from the practice screen at the learner's request; still used internally by the step bar */
+#situationOnly,#combinedPractice,#newSituation,#beginRecall{display:none!important}
