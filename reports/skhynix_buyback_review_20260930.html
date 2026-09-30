@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="description" content="SK하이닉스 5년 연속 매입·소각 시나리오 재계산과 메리츠·KT&amp;G 비교 검토.">
+<title>SK하이닉스 매입·소각 검토</title>
+<!-- 차트 라이브러리: 원본과 같은 Plotly 3.3.1. 인터넷 없이 열어야 하면 make_offline.py 로 파일 안에 내장 -->
+<script src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@3.3.1/plotly.min.js"></script>
+<style>
+/* =========================================================
+   1) 색상 토큰 — 이 값들만 쓰고 새 색을 만들지 않음
+   ========================================================= */
+:root{
+  color-scheme:light;
+  --bg:#F3F6FB;        /* 페이지 바탕 (옅은 회청색) */
+  --surface:#FFFFFF;   /* 카드·차트 바탕 */
+  --surface2:#EAF0F7;  /* 표 머리글·버튼·강조 칸 */
+  --inset:#F5F8FC;     /* 카드 안의 안쪽 상자 */
+  --line:#CCD7E5;      /* 테두리·격자선 */
+  --text:#15263F;      /* 제목·굵은 글씨 */
+  --soft:#293B52;      /* 본문 */
+  --muted:#52657D;     /* 보조설명·출처·축 */
+  --cyan:#007589;      /* 주인공: 핵심 수치·주 계열·링크 (진한 청록) */
+  --amber:#A65400;     /* 비교 대상·기준선·주의 (진한 주황) */
+  --red:#C0344E;       /* 하락·부정·대안 시나리오 */
+  --green:#14734E;     /* 상승·긍정·신규 */
+  --purple:#7155B7;    /* '조건부' 태그 전용 */
+  --note-bg:#FFF5E8;   /* 범위 공개 상자 바탕 */
+  --row-hl:#E7F3F6;    /* 표 강조 행 */
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:62px}
+body{margin:0;background:var(--bg);color:var(--soft);font-family:Pretendard,'Noto Sans KR','Malgun Gothic',Arial,sans-serif;font-size:14px;line-height:1.65;font-variant-numeric:tabular-nums;letter-spacing:0}
+a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}
+b,strong{font-weight:700;color:var(--text)}
+h1{color:var(--text);font-size:31px;line-height:1.32;margin:23px 0 10px;font-weight:750}
+h2{font-size:20px;line-height:1.45;margin:0;color:var(--text)}
+h3{font-size:14px;line-height:1.45;margin:0;color:var(--text)}
+h2,h3,h4{word-break:keep-all}
+button,select{font:inherit;background:var(--surface2);color:var(--soft);border:1px solid var(--line);padding:7px 12px;border-radius:4px;cursor:pointer}
+button:hover,select:hover{border-color:var(--cyan)}
+button:focus-visible,a:focus-visible,summary:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+code{font-size:11px}
+
+/* =========================================================
+   2) 페이지 뼈대 — 머리글 / 고정 목차 / 섹션 / 바닥글
+   ========================================================= */
+header,main,footer{max-width:1140px;margin:auto;padding:0 28px}
+header{padding-top:35px;padding-bottom:23px;border-bottom:1px solid var(--line)}
+.brand{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px}
+.brand b{color:var(--cyan);font-size:14px}
+.brand>span{text-align:right}
+.dek{max-width:900px;margin:0;font-size:15px;color:var(--soft)}
+.meta-note{font-size:11px;color:var(--muted);margin-top:10px}
+nav{position:sticky;top:0;z-index:30;border-bottom:1px solid var(--line);background:var(--bg);overflow:auto;scrollbar-width:thin}
+nav .inner{max-width:1140px;margin:auto;display:flex;gap:23px;padding:11px 28px;white-space:nowrap;font-size:12px}
+nav a{color:var(--soft)}
+section{padding-top:30px;border-bottom:1px solid var(--line);padding-bottom:25px}
+.section-title{display:flex;align-items:flex-start;gap:13px;margin-bottom:17px}
+.section-title>span{font-size:13px;padding-top:3px;color:var(--cyan);font-weight:700}
+.sub{font-size:11px;color:var(--muted);line-height:1.5;margin-top:6px}
+footer{padding-top:18px;padding-bottom:30px;display:flex;justify-content:space-between;gap:12px;color:var(--muted);font-size:10px}
+
+/* 머리글 요약 상자 (왼쪽: 핵심 숫자 4개 / 오른쪽: 결론) */
+.hero-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:18px;margin-top:22px}
+.hero-box{background:linear-gradient(145deg,var(--surface),var(--inset));border:1px solid var(--line);padding:18px}
+.hero-box h3{font-size:13px;color:var(--cyan);margin-bottom:9px}
+.hero-box p{margin:0 0 8px}
+.hero-list{display:grid;grid-template-columns:1fr 1fr;gap:10px 18px}
+.hero-list b{display:block;font-size:18px}
+.hero-list span{font-size:11px;color:var(--muted)}
+
+/* KPI 줄 (세로선으로 나눈 숫자 4개) */
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:0 0 20px}
+.kpi{padding:8px 18px;border-left:1px solid var(--line)}
+.kpi:first-child{border:0;padding-left:0}
+.kpi small{display:block;font-size:11px;color:var(--muted)}
+.kpi strong{display:block;color:var(--cyan);font-size:23px;line-height:1.4}
+.kpi span{display:block;font-size:11px;color:var(--muted)}
+
+/* =========================================================
+   3) 차트 카드 (figure) — 모든 차트는 이 틀 안에 넣음
+      제목(주장) → 부제(단위·기간·등급) → 차트 → 해설 → 주의 → 출처
+   ========================================================= */
+.figure{position:relative;background:var(--surface);border:1px solid var(--line);padding:15px 16px 13px;margin:0 0 17px;min-width:0;break-inside:avoid}
+.figure-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;min-height:30px}
+.figure-head>div{min-width:0}
+.plot{width:100%;min-width:0;margin:8px 0 7px;overflow:hidden}
+.figure figcaption{font-size:13px;line-height:1.72;padding-top:10px;border-top:1px solid var(--line);word-break:keep-all;overflow-wrap:anywhere}
+.chart-note{font-size:10px;color:var(--muted);margin-top:6px}
+.source{font-size:10.5px;line-height:1.6;color:var(--muted);margin-top:8px;overflow-wrap:anywhere}
+.ref-link{font-size:10px;white-space:nowrap;margin-left:5px}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px;margin-bottom:17px}
+.two>.figure{margin-bottom:0}
+.positive{color:var(--green)!important}
+.negative{color:var(--red)!important}
+
+/* =========================================================
+   4) 도표 부품 (차트가 아닌 그림)
+   ========================================================= */
+/* 흐름도: 단계 → 단계 (모바일에서는 ↓) */
+.flow-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;align-items:stretch;margin-bottom:17px}
+.flow-node{background:var(--surface);border:1px solid var(--line);padding:12px;text-align:center;position:relative}
+.flow-node:not(:last-child):after{content:'→';position:absolute;right:-13px;top:42%;color:var(--cyan);font-size:18px;z-index:2}
+.flow-node b{display:block}
+.flow-node small{color:var(--muted)}
+/* 매출 연결 사슬: 수요 → 제품 → 매출 (3칸) */
+.revenue-chain{display:flex;gap:24px;align-items:stretch;margin:7px 0 14px}
+.revenue-chain span{position:relative;flex:1;text-align:center;background:var(--surface2);border:1px solid var(--line);padding:8px 12px;font-size:12px;color:var(--text)}
+.revenue-chain span:not(:last-child):after{content:'→';position:absolute;right:-19px;color:var(--cyan)}
+/* 강조 상자 */
+.callout{border:1px solid var(--line);background:var(--inset);padding:13px 15px;margin:12px 0 17px}
+.callout>b{color:var(--cyan)}
+.callout p{font-size:12.5px;line-height:1.8;margin:7px 0}
+/* 조건 카드 3칸 (필수 조건 · 비교 방식 · 기준) */
+.cap-rule{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:14px}
+.cap-rule>div{padding:15px;background:var(--surface)}
+.cap-rule small,.cap-rule span{display:block;color:var(--muted);font-size:11px}
+.cap-rule b{display:block;font-size:16px;margin:5px 0}
+/* 범위·한계 공개 (호박색 왼쪽 선) */
+.coverage-note{border-left:3px solid var(--amber);padding:12px 15px;background:var(--note-bg);font-size:12px;margin:15px 0 20px;line-height:1.8}
+/* 요약 한 줄 (청록 왼쪽 선) */
+.scope-line{font-size:12px;line-height:1.8;background:var(--surface);border-left:3px solid var(--cyan);padding:12px 15px;margin:15px 0}
+/* 큰 숫자 4칸 (밑줄형) */
+.wide-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:18px}
+.wide-stats>div{border-bottom:1px solid var(--line);padding:10px 0}
+.wide-stats b{display:block;font-size:21px;color:var(--cyan)}
+.wide-stats small{font-size:11px;color:var(--muted)}
+/* 태그(둥근 알약) · 칩(각진) · 수치 배지 */
+.tag{display:inline-block;border:1px solid var(--line);padding:2px 6px;border-radius:999px;font-size:10px;color:var(--muted);margin-right:5px}
+.tag.direct{color:var(--cyan);border-color:rgba(0,117,137,.45)}
+.tag.market{color:var(--amber);border-color:rgba(166,84,0,.4)}
+.tag.conditional{color:var(--purple);border-color:rgba(113,85,183,.4)}
+.chip{font-size:10px;padding:2px 6px;display:inline-block;border:1px solid var(--line);border-radius:3px}
+.chip.core{color:var(--cyan);border-color:var(--cyan)}
+.chip.theme{color:var(--cyan)}
+.chip.new{color:var(--green)}
+.chip.hold{color:var(--amber)}
+.chip.other,.chip.unreviewed{color:var(--muted)}
+.tech-levels{display:flex;flex-wrap:wrap;gap:6px}
+.tech-levels span{font-size:10px;border:1px solid var(--line);padding:3px 6px;white-space:nowrap}
+
+/* =========================================================
+   5) 섹션 안 소제목 · 기업 분석 카드
+   ========================================================= */
+.sector-heading{display:flex;gap:14px;align-items:flex-start;margin:38px 0 18px;border-top:2px solid var(--cyan);padding:18px 1px 0;scroll-margin-top:70px}
+.sector-heading>span{color:var(--cyan);font-size:12px;font-weight:700;white-space:nowrap;padding-top:3px}
+.sector-heading h3{font-size:21px}
+.sector-heading p{font-size:13px;line-height:1.9;max-width:1000px;margin:8px 0 0;word-break:keep-all}
+.company-block{border-left:3px solid var(--cyan);padding:22px 22px 16px;margin-bottom:27px;scroll-margin-top:62px}
+.winner-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.winner-head h3{font-size:17px}
+.company-name{color:var(--muted);font-size:12px;font-weight:400;margin-left:8px}
+.winner-meta{font-size:10.5px;color:var(--muted);text-align:right;min-width:175px;line-height:1.7}
+.investment-thesis{font-size:18px;line-height:1.55;font-weight:700;color:var(--text);margin:14px 0 3px;word-break:keep-all}
+.eyebrow{display:block;color:var(--cyan);font-size:10px;letter-spacing:.8px;font-weight:700;margin-bottom:5px}
+.business-intro{padding:11px 0 7px;margin-top:9px;border-top:1px solid var(--line)}
+.business-intro p{margin:0;font-size:13px;line-height:1.86}
+.winner-copy{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin:14px 0 12px}
+.winner-copy>div+div{border-left:1px solid var(--line);padding-left:22px}
+.winner-copy>div>b{display:block;font-size:13px;line-height:1.5;color:var(--cyan);margin-bottom:8px}
+.winner-copy p{margin:0;font-size:13px;line-height:1.86;word-break:keep-all;overflow-wrap:anywhere}
+.specific-hinge{background:var(--inset);border-left:2px solid var(--amber);padding:10px 13px;margin:15px 0 8px}
+.specific-hinge>b{font-size:12px;color:var(--amber)}
+.specific-hinge p{font-size:12px;margin:5px 0 0;line-height:1.85;word-break:keep-all}
+.analysis-status{font-size:10px;color:var(--muted);margin:10px 0 15px}
+.integrated-tech{background:transparent;border:0;border-top:1px solid var(--line);padding:15px 0 0;margin:0!important}
+.tech-header{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.tech-header h3{font-size:12px;color:var(--muted)}
+.chart-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:4px 0 12px}
+.chart-actions button{font-size:11px;padding:5px 9px}
+.chart-actions a{font-size:10px;margin-left:auto}
+
+/* =========================================================
+   6) 표 · 필터 · 방법론 · 출처 · 팝업
+   ========================================================= */
+.table-shell{overflow:auto;border:1px solid var(--line);scrollbar-width:thin;max-height:520px}
+table{border-collapse:collapse;width:100%;font-size:11px;white-space:nowrap}
+th{background:var(--surface2);color:var(--muted);font-weight:500;text-align:right;padding:10px 12px;position:sticky;top:0;z-index:2}
+td{padding:9px 12px;text-align:right;border-top:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+tbody tr:hover{background:var(--surface)}
+td small{display:block;font-size:9px;color:var(--muted);max-width:190px;white-space:normal}
+td:first-child b{font-size:13px}
+.row-hl{background:var(--row-hl)}
+.controls{display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin:14px 0 12px}
+.controls label{display:flex;flex-direction:column;gap:5px;color:var(--muted);font-size:11px}
+.controls select,.controls input{height:36px;font-size:12px}
+.controls input{background:var(--surface2);border:1px solid var(--line);color:var(--text);border-radius:4px;padding:7px 10px;width:100%}
+.controls .grow{flex:1;min-width:145px}
+.table-meta{display:flex;justify-content:space-between;gap:15px;font-size:10.5px;color:var(--muted);margin:10px 0}
+.method-grid{display:grid;grid-template-columns:1fr 1fr;gap:23px;background:var(--surface);border:1px solid var(--line);padding:20px;margin-bottom:18px}
+.method-grid dl{margin:9px 0 0;font-size:12px}
+.method-grid dt{font-weight:700;color:var(--soft);margin:9px 0 2px}
+.method-grid dd{margin:0;color:var(--muted);line-height:1.85}
+.source-list{border:1px solid var(--line);padding:13px 17px;background:var(--surface)}
+.source-list>summary{cursor:pointer;font-weight:700;color:var(--text)}
+.source-list summary span{font-size:11px;color:var(--muted);font-weight:400;margin-left:12px}
+.source-list ol{padding-left:22px;margin:14px 0 0;columns:2;column-gap:30px}
+.source-list li{padding:4px 0;font-size:11px;scroll-margin-top:90px;break-inside:avoid}
+.source-list small{display:block;color:var(--muted);font-size:10px}
+.source-list li:target{background:var(--surface2)}
+dialog{background:var(--surface);color:var(--soft);border:1px solid var(--line);border-radius:5px;width:min(1100px,96vw);max-height:90vh;padding:18px}
+dialog::backdrop{background:rgba(21,38,63,.35)}
+.dialog-head{display:flex;gap:10px;justify-content:space-between;align-items:center;margin-bottom:12px}
+.dialog-head h3{font-size:15px}
+.js-plotly-plot .plotly .modebar{background:transparent!important}
+.js-plotly-plot .plotly .modebar-btn path{fill:#52657D!important}
+noscript{display:block;background:#FDECEF;padding:15px;color:var(--red)}
+
+/* =========================================================
+   7) 모바일 (760px 이하) — 2칸 이상은 1칸으로
+   ========================================================= */
+@media(max-width:760px){
+  header,main,footer{padding-left:15px;padding-right:15px}
+  header{padding-top:22px}
+  .brand{font-size:10px}.brand b{font-size:12px}.brand>span{max-width:155px}
+  h1{font-size:26px;margin-top:18px}h2{font-size:18px}.dek{font-size:13px}
+  nav .inner{padding:10px 15px;gap:20px}
+  section{padding-top:24px}.section-title{gap:9px}
+  .hero-grid,.two,.method-grid,.winner-copy,.flow-grid,.cap-rule{grid-template-columns:1fr}
+  .kpis{grid-template-columns:repeat(2,1fr);gap:12px}.kpi{padding:4px 13px}.kpi:nth-child(3){border:0;padding-left:0}.kpi strong{font-size:21px}
+  .wide-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .figure{padding:12px 9px 11px}.figure figcaption{font-size:12.5px}
+  .flow-node:not(:last-child):after{content:'↓';right:50%;top:auto;bottom:-17px}
+  .revenue-chain{gap:18px}.revenue-chain span{padding:8px 5px;font-size:10px}.revenue-chain span:not(:last-child):after{right:-15px}
+  .company-block{padding:15px 11px 12px}.investment-thesis{font-size:16px}
+  .winner-head{flex-wrap:wrap}.winner-meta{text-align:left;min-width:0;flex-basis:100%}
+  .company-name{display:block;margin-left:0;margin-top:3px}
+  .winner-copy>div+div{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-top:13px}
+  .sector-heading{margin-top:29px;gap:10px}.sector-heading h3{font-size:18px}.sector-heading p{font-size:12px}
+  .controls{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .table-meta{display:block;line-height:1.8}
+  .source-list ol{columns:1}
+  .chart-actions a{margin-left:0}
+  footer{display:block}
+}
+/* 인쇄 (A4 세로) — 버튼·목차는 숨김, 바탕색 유지 */
+@media print{
+  body{font-size:10pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  nav,.controls,.chart-actions,.download-row{display:none}
+  header,main,footer{max-width:none;padding-left:0;padding-right:0}
+  h1{font-size:22pt}h2{font-size:14pt}
+  .figure,.winner-copy{break-inside:avoid}
+  .figure figcaption{font-size:8.7pt}.source{font-size:7.4pt}
+  .table-shell{max-height:none}
+  @page{size:A4 portrait;margin:12mm}
+}
+
+/* 이 보고서 전용 */
+.chip.risk{color:var(--red);border-color:var(--red)}
+.review-table{white-space:normal;min-width:760px}
+.review-table td{text-align:left;vertical-align:top;line-height:1.7;font-size:11.5px}
+.review-table th{text-align:left}
+.review-table td:first-child{min-width:120px}
+.review-table td:last-child{min-width:130px}
+.review-table .chip{white-space:nowrap}
+.download-row{display:flex;gap:8px;margin:12px 0 4px}
+.download-row button{font-size:11px}
+</style>
+</head>
+<body>
+<noscript>차트를 표시하려면 JavaScript가 허용된 브라우저에서 열어 주세요.</noscript>
+
+<header>
+  <div class="brand"><b>ATH-LGB · 자사주 매입·소각 검토</b><span>SK hynix Buyback Scenario Review<br>2026.09.30 · Asia/Seoul</span></div>
+  <h1>SK하이닉스 5년 연속 매입·소각 시나리오<br><span>메리츠·KT&amp;G 사례로 다시 본 실현 가능성</span></h1>
+  <p class="dek">GPT로 만든 ‘매년 FCF 50% 매입·소각’ 수정본(2026-09-29)을 다시 계산하고 사실관계를 대조함. 사용자 조건과 다르게 들어간 부분(2031년 이익·분석 기간)을 바로잡고, 빠진 검토(공시 규모 반복 가정, 이익 경로의 현실성, 거래대금·지배구조·남는 현금)를 보충함.</p>
+  <div class="hero-grid">
+    <div class="hero-box"><h3>수정된 기준안 결과</h3>
+      <div class="hero-list">
+        <div><b>491.2만 원</b><span>2030년 말 산출 주가 · GPT 수정본 432.6만 원</span></div>
+        <div><b>900조 원 · 2.63억 주</b><span>2027~2031년 누적 매입·소각 (FCF의 50%)</span></div>
+        <div><b>7.05억 → 4.42억 주</b><span>자기주식 제외 주식 수 −37.3%</span></div>
+        <div><b>시총의 8.9~10.0%</b><span>연간 매입 강도 · 메리츠(6~7%)의 약 1.5배</span></div>
+      </div>
+    </div>
+    <div class="hero-box"><h3>판단</h3>
+      <p><b>재원과 거래대금으로는 실행 가능함. 결과를 가르는 것은 소각이 아니라 이익 경로임.</b></p>
+      <p class="sub">2030년 말 가격 2.77배 = 이익 증가 1.92배 × 소각 1.44배<br>2029~2030년 사용자 이익은 UBS 전망보다 45~60% 높음<br>공시 ‘정량’ 반복은 2029년부터 FCF 전체를 넘어 불가능</p>
+    </div>
+  </div>
+  <div class="meta-note"><b>시세 기준일 2026-09-30 종가(SK하이닉스 177.6만 원) · 모든 미래 수치는 사용자 가정에 따른 조건부 계산임(Scenario).</b> 수익률 예측이 아님. <a href="#method">방법·출처</a></div>
+</header>
+
+<nav><div class="inner"><a href="#review">00 검토 결과</a><a href="#base">01 FCF 50% 기준안</a><a href="#repeat">02 공시 규모 반복</a><a href="#peers">03 메리츠·KT&amp;G</a><a href="#feasible">04 실현 가능성</a><a href="#method">05 방법·출처</a></div></nav>
+
+<main>
+<!-- 00 -->
+<section id="review">
+  <div class="section-title"><span>00</span><div><h2>GPT 수정본에서 고친 것과 보충한 것</h2><div class="sub">계산 방식과 메리츠·KT&amp;G 시세 수치는 재계산 결과 일치함 · 틀린 것은 입력 조건, 빠진 것은 실현 가능성 검토</div></div></div>
+  <div class="cap-rule">
+    <div><small>사용자 조건 ①·④</small><b>공시 규모 5년 반복 · FCF 50%</b><span>40조 원(2,407만 주)을 석 달에 매입하는 공시 · 매년 FCF의 절반</span></div>
+    <div><small>사용자 조건 ②</small><b>영업이익 400→800조 원</b><span>2027·28·29·30·31년 = 400·500·600·700·800조 원</span></div>
+    <div><small>사용자 조건 ③</small><b>Fwd 12M PER 4배 고정</b><span>매 시점 주가 = 4 × 향후 12개월 순이익 ÷ 주식 수</span></div>
+  </div>
+  <figure class="figure"><h3>항목별 검토 결과</h3>
+    <div class="table-shell"><table class="review-table"><thead><tr><th>항목</th><th>GPT 수정본</th><th>판정</th><th>이번 수정</th></tr></thead><tbody>
+      <tr><td><b>분석 기간·2031년 이익</b></td><td>2027~2030년 4년 집행. 2030년 말 Fwd 이익에 ‘2031년 700조 원 유지’를 추가 가정</td><td><span class="chip risk">오류</span></td><td>사용자 조건대로 <b>2031년 800조 원</b>, 2027~2031년 <b>5년</b> 집행. 2030년 말 가격 432.6만 → <b>491.2만 원</b>(+13.5%)</td></tr>
+      <tr><td><b>조건 ① 공시 규모 반복</b></td><td>앞선 ‘연 9,628만 주 고정’안을 폐기하고 FCF 50%로 대체</td><td><span class="chip risk">누락</span></td><td>두 조건을 모두 계산함. <b>정액(분기 40조 원) 반복은 5년 누적 FCF 50%의 89%로 정합</b>, 정량(분기 2,407만 주) 반복은 2029년부터 FCF 전체를 초과 → <a href="#repeat">02</a></td></tr>
+      <tr><td><b>5년째(2031년) 말 가격</b></td><td>없음</td><td><span class="chip hold">보충</span></td><td>2032년 이익이 필요하므로 <b>800조 원 유지</b>를 별도 가정해 542.9만 원. 2030년 말 값은 추가 가정 없음</td></tr>
+      <tr><td><b>SK하이닉스 자체 공시 반응</b></td><td>없음</td><td><span class="chip hold">보충</span></td><td>8/19 40조 원 결의 후 20거래일 +5.8%, KOSPI 대비 +8.0%p → <a href="#peers">03</a></td></tr>
+      <tr><td><b>이익 경로의 현실성</b></td><td>“조건”이라고만 기재</td><td><span class="chip hold">보충</span></td><td>UBS(9/22)·국내 컨센서스와 연도별 비교. 2027년은 컨센서스와 같고, 2029년 이후가 가장 큰 가정 → <a href="#feasible">04</a></td></tr>
+      <tr><td><b>실행 가능성</b></td><td>없음</td><td><span class="chip hold">보충</span></td><td>일 거래대금 대비 매입 비중, SK스퀘어 지분율 변화, 매입하지 않은 FCF 50%의 누적 현금</td></tr>
+      <tr><td><b>계산 방식</b></td><td>일별 균등 매입 · 매입 시점 주가로 수량 결정 · Fwd PER</td><td><span class="chip new">일치</span></td><td>같은 방식으로 재현 시 2030년 말 432.6만 원이 동일하게 나옴 → 방식은 유지</td></tr>
+      <tr><td><b>순이익 75% · FCF 80%</b></td><td>UBS 현금흐름표를 근거로 설정</td><td><span class="chip new">유지</span></td><td>UBS의 순이익/영업이익은 2027E 78%, 2028E 78% → 75%는 약간 보수적. CAPEX 63·71조 원 수치 원문 일치</td></tr>
+      <tr><td><b>메리츠·KT&amp;G 주가·공시 반응</b></td><td>Yahoo 종가로 계산</td><td><span class="chip new">일치</span></td><td>같은 원자료로 재계산해 D+1·D+20 값 일치 확인. 9/30 종가로 갱신</td></tr>
+    </tbody></table></div>
+    <div class="chart-note">GPT 수정본의 메리츠·KT&amp;G 공시 내용(계약액·소각 수량·발행주식 수)은 공시 원문을 다시 열어보지 못해 그대로 인용함. 출처 [6]에 표시.</div>
+  </figure>
+</section>
+
+<!-- 01 -->
+<section id="base">
+  <div class="section-title"><span>01</span><div><h2>FCF 50% 기준안: 시가총액은 이익이 정하고, 소각은 주당 몫만 키움</h2><div class="sub">2027~2031년 5년 · 순이익 = 영업이익 × 75% · FCF = 순이익 × 80% · 예산 = FCF × 50%를 연중 균등 매입</div></div></div>
+
+  <div class="flow-grid">
+    <div class="flow-node"><b>영업이익</b><small>400→800조 원 · 사용자</small></div>
+    <div class="flow-node"><b>× 75% = 순이익</b><small>UBS 78% 대비 보수적</small></div>
+    <div class="flow-node"><b>× 80% = FCF</b><small>UBS 27~28E 81~86% 참고</small></div>
+    <div class="flow-node"><b>× 50% = 매입 예산</b><small>매일 그날 주가로 매입</small></div>
+    <div class="flow-node"><b>4 × Fwd 이익 ÷ 주식 수</b><small>= 그 시점 주가</small></div>
+  </div>
+
+  <div class="callout"><b>PER이 고정이면 시가총액도 고정됨</b>
+    <p>주가 × 주식 수 = 4 × 향후 12개월 이익이므로, 2030년 말 시가총액은 매입을 하든 안 하든 <b>4 × 2031년 순이익 600조 원 = 2,400조 원</b>임. 소각은 파이 크기가 아니라 <b>남은 주식 한 주의 몫</b>을 키움. 매입·소각이 없으면 2030년 말 주가는 340.5만 원, FCF 50% 소각 시 491.2만 원.</p>
+  </div>
+
+  <figure class="figure"><div class="figure-head"><div><h3>2030년 말 491.2만 원 — 소각이 없을 때보다 1.44배</h3><div class="sub">분기 말 산출 주가 · 만 원 · Scenario · 2031년 구간은 2032년 영업이익 800조 원 유지 가정 포함</div></div></div>
+    <div class="plot" id="c-price"></div>
+    <figcaption><b>기준안(FCF/순이익 80%)은 2027년 말 232.7만 → 2028년 말 305.9만 → 2029년 말 391.5만 → 2030년 말 491.2만 원.</b> 2031년 말 542.9만 원은 2032년 이익을 800조 원으로 둔 추가 가정 값이며, 2032년이 600조 원이면 413.4만 원으로 낮아짐. FCF 전환율 60~100%는 비교용이며 확률 구간이 아님.</figcaption>
+    <div class="source">직접 계산 [7] · 출발 주식 수 704,796,596주 [8] · Scenario</div>
+  </figure>
+
+  <div class="two">
+    <figure class="figure"><div class="figure-head"><div><h3>현재 주가의 2.77배 = 이익 1.92배 × 소각 1.44배</h3><div class="sub">2030년 말 산출 주가 분해 · 만 원</div></div></div>
+      <div class="plot" id="c-decomp"></div>
+      <figcaption><b>177.6만 원 → 340.5만 원(이익만) → 491.2만 원(이익+소각).</b> 연 환산 약 27%. 상승분의 대부분은 영업이익이 400조에서 800조 원으로 두 배가 된다는 가정에서 나옴.</figcaption>
+      <div class="source">9/30 종가 [1] · 나머지 직접 계산 [7]</div>
+    </figure>
+    <figure class="figure"><div class="figure-head"><div><h3>매입 예산은 늘지만 사들이는 주식 수는 줄어듦</h3><div class="sub">연간 FCF와 매입·소각 예산 · 조 원 · Scenario</div></div></div>
+      <div class="plot" id="c-budget"></div>
+      <figcaption><b>예산 120 → 150 → 180 → 210 → 240조 원(5년 누적 900조 원).</b> 주가가 함께 오르므로 매입 수량은 6,019만 → 4,650만 주로 감소하지만, 남은 주식 수도 줄어 연초 대비 매입 비율은 8.5% → 9.5%로 오히려 높아짐.</figcaption>
+      <div class="source">직접 계산 [7]</div>
+    </figure>
+  </div>
+
+  <figure class="figure"><h3>연도별 기준안</h3>
+    <div class="table-shell"><table><thead><tr><th>집행 연도</th><th>영업이익 (조원)</th><th>순이익 (조원)</th><th>FCF (조원)</th><th>매입액 (조원)</th><th>매입·소각 (만 주)</th><th>평균 매입가 (만원)</th><th>연초 대비 매입</th><th>연말 주식 수 (백만 주)</th><th>연말 산출 주가 (만원)</th></tr></thead><tbody id="t-base"></tbody></table></div>
+    <div class="download-row"><button type="button" id="csv-base">기준안·민감도 CSV</button></div>
+    <div class="chart-note">연말 주가 = 4 × 다음 해 순이익 ÷ 연말 주식 수. 2031년 말은 2032년 영업이익 800조 원 유지 가정(*). 매입분은 취득 시점부터 주식 수에서 제외하며 재매각·주식보상·신주발행은 없다고 가정함.</div>
+  </figure>
+</section>
+
+<!-- 02 -->
+<section id="repeat">
+  <div class="section-title"><span>02</span><div><h2>“공시한 만큼 5년 반복”은 금액으로는 가능, 수량으로는 불가능</h2><div class="sub">8/19 공시: 40조 43억 원 · 2,407만 주(발행주식의 3.3%) · 8/20~11/19 석 달 장내 매입 후 전량 소각 [2]</div></div></div>
+  <div class="coverage-note" role="note"><b>두 가지 해석을 나눠 계산함.</b> ‘공시만큼’을 <b>금액</b>으로 읽으면 분기 40조 원 = 연 160조 원, <b>수량</b>으로 읽으면 분기 2,407만 주 = 연 9,628만 주. GPT의 앞선 버전(680.3만 원)은 수량 해석이었고, 수정본은 이 조건을 FCF 50%로 바꿔 없앰.</div>
+  <figure class="figure"><div class="figure-head"><div><h3>정량 반복은 2029년부터 FCF 전체보다 많은 현금이 필요</h3><div class="sub">연간 매입에 필요한 현금 · 조 원 · Scenario · 회색 = 그해 FCF 전체</div></div></div>
+    <div class="plot" id="c-repeat"></div>
+    <figcaption><b>정액 반복(연 160조 원)의 5년 누적 800조 원은 FCF 50% 누적 900조 원의 89%로 거의 같은 강도임.</b> 2027·2028년에는 FCF 50%를 40·10조 원 넘으므로 보유 순현금(2Q26 말 약 69조 원 [2])으로 메워야 함. 정량 반복은 주가가 오를수록 필요 현금이 커져 2029년 407조 원으로 FCF 360조 원을 넘고, 2031년에는 860조 원이 필요함.</figcaption>
+    <div class="source">공시 규모 [2] · 직접 계산 [7] · FCF는 기준안(순이익의 80%)</div>
+  </figure>
+  <figure class="figure"><h3>세 방식의 결과 비교</h3>
+    <div class="table-shell"><table><thead><tr><th>매입 규칙</th><th>5년 필요 현금 (조원)</th><th>FCF 50% 대비</th><th>5년 매입 (백만 주)</th><th>2031년 말 주식 수 (백만 주)</th><th>2030년 말 주가 (만원)</th><th>실행 판단</th></tr></thead><tbody id="t-repeat"></tbody></table></div>
+    <div class="chart-note">정량 반복의 2030년 말 750.8만 원은 FCF를 넘는 차입이나 보유현금 소진이 있어야 나오는 값이라 기준안으로 쓰지 않음.</div>
+  </figure>
+</section>
+
+<!-- 03 -->
+<section id="peers">
+  <div class="section-title"><span>03</span><div><h2>메리츠·KT&amp;G: 소각이 주가를 올린 것이 아니라, 꾸준함이 재평가를 불렀음</h2><div class="sub">5년 가격 흐름 · 매입 강도 · 공시 직후 반응 · 배당 재투자 제외</div></div></div>
+
+  <figure class="figure"><div class="figure-head"><div><h3>5년 가격: 메리츠 +270.9%, KT&amp;G +118.9%, KOSPI +123.4%</h3><div class="sub">2021-09-29 = 100 · 일별 종가(3거래일 간격 표시) · Actual</div></div></div>
+    <div class="plot" id="c-5y"></div>
+    <figcaption><b>메리츠는 시장을 크게 앞섰고 KT&amp;G는 시장과 비슷했음.</b> 메리츠 발행주식은 2023년 말 대비 17.7% 줄었을 뿐이라 주가 3.7배의 대부분은 이익 증가와 PER 재평가로 설명됨. KT&amp;G는 2025년 EPS가 3% 줄었는데 주가가 32.7% 올라, 사후 계산 PER이 약 37% 높아졌음 [6]. SK하이닉스(같은 기간 +1,676%)는 눈금이 달라 제외함.</figcaption>
+    <div class="source">Yahoo Finance 일별 종가 [1] · 발행주식·EPS는 GPT 수정본 인용 [6]</div>
+  </figure>
+
+  <div class="two">
+    <figure class="figure"><div class="figure-head"><div><h3>시나리오의 매입 강도는 메리츠의 약 1.5배</h3><div class="sub">연간 신규 매입액 ÷ 연평균 시가총액 · % · 메리츠·KT&amp;G는 Calculated, 하이닉스 시나리오는 Scenario</div></div></div>
+      <div class="plot" id="c-intensity"></div>
+      <figcaption><b>메리츠는 2023~2026년 매년 시총의 6~7%를 새로 샀고, 시나리오의 하이닉스는 8.9~10.0%임.</b> 이번 40조 원 프로그램은 석 달 만에 시총의 약 3.2%로, 연 환산 12.8%에 해당함. KT&amp;G의 2026년 신규 매입(3,600억 원)은 약 2.1%이며 대규모 소각의 대부분은 과거 취득분임.</figcaption>
+      <div class="source">메리츠 계약액·KT&amp;G 취득 예정액 [6] · 연평균 주가 [1] · 메리츠 연평균 주식 수는 연말 발행주식으로 근사</div>
+    </figure>
+    <figure class="figure"><div class="figure-head"><div><h3>SK하이닉스 8/19 공시: 당일은 시장과 함께 급락, 20거래일 뒤 시장 대비 +8.0%p</h3><div class="sub">SK하이닉스 일봉 · 만 원 · 2026-07-15 ~ 09-30 · 점선 = 8/19 결의일 · Actual</div></div></div>
+      <div class="plot" id="c-candle"></div>
+      <figcaption><b>8/19 종가 −9.7%(KOSPI −5.8%), 8/20 매입 개시 후 반등.</b> 공시 전날 대비 20거래일 누적 +5.8%, 같은 기간 KOSPI −2.2%. 매입 기간(~11/19) 중 일평균 약 6,450억 원 매수가 하방을 받치는 구간임. 표본 1건이라 소각의 효과로 단정하지 않음.</figcaption>
+      <div class="source">Yahoo Finance 일봉 [1] · 매입 일정 [2] · 수평 점선 = 9/30 기준 SMA20·SMA50 (Calculated)</div>
+    </figure>
+  </div>
+
+  <figure class="figure"><h3>공시 전 거래일 종가 대비 주가 반응</h3>
+    <div class="table-shell"><table><thead><tr><th>회사 · 결의일</th><th>공시 내용</th><th>D+1 누적</th><th>D+20 누적</th><th>D+20 KOSPI 대비</th></tr></thead><tbody id="t-event"></tbody></table></div>
+    <div class="chart-note">D−1 종가 기준 누적 수익률. 발표 시각(장중·장후)은 보정하지 않음. 실적·시장 변화를 통제하지 않은 단순 비교이며 표본이 6건뿐임.</div>
+    <div class="source">Yahoo Finance 종가로 직접 계산 [1] · 공시 내용 [2][6]</div>
+  </figure>
+
+  <div class="callout"><b>하이닉스로 옮길 수 있는 것과 없는 것</b>
+    <p><b>옮길 수 있는 것:</b> 이익의 일정 비율을 매년 쉬지 않고 투입하는 규칙, 그리고 가격이 쌀 때 더 사는 판단(메리츠는 Fwd PER 6.1배의 이익수익률 16.4%를 요구수익률 10%와 비교함 [6]). PER 4배라면 이익수익률은 25%로 같은 현금의 소각 효율이 더 높음.</p>
+    <p><b>옮길 수 없는 것:</b> 두 회사는 금융·담배로 이익 변동이 작고, 지속성이 확인된 뒤 PER이 올랐음. 메모리 이익은 주기적으로 크게 줄어들었고, 시나리오는 PER 재평가를 넣지 않았으므로 <b>메리츠식 상승은 “이익 경로 유지 + PER 상향”이 함께 있어야 재현됨.</b></p>
+  </div>
+</section>
+
+<!-- 04 -->
+<section id="feasible">
+  <div class="section-title"><span>04</span><div><h2>실현 가능성 점검: 막히는 곳은 현금이 아니라 이익</h2><div class="sub">재원 · 시장 유동성 · 이익 경로 · PER · 지배구조 · 정책 연속성</div></div></div>
+
+  <figure class="figure"><div class="figure-head"><div><h3>2029년부터 사용자 이익 경로와 증권가 전망이 크게 갈라짐</h3><div class="sub">SK하이닉스 영업이익 · 조 원 · 사용자 가정 vs UBS(2026-09-22) vs 국내 컨센서스(FnSpace, 9/30)</div></div></div>
+    <div class="plot" id="c-op"></div>
+    <figcaption><b>2027년 400조 원은 컨센서스(401.7조 원)와 같고, 2028년 500조 원은 UBS(540.8조 원)보다 낮음.</b> 그러나 UBS는 2029년 414.2조, 2030년 437.7조 원으로 이익 감소를 예상하는 반면 사용자 가정은 600·700조 원으로 계속 늘어 45~60% 높음. UBS 강세 시나리오도 2027·2028년 570·610조 원까지만 제시함.</figcaption>
+    <div class="source">UBS [3] · FnSpace 컨센서스 via ATH Wiki [4] · 2029년 이후 국내 컨센서스 없음</div>
+  </figure>
+
+  <figure class="figure"><h3>항목별 판단</h3>
+    <div class="table-shell"><table class="review-table"><thead><tr><th>점검 항목</th><th>근거</th><th>판단</th></tr></thead><tbody>
+      <tr><td><b>재원</b></td><td>FCF 50% 규칙은 정의상 재원 안에서 집행. 정액 반복도 5년 누적으로는 FCF 50%의 89%. 정량 반복은 2029년부터 FCF 초과</td><td><span class="chip new">충족</span> <small>정량 반복만 불가</small></td></tr>
+      <tr><td><b>시장 유동성</b></td><td>2027년 예산 120조 원 ÷ 245거래일 ≈ 일 0.49조 원. 최근 60일 평균 거래대금 8.4조 원(20일 5.7조 원)의 약 6~9%. 수량으로는 일 약 25만 주, 60일 평균 거래량 479만 주의 약 5%. 현재 40조 원 프로그램(일 약 0.65조 원)보다 느림</td><td><span class="chip new">충족</span></td></tr>
+      <tr><td><b>이익 경로</b></td><td>2029·2030년 600·700조 원은 UBS보다 45~60% 높고, 2031년 800조 원은 비교할 외부 전망이 없음. 메모리 가격 하락기가 5년 동안 한 번도 없다는 가정. CXMT 등 중국 DRAM 증설도 변수</td><td><span class="chip risk">가장 큰 위험</span></td></tr>
+      <tr><td><b>PER 4배 고정</b></td><td>현재 주가는 2027년 사용자 순이익 300조 원 기준 약 4.2배라 출발점은 현실적. 매입하지 않은 FCF 50%(5년 900조 원)가 쌓이면 2031년 시총 2,400조 원의 약 40%가 현금이 되어 현금 제외 PER은 약 2.4배로 내려감 — 배당이나 투자로 쓰지 않는 한 4배 고정은 보수적인 쪽</td><td><span class="chip hold">조건부</span></td></tr>
+      <tr><td><b>지배구조</b></td><td>SK스퀘어 보유 약 1.46억 주(약 20.1% [5])가 그대로면 자기주식 제외 기준 지분율이 2030년 말 약 30%, 2031년 말 약 33%로 높아짐. 유통주식 감소와 지주회사 지분 요건을 함께 확인해야 함</td><td><span class="chip hold">확인 필요</span></td></tr>
+      <tr><td><b>정책 연속성</b></td><td>현재 확정된 정책은 2025~2027년 누적 FCF의 50% 이상을 배당과 소각으로 환원하는 것 [2][3]. 2028~2031년 정책은 없고, 배당 몫이 늘면 소각 예산은 줄어듦</td><td><span class="chip hold">조건부</span></td></tr>
+    </tbody></table></div>
+  </figure>
+
+  <div class="specific-hinge"><b>결론: 시나리오대로 흘러갈 수 있는가</b>
+    <p>매입·소각 자체는 메리츠보다 강한 강도로도 현금과 거래대금 안에서 실행 가능함. 공시 규모를 <b>금액</b>으로 5년 반복하는 것도 FCF 50%와 거의 같은 경로임. 그러나 491.2만 원이라는 결과의 약 3분의 2(로그 기준 64%)는 이익이 두 배가 된다는 가정에서 나오고, 그 가정은 증권가 전망보다 크게 높음. <b>따라서 이 시나리오는 “소각이 주가를 끌어올리는 이야기”가 아니라 “메모리 이익이 5년 동안 꺾이지 않는다면 소각이 그 효과를 1.44배로 키운다”는 이야기로 읽어야 함.</b> 이익이 UBS 경로를 따르면 같은 규칙에서도 예산과 주가가 함께 줄어듦.</p>
+  </div>
+</section>
+
+<!-- 05 -->
+<section id="method">
+  <div class="section-title"><span>05</span><div><h2>방법·원자료·출처</h2><div class="sub">Actual(관측) · Calculated(계산) · Estimate(외부 추정) · Scenario(사용자 가정 기반 조건부 계산)</div></div></div>
+  <div class="method-grid">
+    <div><h3>계산식</h3><dl>
+      <dt>주가</dt><dd>P(t) = 4 × 향후 12개월 순이익(t) ÷ N(t). 연간 이익은 연중 균등 발생으로 보고, 연말 주가는 다음 해 순이익을 씀.</dd>
+      <dt>매입</dt><dd>하루 예산 dB를 그날 가격 P(t)로 나눈 수량만큼 N(t)에서 즉시 제외(365단계 균등 집행). 정량 반복은 하루 수량을 고정하고 필요 현금을 계산.</dd>
+      <dt>출발점</dt><dd>2026년 말 N = 728,866,596주 − 이번 공시 2,407만 주 = 704,796,596주 [8]. 2026년 4분기 추가 매입은 넣지 않음.</dd>
+      <dt>재현 확인</dt><dd>GPT 수정본 조건(4년·2031년 700조 원)으로 돌리면 2030년 말 432.6만 원이 동일하게 나옴.</dd></dl></div>
+    <div><h3>가정과 한계</h3><dl>
+      <dt>사용자 가정</dt><dd>영업이익 경로, PER 4배, FCF 50% 매입·소각, 공시 규모 반복.</dd>
+      <dt>추가 가정</dt><dd>순이익 = 영업이익 × 75%, FCF = 순이익 × 80%(60·100% 민감도), 2031년 말 가격에 한해 2032년 영업이익 800조 원 유지.</dd>
+      <dt>넣지 않은 것</dt><dd>배당, 쌓이는 현금의 이자수익, 세금·수수료, 주식보상, 신주 발행, PER 변화.</dd>
+      <dt>비교의 한계</dt><dd>메리츠·KT&amp;G는 사후에 고른 성공 사례이며 업종 이익 변동성이 다름. 공시 반응 표는 인과효과가 아님.</dd></dl></div>
+  </div>
+  <details class="source-list" open><summary>출처 <span>시세·리포트·공시·계산</span></summary>
+    <ol>
+      <li id="src-1">[1] Yahoo Finance — 000660.KS · 138040.KS · 033780.KS · ^KS11 일별 시세<small>2021-09-27 ~ 2026-09-30 · Actual · ATH Wiki get_price로 최근값 교차 확인</small></li>
+      <li id="src-2">[2] <a href="https://athwiki.duckdns.org/pdfs/final/report_279ced3489394b70.pdf">글로벌 메모리 5사 주주환원 비교 최종 2026 27년 예상 환원 규모 (2026-08-21)</a><small>SK하이닉스 8/19 이사회 결의: 40조 43억 원·2,407만 주·발행주식 3.3%, 8/20~11/19 매입, 일평균 약 6,450억 원, 2Q 말 순현금 약 69조 원, 2025~27년 누적 FCF 50% 이상</small></li>
+      <li id="src-3">[3] <a href="https://athwiki.duckdns.org/pdfs/final/report_a1e5f6deed27bea3.pdf">UBS SK Hynix Ground to recover further (2026-09-22)</a><small>EBIT 2027~30E 499.9·540.8·414.2·437.7조 원, 순이익 390.2·422.3조 원(27~28E), CAPEX 63·71조 원, 시나리오별 영업이익 · Estimate</small></li>
+      <li id="src-4">[4] FnSpace 영업이익 컨센서스 via ATH Wiki<small>2027년 401.7조 원, 2028년 420.2조 원 · 2026-09-30 조회 · Estimate</small></li>
+      <li id="src-5">[5] 대신증권 SK스퀘어(402340) 「하나만 낳아 잘 키우자」 NAV 표<small>2026-02-25 · SK하이닉스 지분율 20.1% · 이후 지분 변동은 확인하지 않음</small></li>
+      <li id="src-6">[6] GPT 수정본(2026-09-29)이 인용한 공시·IR — 원문 미재확인<small>메리츠 IR(2Q26 기업가치 제고 계획, 주주정책 이력), KRX 메리츠 신탁계약(2025.8.20·2026.2.9), KT&amp;G 소각 결정(2026.4.16)·취득 결정(2026.9.22)·2025 실적발표·주주구성. 계약액·주식 수·EPS를 그대로 사용</small></li>
+      <li id="src-7">[7] 이번 검토의 시나리오 계산<small>일별 균등 매입 모형 · Scenario · 표의 CSV 버튼으로 원값 제공</small></li>
+      <li id="src-8">[8] 공시 직전 자기주식 제외 주식 수 728,866,596주 — GPT 수정본 인용<small>2,407만 주 ÷ 3.3% ≈ 7.29억 주로 공시 비율과 정합 · Calculated</small></li>
+    </ol>
+  </details>
+</section>
+</main>
+
+<footer>ATH-LGB · SK하이닉스 매입·소각 시나리오 검토 · 2026-09-30 <span>소각 ≠ 주가 상승 보장 · 산출 주가 ≠ 목표주가</span></footer>
+
+<script id="report-data" type="application/json">{"fcf60": {"rows": [{"year": 2027, "op": 400, "ni": 300.0, "fcf": 180.0, "cash": 90.0, "qty": 45.641, "avg": 197.192, "start": 704.797, "end": 659.156, "pct": 6.476, "price": 227.564, "mcap": 1500.0}, {"year": 2028, "op": 500, "ni": 375.0, "fcf": 225.0, "cash": 112.5, "qty": 43.565, "avg": 258.236, "start": 659.156, "end": 615.591, "pct": 6.609, "price": 292.402, "mcap": 1800.0}, {"year": 2029, "op": 600, "ni": 450.0, "fcf": 270.0, "cash": 135.0, "qty": 41.259, "avg": 327.205, "start": 615.591, "end": 574.333, "pct": 6.702, "price": 365.642, "mcap": 2100.0}, {"year": 2030, "op": 700, "ni": 525.0, "fcf": 315.0, "cash": 157.5, "qty": 38.888, "avg": 405.012, "start": 574.333, "end": 535.445, "pct": 6.771, "price": 448.225, "mcap": 2400.0}, {"year": 2031, "op": 800, "ni": 600.0, "fcf": 360.0, "cash": 180.0, "qty": 38.693, "avg": 465.198, "start": 535.445, "end": 496.752, "pct": 7.226, "price": 483.139, "mcap": 2400.0}], "path": [["2026-12-31", 170.26], ["2027-03-31", 184.19], ["2027-06-30", 198.36], ["2027-09-30", 212.76], ["2027-12-31", 227.56], ["2028-03-31", 243.31], ["2028-06-30", 259.34], ["2028-09-30", 275.65], ["2028-12-31", 292.4], ["2029-03-31", 310.18], ["2029-06-30", 328.29], ["2029-09-30", 346.71], ["2029-12-31", 365.64], ["2030-03-31", 385.69], ["2030-06-30", 406.1], ["2030-09-30", 426.87], ["2030-12-31", 448.23], ["2031-03-31", 456.69], ["2031-06-30", 465.31], ["2031-09-30", 474.09], ["2031-12-31", 483.14]]}, "fcf80": {"rows": [{"year": 2027, "op": 400, "ni": 300.0, "fcf": 240.0, "cash": 120.0, "qty": 60.19, "avg": 199.37, "start": 704.797, "end": 644.607, "pct": 8.54, "price": 232.7, "mcap": 1500.0}, {"year": 2028, "op": 500, "ni": 375.0, "fcf": 300.0, "cash": 150.0, "qty": 56.171, "avg": 267.043, "start": 644.607, "end": 588.436, "pct": 8.714, "price": 305.895, "mcap": 1800.0}, {"year": 2029, "op": 600, "ni": 450.0, "fcf": 360.0, "cash": 180.0, "qty": 51.99, "avg": 346.221, "start": 588.436, "end": 536.446, "pct": 8.835, "price": 391.465, "mcap": 2100.0}, {"year": 2030, "op": 700, "ni": 525.0, "fcf": 420.0, "cash": 210.0, "qty": 47.876, "avg": 438.629, "start": 536.446, "end": 488.57, "pct": 8.925, "price": 491.23, "mcap": 2400.0}, {"year": 2031, "op": 800, "ni": 600.0, "fcf": 480.0, "cash": 240.0, "qty": 46.5, "avg": 516.133, "start": 488.57, "end": 442.07, "pct": 9.517, "price": 542.9, "mcap": 2400.0}], "path": [["2026-12-31", 170.26], ["2027-03-31", 185.3], ["2027-06-30", 200.7], ["2027-09-30", 216.44], ["2027-12-31", 232.7], ["2028-03-31", 250.32], ["2028-06-30", 268.36], ["2028-09-30", 286.82], ["2028-12-31", 305.9], ["2029-03-31", 326.49], ["2029-06-30", 347.58], ["2029-09-30", 369.16], ["2029-12-31", 391.47], ["2030-03-31", 415.46], ["2030-06-30", 440.05], ["2030-09-30", 465.21], ["2030-12-31", 491.23], ["2031-03-31", 503.63], ["2031-06-30", 516.35], ["2031-09-30", 529.39], ["2031-12-31", 542.9]]}, "fcf100": {"rows": [{"year": 2027, "op": 400, "ni": 300.0, "fcf": 300.0, "cash": 150.0, "qty": 74.418, "avg": 201.564, "start": 704.797, "end": 630.378, "pct": 10.559, "price": 237.952, "mcap": 1500.0}, {"year": 2028, "op": 500, "ni": 375.0, "fcf": 375.0, "cash": 187.5, "qty": 67.901, "avg": 276.138, "start": 630.378, "end": 562.478, "pct": 10.771, "price": 320.013, "mcap": 1800.0}, {"year": 2029, "op": 600, "ni": 450.0, "fcf": 450.0, "cash": 225.0, "qty": 61.421, "avg": 366.327, "start": 562.478, "end": 501.057, "pct": 10.92, "price": 419.114, "mcap": 2100.0}, {"year": 2030, "op": 700, "ni": 525.0, "fcf": 525.0, "cash": 262.5, "qty": 55.261, "avg": 475.017, "start": 501.057, "end": 445.796, "pct": 11.029, "price": 538.363, "mcap": 2400.0}, {"year": 2031, "op": 800, "ni": 600.0, "fcf": 600.0, "cash": 300.0, "qty": 52.391, "avg": 572.619, "start": 445.796, "end": 393.405, "pct": 11.752, "price": 610.058, "mcap": 2400.0}], "path": [["2026-12-31", 170.26], ["2027-03-31", 186.43], ["2027-06-30", 203.07], ["2027-09-30", 220.19], ["2027-12-31", 237.95], ["2028-03-31", 257.53], ["2028-06-30", 277.7], ["2028-09-30", 298.45], ["2028-12-31", 320.01], ["2029-03-31", 343.65], ["2029-06-30", 368.0], ["2029-09-30", 393.06], ["2029-12-31", 419.11], ["2030-03-31", 447.54], ["2030-06-30", 476.84], ["2030-09-30", 507.0], ["2030-12-31", 538.36], ["2031-03-31", 555.41], ["2031-06-30", 572.99], ["2031-09-30", 591.13], ["2031-12-31", 610.06]]}, "nobuy": [["2026-12-31", 170.26], ["2027-03-31", 180.87], ["2027-06-30", 191.49], ["2027-09-30", 202.1], ["2027-12-31", 212.83], ["2028-03-31", 223.44], ["2028-06-30", 234.05], ["2028-09-30", 244.66], ["2028-12-31", 255.39], ["2029-03-31", 266.01], ["2029-06-30", 276.62], ["2029-09-30", 287.23], ["2029-12-31", 297.96], ["2030-03-31", 308.57], ["2030-06-30", 319.18], ["2030-09-30", 329.79], ["2030-12-31", 340.52], ["2031-03-31", 340.52], ["2031-06-30", 340.52], ["2031-09-30", 340.52], ["2031-12-31", 340.52]], "a1": [{"year": 2027, "op": 400, "ni": 300.0, "fcf": null, "cash": 160.0, "qty": 79.091, "avg": 202.298, "start": 704.797, "end": 625.706, "pct": 11.222, "price": 239.729, "mcap": 1500.0}, {"year": 2028, "op": 500, "ni": 375.0, "fcf": null, "cash": 160.0, "qty": 57.985, "avg": 275.932, "start": 625.706, "end": 567.72, "pct": 9.267, "price": 317.058, "mcap": 1800.0}, {"year": 2029, "op": 600, "ni": 450.0, "fcf": null, "cash": 160.0, "qty": 44.812, "avg": 357.046, "start": 567.72, "end": 522.908, "pct": 7.893, "price": 401.6, "mcap": 2100.0}, {"year": 2030, "op": 700, "ni": 525.0, "fcf": null, "cash": 160.0, "qty": 35.948, "avg": 445.086, "start": 522.908, "end": 486.96, "pct": 6.875, "price": 492.854, "mcap": 2400.0}, {"year": 2031, "op": 800, "ni": 600.0, "fcf": null, "cash": 160.0, "qty": 31.408, "avg": 509.42, "start": 486.96, "end": 455.552, "pct": 6.45, "price": 526.834, "mcap": 2400.0}], "a2": [{"year": 2027, "op": 400, "ni": 300.0, "fcf": null, "cash": 198.794, "qty": 96.28, "avg": 206.475, "start": 704.797, "end": 608.517, "pct": 13.661, "price": 246.501, "mcap": 1500.0}, {"year": 2028, "op": 500, "ni": 375.0, "fcf": null, "cash": 284.866, "qty": 96.28, "avg": 295.872, "start": 608.517, "end": 512.237, "pct": 15.822, "price": 351.4, "mcap": 1800.0}, {"year": 2029, "op": 600, "ni": 450.0, "fcf": null, "cash": 406.967, "qty": 96.28, "avg": 422.691, "start": 512.237, "end": 415.957, "pct": 18.796, "price": 504.86, "mcap": 2100.0}, {"year": 2030, "op": 700, "ni": 525.0, "fcf": null, "cash": 593.875, "qty": 96.28, "avg": 616.82, "start": 415.957, "end": 319.677, "pct": 23.147, "price": 750.759, "mcap": 2400.0}, {"year": 2031, "op": 800, "ni": 600.0, "fcf": null, "cash": 859.64, "qty": 96.28, "avg": 892.854, "start": 319.677, "end": 223.397, "pct": 30.118, "price": 1074.323, "mcap": 2400.0}], "gpt": [{"year": 2027, "op": 400, "ni": 300.0, "fcf": null, "cash": 120.0, "qty": 60.19, "avg": 199.37, "start": 704.797, "end": 644.607, "pct": 8.54, "price": 232.7, "mcap": 1500.0}, {"year": 2028, "op": 500, "ni": 375.0, "fcf": null, "cash": 150.0, "qty": 56.171, "avg": 267.043, "start": 644.607, "end": 588.436, "pct": 8.714, "price": 305.895, "mcap": 1800.0}, {"year": 2029, "op": 600, "ni": 450.0, "fcf": null, "cash": 180.0, "qty": 51.99, "avg": 346.221, "start": 588.436, "end": 536.446, "pct": 8.835, "price": 391.465, "mcap": 2100.0}, {"year": 2030, "op": 700, "ni": 525.0, "fcf": null, "cash": 210.0, "qty": 51.056, "avg": 411.311, "start": 536.446, "end": 485.39, "pct": 9.517, "price": 432.642, "mcap": 2100.0}], "n5": {"M": [["2021-09-29", 100.0], ["2021-10-05", 94.71], ["2021-10-08", 94.71], ["2021-10-14", 96.48], ["2021-10-19", 98.24], ["2021-10-22", 98.38], ["2021-10-27", 98.97], ["2021-11-01", 97.94], ["2021-11-04", 103.82], ["2021-11-09", 101.47], ["2021-11-12", 100.0], ["2021-11-17", 100.15], ["2021-11-22", 98.83], ["2021-11-25", 104.85], ["2021-11-30", 100.88], ["2021-12-03", 106.17], ["2021-12-08", 98.09], ["2021-12-13", 96.48], ["2021-12-16", 97.5], ["2021-12-21", 111.31], ["2021-12-24", 119.24], ["2021-12-29", 125.99], ["2022-01-05", 138.03], ["2022-01-10", 141.7], ["2022-01-13", 157.71], ["2022-01-18", 152.13], ["2022-01-21", 149.49], ["2022-01-26", 142.44], ["2022-02-03", 134.36], ["2022-02-08", 131.57], ["2022-02-11", 123.79], ["2022-02-16", 114.83], ["2022-02-21", 112.04], ["2022-02-24", 113.07], ["2022-03-02", 105.58], ["2022-03-07", 96.33], ["2022-03-11", 93.1], ["2022-03-16", 93.25], ["2022-03-21", 101.62], ["2022-03-24", 111.01], ["2022-03-29", 113.36], ["2022-04-01", 119.24], ["2022-04-06", 119.24], ["2022-04-11", 119.82], ["2022-04-14", 124.38], ["2022-04-19", 120.41], ["2022-04-22", 111.6], ["2022-04-27", 111.89], ["2022-05-02", 111.75], ["2022-05-06", 104.99], ["2022-05-12", 88.55], ["2022-05-17", 91.19], ["2022-05-20", 90.16], ["2022-05-25", 95.59], ["2022-05-30", 93.83], ["2022-06-03", 93.39], ["2022-06-09", 89.43], ["2022-06-14", 82.23], ["2022-06-17", 81.2], ["2022-06-22", 76.06], ["2022-06-27", 79.74], ["2022-06-30", 75.92], ["2022-07-05", 79.44], ["2022-07-08", 78.12], ["2022-07-13", 74.6], ["2022-07-18", 70.93], ["2022-07-21", 74.6], ["2022-07-26", 74.3], ["2022-07-29", 77.09], ["2022-08-03", 80.32], ["2022-08-08", 86.05], ["2022-08-11", 85.76], ["2022-08-17", 87.67], ["2022-08-22", 90.9], ["2022-08-25", 86.64], ["2022-08-30", 88.4], ["2022-09-02", 83.11], ["2022-09-07", 76.06], ["2022-09-14", 74.16], ["2022-09-19", 71.07], ["2022-09-22", 69.9], ["2022-09-27", 63.73], ["2022-09-30", 61.23], ["2022-10-06", 62.41], ["2022-10-12", 61.23], ["2022-10-17", 66.81], ["2022-10-20", 67.11], ["2022-10-25", 61.53], ["2022-10-28", 64.9], ["2022-11-02", 65.2], ["2022-11-07", 70.04], ["2022-11-10", 82.09], ["2022-11-15", 87.67], ["2022-11-18", 82.38], ["2022-11-23", 106.9], ["2022-11-28", 104.55], ["2022-12-01", 121.0], ["2022-12-06", 115.57], ["2022-12-09", 107.93], ["2022-12-14", 112.33], ["2022-12-19", 116.01], ["2022-12-22", 124.23], ["2022-12-27", 122.47], ["2023-01-02", 122.03], ["2023-01-05", 115.12], ["2023-01-10", 116.74], ["2023-01-13", 128.93], ["2023-01-18", 138.33], ["2023-01-25", 134.95], ["2023-01-30", 125.55], ["2023-02-02", 125.11], ["2023-02-07", 123.05], ["2023-02-10", 124.82], ["2023-02-15", 123.94], ["2023-02-20", 123.35], ["2023-02-23", 122.91], ["2023-02-28", 132.16], ["2023-03-06", 121.59], ["2023-03-09", 126.73], ["2023-03-14", 117.33], ["2023-03-17", 123.79], ["2023-03-22", 121.88], ["2023-03-27", 114.54], ["2023-03-30", 117.03], ["2023-04-04", 121.15], ["2023-04-07", 128.19], ["2023-04-12", 133.92], ["2023-04-17", 128.19], ["2023-04-20", 126.58], ["2023-04-25", 133.92], ["2023-04-28", 134.8], ["2023-05-04", 134.21], ["2023-05-10", 128.78], ["2023-05-15", 131.42], ["2023-05-18", 131.42], ["2023-05-23", 132.01], ["2023-05-26", 130.69], ["2023-06-01", 130.1], ["2023-06-07", 135.98], ["2023-06-12", 129.22], ["2023-06-15", 125.11], ["2023-06-20", 127.31], ["2023-06-23", 123.49], ["2023-06-28", 122.32], ["2023-07-03", 124.38], ["2023-07-06", 124.08], ["2023-07-11", 129.22], ["2023-07-14", 133.77], ["2023-07-19", 132.75], ["2023-07-24", 140.38], ["2023-07-27", 142.29], ["2023-08-01", 145.81], ["2023-08-04", 147.43], ["2023-08-09", 145.37], ["2023-08-14", 147.43], ["2023-08-18", 145.52], ["2023-08-23", 149.49], ["2023-08-28", 152.13], ["2023-08-31", 160.65], ["2023-09-05", 158.59], ["2023-09-08", 161.53], ["2023-09-13", 160.94], ["2023-09-18", 160.94], ["2023-09-21", 158.59], ["2023-09-26", 165.64], ["2023-10-05", 155.36], ["2023-10-11", 157.42], ["2023-10-16", 155.07], ["2023-10-19", 150.07], ["2023-10-24", 143.32], ["2023-10-27", 145.96], ["2023-11-01", 149.78], ["2023-11-06", 153.01], ["2023-11-09", 156.24], ["2023-11-14", 165.64], ["2023-11-17", 164.17], ["2023-11-22", 163.58], ["2023-11-27", 162.11], ["2023-11-30", 163.0], ["2023-12-05", 165.93], ["2023-12-08", 171.81], ["2023-12-13", 170.34], ["2023-12-18", 165.64], ["2023-12-21", 167.4], ["2023-12-27", 163.88], ["2024-01-03", 171.51], ["2024-01-08", 165.35], ["2024-01-11", 172.1], ["2024-01-16", 179.44], ["2024-01-19", 175.62], ["2024-01-24", 181.79], ["2024-01-29", 188.84], ["2024-02-01", 205.58], ["2024-02-06", 198.24], ["2024-02-13", 209.1], ["2024-02-16", 219.68], ["2024-02-21", 220.26], ["2024-02-26", 250.22], ["2024-02-29", 244.05], ["2024-03-06", 232.89], ["2024-03-11", 239.06], ["2024-03-14", 250.51], ["2024-03-19", 235.54], ["2024-03-22", 247.28], ["2024-03-27", 235.54], ["2024-04-01", 240.82], ["2024-04-04", 242.58], ["2024-04-09", 239.06], ["2024-04-15", 225.84], ["2024-04-18", 224.08], ["2024-04-23", 231.42], ["2024-04-26", 234.07], ["2024-05-02", 231.13], ["2024-05-08", 238.77], ["2024-05-13", 247.28], ["2024-05-17", 238.77], ["2024-05-22", 229.96], ["2024-05-27", 225.26], ["2024-05-30", 223.49], ["2024-06-04", 220.56], ["2024-06-10", 220.85], ["2024-06-13", 215.86], ["2024-06-18", 223.49], ["2024-06-21", 224.67], ["2024-06-26", 218.8], ["2024-07-01", 227.31], ["2024-07-04", 244.93], ["2024-07-09", 237.0], ["2024-07-12", 240.82], ["2024-07-17", 241.7], ["2024-07-22", 240.53], ["2024-07-25", 234.36], ["2024-07-30", 242.88], ["2024-08-02", 235.54], ["2024-08-07", 236.71], ["2024-08-12", 244.35], ["2024-08-16", 260.79], ["2024-08-21", 269.9], ["2024-08-26", 279.88], ["2024-08-29", 274.3], ["2024-09-03", 274.6], ["2024-09-06", 263.44], ["2024-09-11", 259.03], ["2024-09-19", 279.3], ["2024-09-24", 275.18], ["2024-09-27", 286.64], ["2024-10-04", 285.17], ["2024-10-10", 293.69], ["2024-10-15", 301.32], ["2024-10-18", 311.31], ["2024-10-23", 303.38], ["2024-10-28", 305.14], ["2024-10-31", 301.62], ["2024-11-05", 303.67], ["2024-11-08", 310.72], ["2024-11-13", 304.26], ["2024-11-18", 306.9], ["2024-11-21", 304.85], ["2024-11-26", 297.5], ["2024-11-29", 299.56], ["2024-12-04", 305.14], ["2024-12-09", 288.99], ["2024-12-12", 298.09], ["2024-12-17", 285.76], ["2024-12-20", 288.99], ["2024-12-26", 290.75], ["2025-01-02", 306.02], ["2025-01-07", 310.72], ["2025-01-10", 306.9], ["2025-01-15", 317.47], ["2025-01-20", 325.7], ["2025-01-23", 320.12], ["2025-02-03", 327.17], ["2025-02-06", 322.76], ["2025-02-11", 327.17], ["2025-02-14", 345.67], ["2025-02-19", 350.66], ["2025-02-24", 367.11], ["2025-02-27", 359.18], ["2025-03-05", 359.77], ["2025-03-10", 351.54], ["2025-03-13", 345.96], ["2025-03-18", 348.9], ["2025-03-21", 344.79], ["2025-03-26", 351.25], ["2025-03-31", 358.3], ["2025-04-03", 349.78], ["2025-04-08", 325.99], ["2025-04-11", 327.46], ["2025-04-16", 337.15], ["2025-04-21", 345.96], ["2025-04-24", 349.19], ["2025-04-29", 349.78], ["2025-05-07", 358.88], ["2025-05-12", 343.61], ["2025-05-15", 334.51], ["2025-05-20", 325.4], ["2025-05-23", 320.7], ["2025-05-28", 323.64], ["2025-06-02", 326.87], ["2025-06-09", 333.63], ["2025-06-12", 329.52], ["2025-06-17", 318.06], ["2025-06-20", 312.48], ["2025-06-25", 335.68], ["2025-06-30", 330.4], ["2025-07-03", 341.26], ["2025-07-08", 338.91], ["2025-07-11", 347.43], ["2025-07-16", 340.09], ["2025-07-21", 350.07], ["2025-07-24", 340.68], ["2025-07-29", 343.61], ["2025-08-01", 327.75], ["2025-08-06", 336.56], ["2025-08-11", 327.75], ["2025-08-14", 354.77], ["2025-08-20", 349.49], ["2025-08-25", 377.97], ["2025-08-28", 369.16], ["2025-09-02", 369.46], ["2025-09-05", 361.53], ["2025-09-10", 375.33], ["2025-09-15", 370.63], ["2025-09-18", 356.83], ["2025-09-24", 341.26], ["2025-09-29", 339.21], ["2025-10-02", 336.27], ["2025-10-14", 324.82], ["2025-10-17", 328.34], ["2025-10-22", 343.02], ["2025-10-27", 334.8], ["2025-10-30", 324.82], ["2025-11-04", 332.75], ["2025-11-07", 338.33], ["2025-11-12", 354.48], ["2025-11-17", 325.7], ["2025-11-20", 323.35], ["2025-11-25", 315.71], ["2025-11-28", 318.94], ["2025-12-03", 325.4], ["2025-12-08", 325.11], ["2025-12-11", 318.65], ["2025-12-16", 322.17], ["2025-12-19", 321.88], ["2025-12-24", 321.0], ["2025-12-30", 332.16], ["2026-01-06", 318.06], ["2026-01-09", 298.09], ["2026-01-14", 305.73], ["2026-01-19", 307.2], ["2026-01-22", 315.42], ["2026-01-27", 323.05], ["2026-01-30", 342.44], ["2026-02-04", 356.24], ["2026-02-09", 354.77], ["2026-02-12", 396.48], ["2026-02-20", 429.37], ["2026-02-25", 392.07], ["2026-03-03", 353.3], ["2026-03-06", 335.98], ["2026-03-11", 337.44], ["2026-03-16", 322.76], ["2026-03-19", 325.7], ["2026-03-24", 311.6], ["2026-03-27", 341.85], ["2026-04-01", 339.79], ["2026-04-06", 326.87], ["2026-04-09", 341.85], ["2026-04-14", 347.43], ["2026-04-17", 345.67], ["2026-04-22", 339.21], ["2026-04-27", 336.86], ["2026-04-30", 328.05], ["2026-05-07", 332.45], ["2026-05-12", 315.71], ["2026-05-15", 310.72], ["2026-05-20", 317.77], ["2026-05-26", 312.78], ["2026-05-29", 302.2], ["2026-06-04", 312.78], ["2026-06-09", 320.41], ["2026-06-12", 319.82], ["2026-06-17", 335.68], ["2026-06-22", 310.43], ["2026-06-25", 300.73], ["2026-06-30", 310.13], ["2026-07-03", 331.57], ["2026-07-08", 333.92], ["2026-07-13", 343.61], ["2026-07-16", 347.43], ["2026-07-22", 335.98], ["2026-07-27", 368.87], ["2026-07-30", 364.46], ["2026-08-04", 350.95], ["2026-08-07", 370.93], ["2026-08-12", 349.49], ["2026-08-18", 344.2], ["2026-08-21", 338.91], ["2026-08-26", 346.55], ["2026-08-31", 358.88], ["2026-09-03", 402.06], ["2026-09-08", 384.14], ["2026-09-11", 377.09], ["2026-09-16", 367.11], ["2026-09-21", 381.5], ["2026-09-28", 391.78], ["2026-09-30", 370.93]], "K": [["2021-09-29", 100.0], ["2021-10-05", 100.25], ["2021-10-08", 100.25], ["2021-10-14", 100.87], ["2021-10-19", 101.86], ["2021-10-22", 102.11], ["2021-10-27", 101.86], ["2021-11-01", 101.86], ["2021-11-04", 106.21], ["2021-11-09", 107.08], ["2021-11-12", 105.59], ["2021-11-17", 104.72], ["2021-11-22", 104.6], ["2021-11-25", 104.97], ["2021-11-30", 101.74], ["2021-12-03", 105.71], ["2021-12-08", 106.21], ["2021-12-13", 106.71], ["2021-12-16", 105.22], ["2021-12-21", 105.84], ["2021-12-24", 104.6], ["2021-12-29", 99.01], ["2022-01-05", 97.52], ["2022-01-10", 97.52], ["2022-01-13", 98.14], ["2022-01-18", 97.52], ["2022-01-21", 98.39], ["2022-01-26", 97.27], ["2022-02-03", 96.77], ["2022-02-08", 97.64], ["2022-02-11", 99.38], ["2022-02-16", 99.25], ["2022-02-21", 100.37], ["2022-02-24", 99.01], ["2022-03-02", 99.63], ["2022-03-07", 100.25], ["2022-03-11", 100.12], ["2022-03-16", 100.99], ["2022-03-21", 101.24], ["2022-03-24", 100.5], ["2022-03-29", 100.75], ["2022-04-01", 100.62], ["2022-04-06", 100.87], ["2022-04-11", 102.24], ["2022-04-14", 100.37], ["2022-04-19", 100.75], ["2022-04-22", 101.86], ["2022-04-27", 101.37], ["2022-05-02", 102.48], ["2022-05-06", 102.48], ["2022-05-12", 102.86], ["2022-05-17", 104.22], ["2022-05-20", 104.84], ["2022-05-25", 105.47], ["2022-05-30", 104.35], ["2022-06-03", 105.59], ["2022-06-09", 105.71], ["2022-06-14", 103.85], ["2022-06-17", 103.6], ["2022-06-22", 102.11], ["2022-06-27", 102.36], ["2022-06-30", 102.11], ["2022-07-05", 101.49], ["2022-07-08", 100.25], ["2022-07-13", 100.87], ["2022-07-18", 100.75], ["2022-07-21", 100.75], ["2022-07-26", 102.11], ["2022-07-29", 101.74], ["2022-08-03", 100.62], ["2022-08-08", 100.99], ["2022-08-11", 101.24], ["2022-08-17", 100.99], ["2022-08-22", 102.24], ["2022-08-25", 102.36], ["2022-08-30", 103.11], ["2022-09-02", 103.11], ["2022-09-07", 103.23], ["2022-09-14", 103.85], ["2022-09-19", 104.72], ["2022-09-22", 107.33], ["2022-09-27", 107.2], ["2022-09-30", 107.58], ["2022-10-06", 108.07], ["2022-10-12", 108.07], ["2022-10-17", 109.07], ["2022-10-20", 109.32], ["2022-10-25", 111.06], ["2022-10-28", 116.89], ["2022-11-02", 117.39], ["2022-11-07", 117.76], ["2022-11-10", 117.27], ["2022-11-15", 117.52], ["2022-11-18", 118.01], ["2022-11-23", 118.14], ["2022-11-28", 118.88], ["2022-12-01", 121.24], ["2022-12-06", 121.37], ["2022-12-09", 121.74], ["2022-12-14", 122.48], ["2022-12-19", 120.37], ["2022-12-22", 120.5], ["2022-12-27", 118.14], ["2023-01-02", 110.56], ["2023-01-05", 108.94], ["2023-01-10", 113.91], ["2023-01-13", 113.54], ["2023-01-18", 114.41], ["2023-01-25", 118.76], ["2023-01-30", 117.02], ["2023-02-02", 114.16], ["2023-02-07", 112.92], ["2023-02-10", 108.94], ["2023-02-15", 108.7], ["2023-02-20", 110.31], ["2023-02-23", 112.17], ["2023-02-28", 110.19], ["2023-03-06", 108.07], ["2023-03-09", 106.71], ["2023-03-14", 105.71], ["2023-03-17", 114.04], ["2023-03-22", 110.56], ["2023-03-27", 108.7], ["2023-03-30", 104.6], ["2023-04-04", 104.72], ["2023-04-07", 103.6], ["2023-04-12", 103.6], ["2023-04-17", 104.72], ["2023-04-20", 107.33], ["2023-04-25", 106.83], ["2023-04-28", 106.58], ["2023-05-04", 105.71], ["2023-05-10", 105.34], ["2023-05-15", 105.22], ["2023-05-18", 104.22], ["2023-05-23", 103.73], ["2023-05-26", 103.73], ["2023-06-01", 103.11], ["2023-06-07", 103.11], ["2023-06-12", 103.35], ["2023-06-15", 101.74], ["2023-06-20", 102.11], ["2023-06-23", 102.86], ["2023-06-28", 104.35], ["2023-07-03", 102.86], ["2023-07-06", 101.49], ["2023-07-11", 101.99], ["2023-07-14", 102.86], ["2023-07-19", 101.86], ["2023-07-24", 101.86], ["2023-07-27", 104.35], ["2023-08-01", 103.73], ["2023-08-04", 105.34], ["2023-08-09", 104.1], ["2023-08-14", 107.45], ["2023-08-18", 106.09], ["2023-08-23", 106.83], ["2023-08-28", 108.2], ["2023-08-31", 107.95], ["2023-09-05", 108.32], ["2023-09-08", 109.94], ["2023-09-13", 110.68], ["2023-09-18", 113.04], ["2023-09-21", 109.81], ["2023-09-26", 106.83], ["2023-10-05", 104.84], ["2023-10-11", 107.7], ["2023-10-16", 110.56], ["2023-10-19", 109.69], ["2023-10-24", 107.83], ["2023-10-27", 107.45], ["2023-11-01", 108.32], ["2023-11-06", 111.43], ["2023-11-09", 110.43], ["2023-11-14", 114.04], ["2023-11-17", 112.67], ["2023-11-22", 113.66], ["2023-11-27", 113.04], ["2023-11-30", 109.57], ["2023-12-05", 111.8], ["2023-12-08", 112.8], ["2023-12-13", 113.91], ["2023-12-18", 113.04], ["2023-12-21", 112.8], ["2023-12-27", 106.46], ["2024-01-03", 111.68], ["2024-01-08", 112.17], ["2024-01-11", 111.8], ["2024-01-16", 106.34], ["2024-01-19", 105.71], ["2024-01-24", 106.71], ["2024-01-29", 110.56], ["2024-02-01", 115.03], ["2024-02-06", 111.8], ["2024-02-13", 112.3], ["2024-02-16", 112.92], ["2024-02-21", 114.29], ["2024-02-26", 114.41], ["2024-02-29", 115.53], ["2024-03-06", 114.16], ["2024-03-11", 114.53], ["2024-03-14", 118.26], ["2024-03-19", 114.78], ["2024-03-22", 114.91], ["2024-03-27", 116.65], ["2024-04-01", 113.66], ["2024-04-04", 112.67], ["2024-04-09", 112.92], ["2024-04-15", 111.3], ["2024-04-18", 111.55], ["2024-04-23", 111.43], ["2024-04-26", 110.43], ["2024-05-02", 112.92], ["2024-05-08", 113.91], ["2024-05-13", 111.93], ["2024-05-17", 110.93], ["2024-05-22", 109.32], ["2024-05-27", 107.08], ["2024-05-30", 105.84], ["2024-06-04", 105.84], ["2024-06-10", 106.71], ["2024-06-13", 106.71], ["2024-06-18", 107.45], ["2024-06-21", 107.2], ["2024-06-26", 107.45], ["2024-07-01", 108.45], ["2024-07-04", 109.32], ["2024-07-09", 106.96], ["2024-07-12", 108.7], ["2024-07-17", 109.19], ["2024-07-22", 115.4], ["2024-07-25", 115.78], ["2024-07-30", 115.16], ["2024-08-02", 114.29], ["2024-08-07", 116.02], ["2024-08-12", 124.47], ["2024-08-16", 123.11], ["2024-08-21", 126.96], ["2024-08-26", 135.9], ["2024-08-29", 134.29], ["2024-09-03", 134.78], ["2024-09-06", 138.39], ["2024-09-11", 136.89], ["2024-09-19", 132.55], ["2024-09-24", 133.79], ["2024-09-27", 135.28], ["2024-10-04", 129.07], ["2024-10-10", 145.22], ["2024-10-15", 130.81], ["2024-10-18", 132.67], ["2024-10-23", 133.54], ["2024-10-28", 137.52], ["2024-10-31", 136.27], ["2024-11-05", 135.65], ["2024-11-08", 148.45], ["2024-11-13", 152.8], ["2024-11-18", 144.97], ["2024-11-21", 143.98], ["2024-11-26", 148.94], ["2024-11-29", 151.3], ["2024-12-04", 153.29], ["2024-12-09", 148.07], ["2024-12-12", 144.1], ["2024-12-17", 137.02], ["2024-12-20", 133.66], ["2024-12-26", 135.78], ["2025-01-02", 133.04], ["2025-01-07", 132.05], ["2025-01-10", 135.4], ["2025-01-15", 134.29], ["2025-01-20", 129.94], ["2025-01-23", 131.06], ["2025-02-03", 140.62], ["2025-02-06", 140.0], ["2025-02-11", 134.78], ["2025-02-14", 132.3], ["2025-02-19", 131.55], ["2025-02-24", 128.57], ["2025-02-27", 124.35], ["2025-03-05", 120.37], ["2025-03-10", 121.37], ["2025-03-13", 119.38], ["2025-03-18", 120.25], ["2025-03-21", 124.97], ["2025-03-26", 124.35], ["2025-03-31", 125.59], ["2025-04-03", 127.58], ["2025-04-08", 129.07], ["2025-04-11", 131.18], ["2025-04-16", 135.9], ["2025-04-21", 137.39], ["2025-04-24", 140.99], ["2025-04-29", 140.75], ["2025-05-07", 142.61], ["2025-05-12", 144.22], ["2025-05-15", 143.98], ["2025-05-20", 146.83], ["2025-05-23", 148.32], ["2025-05-28", 152.3], ["2025-06-02", 149.81], ["2025-06-09", 153.17], ["2025-06-12", 151.8], ["2025-06-17", 153.66], ["2025-06-20", 155.9], ["2025-06-25", 155.65], ["2025-06-30", 158.63], ["2025-07-03", 159.5], ["2025-07-08", 167.08], ["2025-07-11", 169.44], ["2025-07-16", 173.91], ["2025-07-21", 170.06], ["2025-07-24", 163.35], ["2025-07-29", 163.73], ["2025-08-01", 160.37], ["2025-08-06", 174.53], ["2025-08-11", 174.04], ["2025-08-14", 166.09], ["2025-08-20", 169.57], ["2025-08-25", 171.3], ["2025-08-28", 168.94], ["2025-09-02", 168.45], ["2025-09-05", 167.95], ["2025-09-10", 163.23], ["2025-09-15", 169.69], ["2025-09-18", 173.54], ["2025-09-24", 174.78], ["2025-09-29", 169.19], ["2025-10-02", 166.96], ["2025-10-14", 172.8], ["2025-10-17", 173.17], ["2025-10-22", 171.18], ["2025-10-27", 168.7], ["2025-10-30", 167.08], ["2025-11-04", 169.32], ["2025-11-07", 168.7], ["2025-11-12", 175.16], ["2025-11-17", 176.52], ["2025-11-20", 176.15], ["2025-11-25", 174.16], ["2025-11-28", 180.75], ["2025-12-03", 179.75], ["2025-12-08", 175.16], ["2025-12-11", 175.9], ["2025-12-16", 186.34], ["2025-12-19", 182.24], ["2025-12-24", 180.12], ["2025-12-30", 176.52], ["2026-01-06", 177.14], ["2026-01-09", 176.65], ["2026-01-14", 179.25], ["2026-01-19", 179.88], ["2026-01-22", 178.88], ["2026-01-27", 179.88], ["2026-01-30", 191.18], ["2026-02-04", 200.99], ["2026-02-09", 209.32], ["2026-02-12", 213.91], ["2026-02-20", 220.0], ["2026-02-25", 223.23], ["2026-03-03", 201.61], ["2026-03-06", 192.17], ["2026-03-11", 192.05], ["2026-03-16", 189.44], ["2026-03-19", 195.03], ["2026-03-24", 195.78], ["2026-03-27", 196.27], ["2026-04-01", 198.76], ["2026-04-06", 195.4], ["2026-04-09", 202.73], ["2026-04-14", 208.82], ["2026-04-17", 212.8], ["2026-04-22", 212.42], ["2026-04-27", 220.87], ["2026-04-30", 221.49], ["2026-05-07", 219.5], ["2026-05-12", 226.21], ["2026-05-15", 223.35], ["2026-05-20", 221.37], ["2026-05-26", 226.21], ["2026-05-29", 229.44], ["2026-06-04", 218.39], ["2026-06-09", 228.94], ["2026-06-12", 233.29], ["2026-06-17", 232.55], ["2026-06-22", 217.27], ["2026-06-25", 211.8], ["2026-06-30", 210.81], ["2026-07-03", 217.52], ["2026-07-08", 228.94], ["2026-07-13", 216.52], ["2026-07-16", 223.48], ["2026-07-22", 219.38], ["2026-07-27", 226.83], ["2026-07-30", 230.81], ["2026-08-04", 218.14], ["2026-08-07", 234.53], ["2026-08-12", 220.37], ["2026-08-18", 219.38], ["2026-08-21", 214.04], ["2026-08-26", 217.02], ["2026-08-31", 221.24], ["2026-09-03", 217.02], ["2026-09-08", 210.93], ["2026-09-11", 213.42], ["2026-09-16", 213.66], ["2026-09-21", 215.9], ["2026-09-28", 217.89], ["2026-09-30", 218.88]], "X": [["2021-09-29", 100.0], ["2021-10-05", 96.79], ["2021-10-08", 96.6], ["2021-10-14", 97.66], ["2021-10-19", 98.98], ["2021-10-22", 98.23], ["2021-10-27", 98.86], ["2021-11-01", 97.34], ["2021-11-04", 97.48], ["2021-11-09", 96.8], ["2021-11-12", 97.01], ["2021-11-17", 96.8], ["2021-11-22", 98.46], ["2021-11-25", 97.39], ["2021-11-30", 92.77], ["2021-12-03", 97.0], ["2021-12-08", 98.09], ["2021-12-13", 98.08], ["2021-12-16", 98.24], ["2021-12-21", 97.21], ["2021-12-24", 98.44], ["2021-12-29", 97.81], ["2022-01-05", 96.53], ["2022-01-10", 95.64], ["2022-01-13", 96.79], ["2022-01-18", 93.59], ["2022-01-21", 92.62], ["2022-01-26", 88.53], ["2022-02-03", 88.48], ["2022-02-08", 89.75], ["2022-02-11", 89.79], ["2022-02-16", 89.2], ["2022-02-21", 89.66], ["2022-02-24", 86.55], ["2022-03-02", 88.34], ["2022-03-07", 86.64], ["2022-03-11", 86.96], ["2022-03-16", 86.9], ["2022-03-21", 87.77], ["2022-03-24", 89.2], ["2022-03-29", 89.57], ["2022-04-01", 89.53], ["2022-04-06", 89.37], ["2022-04-11", 88.0], ["2022-04-14", 88.77], ["2022-04-19", 88.84], ["2022-04-22", 88.38], ["2022-04-27", 86.24], ["2022-05-02", 87.82], ["2022-05-06", 86.41], ["2022-05-12", 83.33], ["2022-05-17", 85.63], ["2022-05-20", 86.24], ["2022-05-25", 85.52], ["2022-05-30", 87.24], ["2022-06-03", 87.27], ["2022-06-09", 85.79], ["2022-06-14", 81.46], ["2022-06-17", 79.76], ["2022-06-22", 76.56], ["2022-06-27", 78.49], ["2022-06-30", 76.22], ["2022-07-05", 76.52], ["2022-07-08", 76.81], ["2022-07-13", 76.09], ["2022-07-18", 77.62], ["2022-07-21", 78.72], ["2022-07-26", 78.85], ["2022-07-29", 80.11], ["2022-08-03", 80.43], ["2022-08-08", 81.47], ["2022-08-11", 82.47], ["2022-08-17", 82.23], ["2022-08-22", 80.47], ["2022-08-25", 80.95], ["2022-08-30", 80.09], ["2022-09-02", 78.73], ["2022-09-07", 77.66], ["2022-09-14", 78.8], ["2022-09-19", 76.98], ["2022-09-22", 76.21], ["2022-09-27", 72.67], ["2022-09-30", 70.43], ["2022-10-06", 73.13], ["2022-10-12", 71.97], ["2022-10-17", 72.53], ["2022-10-20", 72.48], ["2022-10-25", 73.04], ["2022-10-28", 74.12], ["2022-11-02", 76.36], ["2022-11-07", 77.5], ["2022-11-10", 78.5], ["2022-11-15", 81.05], ["2022-11-18", 79.88], ["2022-11-23", 79.01], ["2022-11-28", 78.69], ["2022-12-01", 81.03], ["2022-12-06", 78.2], ["2022-12-09", 78.07], ["2022-12-14", 78.4], ["2022-12-19", 76.86], ["2022-12-22", 77.01], ["2022-12-27", 76.23], ["2023-01-02", 72.73], ["2023-01-05", 74.0], ["2023-01-10", 76.83], ["2023-01-13", 77.97], ["2023-01-18", 77.39], ["2023-01-25", 79.36], ["2023-01-30", 80.07], ["2023-02-02", 80.68], ["2023-02-07", 80.11], ["2023-02-10", 80.7], ["2023-02-15", 79.34], ["2023-02-20", 80.23], ["2023-02-23", 79.7], ["2023-02-28", 78.84], ["2023-03-06", 80.47], ["2023-03-09", 79.05], ["2023-03-14", 76.76], ["2023-03-17", 78.28], ["2023-03-22", 78.98], ["2023-03-27", 78.73], ["2023-03-30", 80.16], ["2023-04-04", 81.06], ["2023-04-07", 81.38], ["2023-04-12", 83.35], ["2023-04-17", 84.17], ["2023-04-20", 83.75], ["2023-04-25", 81.33], ["2023-04-28", 81.74], ["2023-05-04", 81.72], ["2023-05-10", 81.58], ["2023-05-15", 81.02], ["2023-05-18", 82.2], ["2023-05-23", 83.9], ["2023-05-26", 83.61], ["2023-06-01", 83.95], ["2023-06-07", 85.47], ["2023-06-12", 85.92], ["2023-06-15", 85.24], ["2023-06-20", 85.12], ["2023-06-23", 83.98], ["2023-06-28", 83.79], ["2023-07-03", 85.04], ["2023-07-06", 83.53], ["2023-07-11", 83.73], ["2023-07-14", 85.88], ["2023-07-19", 85.23], ["2023-07-24", 85.89], ["2023-07-27", 85.08], ["2023-08-01", 87.15], ["2023-08-04", 85.05], ["2023-08-09", 85.13], ["2023-08-14", 84.01], ["2023-08-18", 81.84], ["2023-08-23", 81.87], ["2023-08-28", 83.11], ["2023-08-31", 83.53], ["2023-09-05", 84.38], ["2023-09-08", 83.25], ["2023-09-13", 82.83], ["2023-09-18", 84.13], ["2023-09-21", 82.18], ["2023-09-26", 80.48], ["2023-10-05", 78.54], ["2023-10-11", 80.06], ["2023-10-16", 79.61], ["2023-10-19", 78.94], ["2023-10-24", 77.89], ["2023-10-27", 75.25], ["2023-11-01", 75.21], ["2023-11-06", 81.77], ["2023-11-09", 79.31], ["2023-11-14", 79.51], ["2023-11-17", 80.71], ["2023-11-22", 82.07], ["2023-11-27", 81.55], ["2023-11-30", 82.85], ["2023-12-05", 81.51], ["2023-12-08", 82.28], ["2023-12-13", 82.04], ["2023-12-18", 83.88], ["2023-12-21", 84.96], ["2023-12-27", 85.4], ["2024-01-03", 85.2], ["2024-01-08", 83.91], ["2024-01-11", 83.01], ["2024-01-16", 81.61], ["2024-01-19", 80.8], ["2024-01-24", 80.7], ["2024-01-29", 81.71], ["2024-02-01", 83.08], ["2024-02-06", 84.18], ["2024-02-13", 86.58], ["2024-02-16", 86.55], ["2024-02-21", 86.7], ["2024-02-26", 86.5], ["2024-02-29", 86.34], ["2024-03-06", 86.32], ["2024-03-11", 86.92], ["2024-03-14", 88.84], ["2024-03-19", 86.8], ["2024-03-22", 89.81], ["2024-03-27", 90.03], ["2024-04-01", 89.79], ["2024-04-04", 89.6], ["2024-04-09", 88.4], ["2024-04-15", 87.26], ["2024-04-18", 86.09], ["2024-04-23", 85.71], ["2024-04-26", 86.8], ["2024-05-02", 87.69], ["2024-05-08", 89.7], ["2024-05-13", 89.12], ["2024-05-17", 89.03], ["2024-05-22", 88.99], ["2024-05-27", 88.98], ["2024-05-30", 86.12], ["2024-06-04", 86.99], ["2024-06-10", 88.27], ["2024-06-13", 90.02], ["2024-06-18", 90.32], ["2024-06-21", 90.98], ["2024-06-26", 91.24], ["2024-07-01", 91.64], ["2024-07-04", 92.31], ["2024-07-09", 93.7], ["2024-07-12", 93.36], ["2024-07-17", 92.91], ["2024-07-22", 90.3], ["2024-07-25", 88.58], ["2024-07-30", 89.48], ["2024-08-02", 87.45], ["2024-08-07", 83.93], ["2024-08-12", 85.56], ["2024-08-16", 88.14], ["2024-08-21", 88.26], ["2024-08-26", 88.16], ["2024-08-29", 86.99], ["2024-09-03", 87.07], ["2024-09-06", 83.14], ["2024-09-11", 82.13], ["2024-09-19", 84.33], ["2024-09-24", 86.0], ["2024-09-27", 86.59], ["2024-10-04", 83.97], ["2024-10-10", 84.93], ["2024-10-15", 86.05], ["2024-10-18", 84.76], ["2024-10-23", 84.95], ["2024-10-28", 85.37], ["2024-10-31", 83.53], ["2024-11-05", 84.2], ["2024-11-08", 83.69], ["2024-11-13", 78.98], ["2024-11-18", 80.68], ["2024-11-21", 81.06], ["2024-11-26", 82.36], ["2024-11-29", 80.25], ["2024-12-04", 80.52], ["2024-12-09", 77.14], ["2024-12-12", 81.11], ["2024-12-17", 80.28], ["2024-12-20", 78.56], ["2024-12-26", 79.39], ["2025-01-02", 78.39], ["2025-01-07", 81.43], ["2025-01-10", 82.21], ["2025-01-15", 81.59], ["2025-01-20", 82.35], ["2025-01-23", 82.2], ["2025-02-03", 80.19], ["2025-02-06", 82.89], ["2025-02-11", 82.97], ["2025-02-14", 84.67], ["2025-02-19", 87.3], ["2025-02-24", 86.44], ["2025-02-27", 85.67], ["2025-03-05", 83.59], ["2025-03-10", 83.99], ["2025-03-13", 84.1], ["2025-03-18", 85.36], ["2025-03-21", 86.37], ["2025-03-26", 86.4], ["2025-03-31", 81.08], ["2025-04-03", 81.26], ["2025-04-08", 76.28], ["2025-04-11", 79.49], ["2025-04-16", 79.97], ["2025-04-21", 81.31], ["2025-04-24", 82.42], ["2025-04-29", 83.83], ["2025-05-07", 84.1], ["2025-05-12", 85.2], ["2025-05-15", 85.66], ["2025-05-20", 85.02], ["2025-05-23", 84.7], ["2025-05-28", 87.25], ["2025-06-02", 88.19], ["2025-06-09", 93.32], ["2025-06-12", 95.42], ["2025-06-17", 96.41], ["2025-06-20", 98.74], ["2025-06-25", 101.57], ["2025-06-30", 100.37], ["2025-07-03", 101.83], ["2025-07-08", 101.79], ["2025-07-11", 103.77], ["2025-07-16", 104.12], ["2025-07-21", 104.92], ["2025-07-24", 104.25], ["2025-07-29", 105.56], ["2025-08-01", 101.93], ["2025-08-06", 104.51], ["2025-08-11", 104.79], ["2025-08-14", 105.4], ["2025-08-20", 102.28], ["2025-08-25", 104.89], ["2025-08-28", 104.45], ["2025-09-02", 103.66], ["2025-09-05", 104.73], ["2025-09-10", 108.31], ["2025-09-15", 111.34], ["2025-09-18", 113.1], ["2025-09-23", 113.92], ["2025-09-26", 110.65], ["2025-10-01", 112.93], ["2025-10-13", 117.13], ["2025-10-16", 122.48], ["2025-10-21", 124.95], ["2025-10-24", 128.8], ["2025-10-29", 133.36], ["2025-11-03", 137.96], ["2025-11-06", 131.57], ["2025-11-11", 134.18], ["2025-11-14", 131.09], ["2025-11-19", 128.4], ["2025-11-24", 125.68], ["2025-11-27", 130.28], ["2025-12-02", 130.54], ["2025-12-05", 133.98], ["2025-12-10", 135.12], ["2025-12-15", 133.67], ["2025-12-18", 130.53], ["2025-12-23", 134.54], ["2025-12-29", 137.91], ["2026-01-05", 145.66], ["2026-01-08", 148.76], ["2026-01-13", 153.34], ["2026-01-16", 158.18], ["2026-01-21", 160.44], ["2026-01-26", 161.74], ["2026-01-29", 170.61], ["2026-02-03", 172.8], ["2026-02-06", 166.3], ["2026-02-11", 174.97], ["2026-02-19", 185.51], ["2026-02-24", 195.07], ["2026-02-27", 204.04], ["2026-03-05", 182.46], ["2026-03-10", 180.79], ["2026-03-13", 179.31], ["2026-03-18", 193.61], ["2026-03-23", 176.64], ["2026-03-26", 178.43], ["2026-03-31", 165.1], ["2026-04-03", 175.71], ["2026-04-08", 191.89], ["2026-04-13", 189.81], ["2026-04-16", 203.45], ["2026-04-21", 208.76], ["2026-04-24", 211.6], ["2026-04-29", 218.64], ["2026-05-06", 241.3], ["2026-05-11", 255.61], ["2026-05-14", 260.81], ["2026-05-19", 237.61], ["2026-05-22", 256.44], ["2026-05-28", 267.47], ["2026-06-02", 287.61], ["2026-06-08", 244.57], ["2026-06-11", 253.7], ["2026-06-16", 285.16], ["2026-06-19", 295.8], ["2026-06-24", 276.81], ["2026-06-29", 274.31], ["2026-07-02", 249.92], ["2026-07-07", 250.18], ["2026-07-10", 244.29], ["2026-07-15", 238.03], ["2026-07-21", 220.5], ["2026-07-24", 218.63], ["2026-07-29", 185.06], ["2026-08-03", 204.47], ["2026-08-06", 205.75], ["2026-08-11", 207.35], ["2026-08-14", 228.02], ["2026-08-20", 223.92], ["2026-08-25", 220.33], ["2026-08-28", 221.84], ["2026-09-02", 214.45], ["2026-09-07", 228.59], ["2026-09-10", 229.85], ["2026-09-15", 216.56], ["2026-09-18", 225.28], ["2026-09-23", 231.38], ["2026-09-30", 223.45]]}, "sma20": 1763650, "sma50": 1683620, "candle": [["2026-07-15", 2120000, 2171000, 2070000, 2082000, 6046951], ["2026-07-16", 1902000, 1919000, 1821000, 1842000, 5608812], ["2026-07-20", 1745000, 1892000, 1735000, 1764000, 5876444], ["2026-07-21", 1775000, 1889000, 1732000, 1836000, 4639208], ["2026-07-22", 1977000, 2006000, 1830000, 1830000, 4802637], ["2026-07-23", 1910000, 1948000, 1845000, 1919000, 4119477], ["2026-07-24", 1894000, 1894000, 1752000, 1759000, 4935624], ["2026-07-27", 1814000, 1821000, 1707000, 1816000, 4030933], ["2026-07-28", 1662000, 1674000, 1550000, 1550000, 8120587], ["2026-07-29", 1567000, 1619000, 1246000, 1401000, 12428883], ["2026-07-30", 1361000, 1459000, 1287000, 1322000, 9543189], ["2026-07-31", 1697000, 1718000, 1586000, 1718000, 10499619], ["2026-08-03", 1642000, 1645000, 1562000, 1567000, 5432833], ["2026-08-04", 1620000, 1630000, 1483000, 1577000, 5391210], ["2026-08-05", 1693000, 1701000, 1647000, 1668000, 3945674], ["2026-08-06", 1600000, 1606000, 1481000, 1495000, 5498295], ["2026-08-07", 1521000, 1542000, 1409000, 1422000, 5002539], ["2026-08-10", 1443000, 1487000, 1397000, 1420000, 3295283], ["2026-08-11", 1405000, 1455000, 1373000, 1425000, 3817655], ["2026-08-12", 1456000, 1549000, 1440000, 1504000, 4566672], ["2026-08-13", 1582000, 1634000, 1567000, 1593000, 4680347], ["2026-08-14", 1695000, 1697000, 1626000, 1645000, 4520990], ["2026-08-18", 1736000, 1792000, 1640000, 1662000, 5139000], ["2026-08-19", 1545000, 1559000, 1486000, 1500000, 4223067], ["2026-08-20", 1613000, 1720000, 1576000, 1691000, 5452970], ["2026-08-21", 1675000, 1773000, 1669000, 1730000, 4274294], ["2026-08-24", 1775000, 1792000, 1670000, 1671000, 3994599], ["2026-08-25", 1598000, 1687000, 1557000, 1678000, 4029660], ["2026-08-26", 1668000, 1735000, 1662000, 1688000, 2923810], ["2026-08-27", 1776000, 1788000, 1708000, 1730000, 3264042], ["2026-08-28", 1704000, 1725000, 1653000, 1653000, 3531892], ["2026-08-31", 1596000, 1674000, 1577000, 1674000, 3980661], ["2026-09-01", 1666000, 1713000, 1652000, 1693000, 2727724], ["2026-09-02", 1630000, 1661000, 1612000, 1613000, 2568478], ["2026-09-03", 1643000, 1649000, 1558000, 1596000, 2632758], ["2026-09-04", 1620000, 1683000, 1620000, 1647000, 2827892], ["2026-09-07", 1737000, 1783000, 1733000, 1783000, 3480094], ["2026-09-08", 1799000, 1889000, 1777000, 1793000, 4164618], ["2026-09-09", 1795000, 1883000, 1795000, 1856000, 3526484], ["2026-09-10", 1879000, 1890000, 1811000, 1853000, 4483585], ["2026-09-11", 1773000, 1827000, 1768000, 1812000, 2625165], ["2026-09-14", 1707000, 1740000, 1686000, 1697000, 4001549], ["2026-09-15", 1690000, 1729000, 1671000, 1690000, 2732031], ["2026-09-16", 1686000, 1760000, 1686000, 1759000, 2857754], ["2026-09-17", 1770000, 1785000, 1735000, 1745000, 2803398], ["2026-09-18", 1810000, 1857000, 1805000, 1857000, 4764077], ["2026-09-21", 1872000, 1888000, 1847000, 1868000, 2755380], ["2026-09-22", 1909000, 1935000, 1832000, 1840000, 3271767], ["2026-09-23", 1899000, 1900000, 1836000, 1862000, 2947714], ["2026-09-28", 1825000, 1840000, 1768000, 1768000, 3302748], ["2026-09-29", 1755000, 1788000, 1736000, 1765000, 2939411], ["2026-09-30", 1789000, 1824000, 1773000, 1776000, 3363557]]}</script>
+<!-- =========================================================
+     차트 도구 — 여기는 고치지 않고 그대로 복사해서 씀
+     ========================================================= -->
+<script>
+'use strict';
+// 차트 색은 위 CSS 색 토큰(:root)에서 읽음 → 색을 바꿀 때 :root 한 곳만 고치면 됨
+const cssVars=getComputedStyle(document.documentElement);
+const C=Object.fromEntries(['bg','surface','line','text','soft','muted','cyan','amber','red','green'].map(k=>[k,cssVars.getPropertyValue('--'+k).trim()]));
+// 옅은 영역 칠하기용: 토큰 색 + 투명도
+const tint=(hex,a)=>{const n=parseInt(hex.slice(1),16);return `rgba(${n>>16},${n>>8&255},${n&255},${a})`;};
+const FONT="Pretendard, 'Noto Sans KR', 'Malgun Gothic', Arial, sans-serif";
+const CFG={responsive:true,displaylogo:false,scrollZoom:false,modeBarButtonsToRemove:['lasso2d','select2d'],toImageButtonOptions:{format:'png',scale:2}};
+const narrow=()=>window.innerWidth<650;
+const pending=[];
+const col=c=>C[c]||c;  // 'cyan' 같은 이름 또는 #hex 둘 다 허용
+
+function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function fmt(v,d=2){return v==null||!Number.isFinite(v)?'—':Number(v).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});}
+function pct(v){return v==null?'—':(v>0?'+':'')+fmt(v,2)+'%';}
+function mul(v){return v==null?'—':fmt(v,2)+'×';}
+
+// 모든 차트의 공통 모양
+function plotLayout(h=300){return {height:h,autosize:true,margin:{l:60,r:28,t:30,b:50},paper_bgcolor:C.surface,plot_bgcolor:C.surface,
+  font:{family:FONT,color:C.soft,size:11},xaxis:{gridcolor:C.line,zeroline:false,automargin:true},yaxis:{gridcolor:C.line,zeroline:false,automargin:true},
+  legend:{orientation:'h',y:1.17,x:0,font:{size:10}},hoverlabel:{bgcolor:C.surface,bordercolor:C.line,font:{color:C.text,size:11}},hovermode:'x unified'};}
+function draw(id,traces,layout){const el=document.getElementById(id);if(!el)return;el.style.height=layout.height+'px';pending.push(Plotly.newPlot(el,traces,layout,CFG));}
+// 막대 위 숫자가 잘리지 않도록 위·아래 20% 여유
+function padRange(vals){vals=vals.filter(v=>v!=null);const hi=Math.max(0,...vals),lo=Math.min(0,...vals),pad=(hi-lo)*0.2;return [lo<0?lo-pad:0,hi>0?hi+pad:pad*0.25];}
+// 기준선 (예: 1배, 0%)
+function refLine(axis,v,color=C.muted){return axis==='y'?{type:'line',xref:'paper',x0:0,x1:1,y0:v,y1:v,line:{color,dash:'dot',width:1}}:{type:'line',yref:'paper',y0:0,y1:1,x0:v,x1:v,line:{color,dash:'dot',width:1}};}
+
+// ① 꺾은선: 점이 적은 추세 (2~12개)
+function lineChart(id,{x,y,yTitle,hover,height=300}){
+  draw(id,[{type:'scatter',mode:'lines+markers',x,y,line:{width:3,color:C.cyan},marker:{size:8},hovertemplate:(hover||'%{x}<br>%{y}')+'<extra></extra>'}],
+    {...plotLayout(height),xaxis:{type:'category'},yaxis:{...plotLayout().yaxis,title:{text:yTitle},rangemode:'tozero'},showlegend:false});}
+// ①-b 여러 계열 꺾은선: series=[{name,x,y,color,dash}] · 첫 계열이 주인공(굵게)
+function multiLine(id,{series,yTitle,height=360,ytype,tickvals,ticktext,hoverFmt='%{y:,.1f}'}){
+  const l=plotLayout(height);l.yaxis={...l.yaxis,title:{text:yTitle},type:ytype};l.xaxis={...l.xaxis,tickvals,ticktext};
+  draw(id,series.map((s,i)=>({type:'scatter',mode:s.mode||'lines',name:s.name,x:s.x,y:s.y,line:{color:col(s.color||'cyan'),width:i===0?2.6:1.6,dash:s.dash||'solid'},marker:{size:6},
+    hovertemplate:s.name+' '+hoverFmt+(s.unit||'')+'<extra></extra>'})),l);}
+// ② 세로 막대: 항목 2~6개 비교. 막대 위에 값 표시
+function barChart(id,{x,y,text,colors,yTitle,range,hover,height=290}){
+  draw(id,[{type:'bar',x,y,text,textposition:'outside',cliponaxis:false,marker:{color:(colors||['cyan']).map(col)},hovertemplate:(hover||'%{x}<br>%{text}')+'<extra></extra>'}],
+    {...plotLayout(height),yaxis:{...plotLayout().yaxis,title:{text:yTitle},range:range||padRange(y)},showlegend:false});}
+// ③ 묶음 막대: 두 계열 비교 + 기준 점선
+function groupedBar(id,{categories,series,yTitle,ref,format=mul,height=300}){
+  const all=series.flatMap(s=>s.values);
+  draw(id,series.map(s=>({type:'bar',x:categories,y:s.values,name:s.name,marker:{color:col(s.color)},text:s.values.map(format),textposition:'outside',cliponaxis:false,hovertemplate:'%{x}<br>'+s.name+' %{text}<extra></extra>'})),
+    {...plotLayout(height),barmode:'group',yaxis:{...plotLayout().yaxis,title:{text:yTitle},range:padRange(all)},shapes:ref==null?[]:[refLine('y',ref)]});}
+// ④ 가로 순위 막대: 상위 N개, 분류별 색
+const GROUP_STYLE={core:{color:C.cyan,symbol:'circle'},theme:{color:C.cyan,symbol:'circle-open'},new:{color:C.green,symbol:'square'},hold:{color:C.amber,symbol:'diamond'},other:{color:C.muted,symbol:'circle'},unreviewed:{color:C.muted,symbol:'circle'}};
+function rankBar(id,{rows,xTitle,n=10,height}){
+  const top=rows.slice().sort((a,b)=>b.ret-a.ret).slice(0,n).reverse();
+  const l=plotLayout(height||Math.max(300,top.length*28+80));l.margin={l:80,r:60,t:15,b:48};l.yaxis={type:'category',automargin:true};
+  l.xaxis={...l.xaxis,title:{text:xTitle},rangemode:'tozero'};l.showlegend=false;l.hovermode='closest';
+  draw(id,[{type:'bar',orientation:'h',y:top.map(r=>r.ticker),x:top.map(r=>r.ret),text:top.map(r=>pct(r.ret)),textposition:'outside',cliponaxis:false,
+    marker:{color:top.map(r=>GROUP_STYLE[r.group].color)},customdata:top.map(r=>[r.name,REPORT.groups[r.group]]),
+    hovertemplate:'<b>%{y} · %{customdata[0]}</b><br>수익률 %{x:.2f}%<br>%{customdata[1]}<extra></extra>'}],l);}
+// ⑤ 사분면 산점도: x=수익률, y=거래량 배수(로그), 기준선 x=0 · y=1
+function quadrantScatter(id,{rows,groups,label=r=>r.group!=='unreviewed'}){
+  const traces=[];
+  for(const [g,name] of Object.entries(groups)){
+    const a=rows.filter(r=>r.group===g);if(!a.length)continue;const st=GROUP_STYLE[g],bg=g==='unreviewed';
+    traces.push({type:'scatter',mode:'markers+text',x:a.map(r=>r.ret),y:a.map(r=>r.volx),name,
+      text:a.map(r=>narrow()||!label(r)?'':r.ticker),textposition:a.map(r=>r.pos||'top center'),textfont:{size:10,color:st.color},
+      marker:{size:bg?5:9,color:st.color,symbol:st.symbol,opacity:bg?.38:.95,line:{width:bg?0:(st.symbol.endsWith('open')?1.6:.5),color:st.symbol.endsWith('open')?st.color:C.bg}},
+      customdata:a.map(r=>[r.ticker,r.name,r.cap,r.note||name]),
+      hovertemplate:'<b>%{customdata[0]} · %{customdata[1]}</b><br>시총 %{customdata[2]:,.1f}조원<br>구간 수익률 %{x:+.2f}%<br>구간 거래량 %{y:.2f}×<br>%{customdata[3]}<extra></extra>'});}
+  const l=plotLayout(narrow()?440:490);l.hovermode='closest';l.legend={orientation:'h',x:0,y:1.18,font:{size:9}};
+  l.xaxis={...l.xaxis,title:{text:'구간 수익률 (%)'}};
+  l.yaxis={...l.yaxis,type:'log',title:{text:'구간 거래량 배수 · 로그 눈금'},tickvals:[.1,.2,.5,1,2,5,10,20],ticktext:['0.1×','0.2×','0.5×','1×','2×','5×','10×','20×']};
+  l.shapes=[refLine('y',1,C.amber),refLine('x',0)];draw(id,traces,l);}
+// ⑥ 캔들 + 거래량 + 조건부 경로
+function axisSessions(rows,steps){
+  const n=rows.length,interval=Math.max(window.innerWidth<600?4:2,Math.ceil(n/(window.innerWidth<600?6:12))),ticks=[];for(let i=0;i<n;i+=interval)ticks.push(i);if(!ticks.includes(n-1)){if(n-1-ticks.at(-1)<interval/2)ticks.pop();ticks.push(n-1);}
+  const labels=ticks.map(i=>rows[i][0].slice(5).replace('-','/'));
+  for(let k=1;k<=steps;k++){ticks.push(n-1+k*2.5);labels.push(window.innerWidth<600?['①','②','③','④'][k-1]:'조건 '+k);}
+  return {type:'linear',tickmode:'array',tickvals:ticks,ticktext:labels,range:[-0.65,n-1+(steps?steps*2.5+0.8:0.65)],showgrid:false,zeroline:false,rangeslider:{visible:false},automargin:true,tickfont:{size:10}};}
+function candleChart(id,T){
+  const bars=T.bars,n=bars.length,x=bars.map((_,i)=>i),steps=Math.max((T.base||[]).length,(T.alt||[]).length,1)-1,p=v=>fmt(v,2);
+  const tr=[{type:'candlestick',x,open:bars.map(r=>r[1]),high:bars.map(r=>r[2]),low:bars.map(r=>r[3]),close:bars.map(r=>r[4]),name:T.ticker+' 본주 OHLC',
+      increasing:{line:{color:C.green},fillcolor:C.green},decreasing:{line:{color:C.red},fillcolor:C.red},
+      hovertext:bars.map(r=>`${r[0]}<br>시가 ${p(r[1])} · 고가 ${p(r[2])}<br>저가 ${p(r[3])} · 종가 ${p(r[4])}`),hoverinfo:'text',yaxis:'y'},
+    {type:'bar',x,y:bars.map(r=>r[5]),name:'거래량',yaxis:'y2',marker:{color:bars.map(r=>r[4]>=r[1]?C.green:C.red)},opacity:.5,customdata:bars.map(r=>r[0]),hovertemplate:'%{customdata}<br>거래량 %{y:,.0f}주<extra></extra>'}];
+  for(const [key,name,color,dash] of [['base',T.baseLabel||'조건부 기본',C.cyan,'dash'],['alt',T.altLabel||'조건부 대안',C.red,'dot']]){
+    const ps=T[key];if(!ps)continue;
+    tr.push({type:'scatter',x:ps.map((_,i)=>n-1+i*2.5),y:ps,mode:'lines+markers',name,line:{color,width:2.3,dash},marker:{size:5,symbol:'diamond'},yaxis:'y',
+      customdata:ps.map((_,i)=>i===0?bars.at(-1)[0]+' 실제 종가':'조건 '+i+' · 날짜/시점 미지정'),hovertemplate:'%{customdata}<br>시나리오 참조 가격 %{y:,.2f}<br>실제 미래 체결값 아님<extra></extra>'});}
+  const l=plotLayout(window.innerWidth<600?440:470);l.margin={l:65,r:20,t:38,b:45};l.hovermode='closest';
+  l.legend=narrow()?{orientation:'h',x:0,y:1.02,yanchor:'bottom',entrywidth:.5,entrywidthmode:'fraction',font:{size:10}}:{orientation:'h',x:0,y:1.18,font:{size:10}};
+  l.xaxis={...axisSessions(bars,steps),anchor:'y2',title:{text:!steps?'실제 거래일':window.innerWidth<600?'실제 거래일 | ①②는 조건부 단계':'왼쪽: 실제 거래일  |  오른쪽: 조건부 단계 (기간 아님)',font:{size:10}}};
+  l.yaxis={...l.yaxis,domain:[.31,1],title:{text:T.currency},tickfont:{size:10}};
+  l.yaxis2={domain:[0,.19],title:{text:'거래량 (주)',font:{size:10}},showgrid:false,zeroline:false,tickformat:'.2s',tickfont:{size:10},automargin:true};
+  // 조건부 경로가 없으면(base/alt 생략) 시나리오 영역·안내문을 그리지 않음 → 순수 캔들 차트
+  l.shapes=steps?[{type:'rect',x0:n-.6,x1:n-1+steps*2.5+.8,yref:'paper',y0:0,y1:1,line:{width:0},fillcolor:tint(C.amber,.06),layer:'below'},
+    {type:'line',x0:n-.6,x1:n-.6,yref:'paper',y0:0,y1:1,line:{color:C.amber,width:1,dash:'dot'}}]:[];
+  const ei=bars.findIndex(r=>r[0]===T.eventDate);if(ei>=0)l.shapes.push({type:'line',x0:ei,x1:ei,yref:'paper',y0:0,y1:1,line:{color:C.muted,dash:'dot',width:1}});
+  for(const [v,color] of [[T.sma20,C.amber],[T.sma50,C.muted]])if(v!=null)l.shapes.push({type:'line',xref:'paper',x0:0,x1:1,y0:v,y1:v,line:{color,dash:'dot',width:1}});
+  if(T.resistance)l.shapes.push({type:'rect',xref:'paper',x0:0,x1:1,y0:T.resistance[0],y1:T.resistance[1],fillcolor:tint(C.red,.06),line:{color:tint(C.red,.4),width:1},layer:'below'});
+  if(T.support)l.shapes.push({type:'rect',xref:'paper',x0:0,x1:1,y0:T.support[0],y1:T.support[1],fillcolor:tint(C.green,.06),line:{color:tint(C.green,.35),width:1},layer:'below'});
+  // 모바일에서는 범례와 겹치므로 생략 (x축 제목이 같은 내용을 설명함)
+  l.annotations=narrow()||!steps?[]:[{xref:'paper',yref:'paper',x:1,y:1.03,text:'조건부 시나리오 · 시점 미지정',showarrow:false,xanchor:'right',font:{size:9,color:C.amber}}];
+  if(T.sma20!=null)l.annotations.push({xref:'paper',x:1,y:T.sma20,text:'기준일 SMA20 '+p(T.sma20),showarrow:false,xanchor:'right',font:{size:9,color:C.amber},bgcolor:C.surface});
+  if(T.sma50!=null)l.annotations.push({xref:'paper',x:1,y:T.sma50,text:'기준일 SMA50 '+p(T.sma50),showarrow:false,xanchor:'right',font:{size:9,color:C.muted},bgcolor:C.surface});
+  // 두 이동평균 값이 2% 이내로 붙어 있으면 이름표만 위아래로 벌림 (선 위치는 그대로)
+  if(T.sma20!=null&&T.sma50!=null&&Math.abs(T.sma20-T.sma50)/bars.at(-1)[4]<.02){l.annotations.at(-2).yshift=10;l.annotations.at(-1).yshift=-10;}
+  draw(id,tr,l);}
+// CSV 저장 (엑셀에서 한글이 깨지지 않도록 BOM 포함)
+function saveCSV(rows,name){const body='﻿'+rows.map(r=>r.map(c=>'"'+String(c??'').replace(/"/g,'""')+'"').join(',')).join('\r\n');
+  const url=URL.createObjectURL(new Blob([body],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+</script>
+
+<script>
+'use strict';
+const D=JSON.parse(document.getElementById('report-data').textContent);
+const B=D.fcf80.rows, YRS=B.map(r=>String(r.year));
+const qx=p=>p.map(r=>r[0]), qy=p=>p.map(r=>r[1]);
+const TV=['2026-12-31','2027-12-31','2028-12-31','2029-12-31','2030-12-31','2031-12-31'],TT=['26말','27말','28말','29말','30말','31말*'];
+multiLine('c-price',{yTitle:'산출 주가 (만 원)',height:400,tickvals:TV,ticktext:TT,unit:'',series:[
+  {name:'기준안 · FCF 80%',x:qx(D.fcf80.path),y:qy(D.fcf80.path),color:'cyan',mode:'lines+markers',unit:'만 원'},
+  {name:'FCF 100%',x:qx(D.fcf100.path),y:qy(D.fcf100.path),color:'amber',dash:'dot',unit:'만 원'},
+  {name:'FCF 60%',x:qx(D.fcf60.path),y:qy(D.fcf60.path),color:'green',dash:'dash',unit:'만 원'},
+  {name:'매입·소각 없음',x:qx(D.nobuy),y:qy(D.nobuy),color:'muted',dash:'dot',unit:'만 원'}]});
+barChart('c-decomp',{x:['현재<br>9/30 종가','2030말<br>이익만 반영','2030말<br>이익 + 소각'],y:[177.6,340.5,491.2],text:['177.6만','340.5만 (×1.92)','491.2만 (×1.44)'],colors:['muted','amber','cyan'],yTitle:'주가 (만 원)',height:300});
+groupedBar('c-budget',{categories:YRS,yTitle:'조 원',format:v=>fmt(v,0),height:300,series:[
+  {name:'FCF',values:B.map(r=>r.fcf),color:'muted'},{name:'매입·소각 예산 (FCF × 50%)',values:B.map(r=>r.cash),color:'cyan'}]});
+groupedBar('c-repeat',{categories:YRS,yTitle:'필요 현금 (조 원)',format:v=>fmt(v,0),height:340,series:[
+  {name:'FCF 전체',values:B.map(r=>r.fcf),color:'muted'},
+  {name:'FCF 50% 규칙',values:B.map(r=>r.cash),color:'cyan'},
+  {name:'공시 정액 반복 (연 160조)',values:D.a1.map(r=>r.cash),color:'amber'},
+  {name:'공시 정량 반복 (연 9,628만 주)',values:D.a2.map(r=>r.cash),color:'red'}]});
+multiLine('c-5y',{yTitle:'2021-09-29 = 100',height:380,series:[
+  {name:'메리츠금융지주',x:qx(D.n5.M),y:qy(D.n5.M),color:'cyan'},{name:'KT&G',x:qx(D.n5.K),y:qy(D.n5.K),color:'amber'},{name:'KOSPI',x:qx(D.n5.X),y:qy(D.n5.X),color:'muted'}]});
+barChart('c-intensity',{x:['메리츠<br>2023','메리츠<br>2024','메리츠<br>2025','메리츠<br>2026','KT&G<br>2026 신규','하이닉스<br>40조 연환산','시나리오<br>2027','시나리오<br>2031'],
+  y:[6.6,6.0,6.0,7.1,2.1,12.8,8.9,10.0],text:['6.6%','6.0%','6.0%','7.1%','2.1%','12.8%','8.9%','10.0%'],
+  colors:['amber','amber','amber','amber','muted','cyan','cyan','cyan'],yTitle:'연 매입액 ÷ 시가총액 (%)',height:320});
+const cb=D.candle.map(r=>[r[0],r[1]/1e4,r[2]/1e4,r[3]/1e4,r[4]/1e4,r[5]]);
+candleChart('c-candle',{ticker:'000660',currency:'만 원',bars:cb,eventDate:'2026-08-19',sma20:D.sma20/1e4,sma50:D.sma50/1e4});
+groupedBar('c-op',{categories:['2027','2028','2029','2030','2031'],yTitle:'영업이익 (조 원)',format:v=>v==null?'':fmt(v,0),height:330,series:[
+  {name:'사용자 가정',values:[400,500,600,700,800],color:'cyan'},{name:'UBS 9/22',values:[499.9,540.8,414.2,437.7,null],color:'amber'},{name:'국내 컨센서스',values:[401.7,420.2,null,null,null],color:'muted'}]});
+
+// 표
+const m=(v,d=1)=>fmt(v,d);
+document.getElementById('t-base').innerHTML=B.map(r=>`<tr><td><b>${r.year}</b></td><td>${m(r.op,0)}</td><td>${m(r.ni,0)}</td><td>${m(r.fcf,0)}</td><td>${m(r.cash,0)}</td><td>${fmt(r.qty*100,0)}</td><td>${m(r.avg)}</td><td>${m(r.pct,2)}%</td><td>${m(r.end,1)}</td><td><b>${m(r.price)}${r.year===2031?'*':''}</b></td></tr>`).join('')+
+ `<tr class="row-hl"><td><b>합계</b></td><td>3,000</td><td>2,250</td><td>1,800</td><td><b>${m(B.reduce((a,r)=>a+r.cash,0),0)}</b></td><td><b>${fmt(B.reduce((a,r)=>a+r.qty,0)*100,0)}</b></td><td>—</td><td>−${m((1-B.at(-1).end/B[0].start)*100,1)}%</td><td>${m(B.at(-1).end,1)}</td><td>—</td></tr>`;
+const rules=[['FCF 50% 규칙 (기준안)',B,'<span class="chip new">가능</span>'],['공시 정액 반복 · 분기 40조 원',D.a1,'<span class="chip hold">가능 · 27~28년 보유현금 50조 원 보충</span>'],['공시 정량 반복 · 분기 2,407만 주',D.a2,'<span class="chip risk">불가 · 2029년부터 FCF 초과</span>']];
+const fcf50=B.reduce((a,r)=>a+r.cash,0);
+document.getElementById('t-repeat').innerHTML=rules.map(([n,R,v])=>{const c=R.reduce((a,r)=>a+r.cash,0),q=R.reduce((a,r)=>a+r.qty,0);return `<tr><td><b>${n}</b></td><td>${m(c,0)}</td><td>${m(c/fcf50*100,0)}%</td><td>${m(q,1)}</td><td>${m(R.at(-1).end,1)}</td><td>${m(R[3].price)}</td><td>${v}</td></tr>`;}).join('')+
+ `<tr><td><b>참고 · GPT 수정본</b><small>4년, 2031년 700조 원</small></td><td>${m(D.gpt.reduce((a,r)=>a+r.cash,0),0)}</td><td>—</td><td>${m(D.gpt.reduce((a,r)=>a+r.qty,0),1)}</td><td>—</td><td>${m(D.gpt[3].price)}</td><td><span class="chip other">입력 조건 오류</span></td></tr>`;
+const EV=[['메리츠금융지주','2025-08-20','7,000억 원 신규 신탁 · 기매입분 소각',9.0,3.9,-4.4],['메리츠금융지주','2026-02-09','2,000억 원 신규 신탁 · 기매입분 소각',-0.4,-8.6,-16.4],['메리츠금융지주','2026-08-28','5,000억 원 신규 신탁',2.7,11.5,12.1],
+ ['KT&G','2026-04-16','기보유 1,086.6만 주 소각',0.5,4.6,-18.8],['KT&G','2026-09-22','3,600억 원 신규 취득 후 소각',0.3,null,null],['SK하이닉스','2026-08-19','40조 43억 원 · 2,407만 주 취득 후 전량 소각',1.7,5.8,8.0]];
+const cls=v=>v==null?'':v>=0?'positive':'negative';
+document.getElementById('t-event').innerHTML=EV.map(([c,d,e,a,b,x])=>`<tr class="${c==='SK하이닉스'?'row-hl':''}"><td><b>${c}</b><small>${d}</small></td><td>${e}</td><td class="${cls(a)}">${pct(a)}</td><td class="${cls(b)}">${b==null?'20거래일 미도달':pct(b)}</td><td class="${cls(x)}">${x==null?'—':(x>0?'+':'')+fmt(x,1)+'%p'}</td></tr>`).join('');
+document.getElementById('csv-base').addEventListener('click',()=>{const h=['scenario','year','op_trn','ni_trn','fcf_trn','buyback_trn','shares_bought_mn','avg_price_10k_krw','shares_end_mn','price_end_10k_krw'];const rows=[h];
+ for(const k of ['fcf60','fcf80','fcf100'])for(const r of D[k].rows)rows.push([k,r.year,r.op,r.ni,r.fcf,r.cash,r.qty,r.avg,r.end,r.price]);
+ for(const [k,R] of [['repeat_fixed_cash_160',D.a1],['repeat_fixed_qty_96.28mn',D.a2]])for(const r of R)rows.push([k,r.year,r.op,r.ni,'',r.cash,r.qty,r.avg,r.end,r.price]);
+ saveCSV(rows,'SKhynix_buyback_scenario_20260930.csv');});
+Promise.all(pending).then(()=>{window.REPORT_READY=true;}).catch(err=>{console.error(err);window.REPORT_ERROR=String(err);});
+let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(()=>document.querySelectorAll('.js-plotly-plot').forEach(el=>Plotly.Plots.resize(el)),100);});
+</script>
+</body>
+</html>

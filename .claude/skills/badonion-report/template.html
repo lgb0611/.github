@@ -519,7 +519,7 @@ function plotLayout(h=300){return {height:h,autosize:true,margin:{l:60,r:28,t:30
   legend:{orientation:'h',y:1.17,x:0,font:{size:10}},hoverlabel:{bgcolor:C.surface,bordercolor:C.line,font:{color:C.text,size:11}},hovermode:'x unified'};}
 function draw(id,traces,layout){const el=document.getElementById(id);if(!el)return;el.style.height=layout.height+'px';pending.push(Plotly.newPlot(el,traces,layout,CFG));}
 // 막대 위 숫자가 잘리지 않도록 위·아래 20% 여유
-function padRange(vals){const hi=Math.max(0,...vals),lo=Math.min(0,...vals),pad=(hi-lo)*0.2;return [lo<0?lo-pad:0,hi>0?hi+pad:pad*0.25];}
+function padRange(vals){vals=vals.filter(v=>v!=null);const hi=Math.max(0,...vals),lo=Math.min(0,...vals),pad=(hi-lo)*0.2;return [lo<0?lo-pad:0,hi>0?hi+pad:pad*0.25];}
 // 기준선 (예: 1배, 0%)
 function refLine(axis,v,color=C.muted){return axis==='y'?{type:'line',xref:'paper',x0:0,x1:1,y0:v,y1:v,line:{color,dash:'dot',width:1}}:{type:'line',yref:'paper',y0:0,y1:1,x0:v,x1:v,line:{color,dash:'dot',width:1}};}
 
@@ -527,6 +527,11 @@ function refLine(axis,v,color=C.muted){return axis==='y'?{type:'line',xref:'pape
 function lineChart(id,{x,y,yTitle,hover,height=300}){
   draw(id,[{type:'scatter',mode:'lines+markers',x,y,line:{width:3,color:C.cyan},marker:{size:8},hovertemplate:(hover||'%{x}<br>%{y}')+'<extra></extra>'}],
     {...plotLayout(height),xaxis:{type:'category'},yaxis:{...plotLayout().yaxis,title:{text:yTitle},rangemode:'tozero'},showlegend:false});}
+// ①-b 여러 계열 꺾은선: series=[{name,x,y,color,dash}] · 첫 계열이 주인공(굵게)
+function multiLine(id,{series,yTitle,height=360,ytype,tickvals,ticktext,hoverFmt='%{y:,.1f}'}){
+  const l=plotLayout(height);l.yaxis={...l.yaxis,title:{text:yTitle},type:ytype};l.xaxis={...l.xaxis,tickvals,ticktext};
+  draw(id,series.map((s,i)=>({type:'scatter',mode:s.mode||'lines',name:s.name,x:s.x,y:s.y,line:{color:col(s.color||'cyan'),width:i===0?2.6:1.6,dash:s.dash||'solid'},marker:{size:6},
+    hovertemplate:s.name+' '+hoverFmt+(s.unit||'')+'<extra></extra>'})),l);}
 // ② 세로 막대: 항목 2~6개 비교. 막대 위에 값 표시
 function barChart(id,{x,y,text,colors,yTitle,range,hover,height=290}){
   draw(id,[{type:'bar',x,y,text,textposition:'outside',cliponaxis:false,marker:{color:(colors||['cyan']).map(col)},hovertemplate:(hover||'%{x}<br>%{text}')+'<extra></extra>'}],
@@ -561,7 +566,7 @@ function quadrantScatter(id,{rows,groups,label=r=>r.group!=='unreviewed'}){
   l.shapes=[refLine('y',1,C.amber),refLine('x',0)];draw(id,traces,l);}
 // ⑥ 캔들 + 거래량 + 조건부 경로
 function axisSessions(rows,steps){
-  const n=rows.length,interval=window.innerWidth<600?4:2,ticks=[];for(let i=0;i<n;i+=interval)ticks.push(i);if(!ticks.includes(n-1))ticks.push(n-1);
+  const n=rows.length,interval=Math.max(window.innerWidth<600?4:2,Math.ceil(n/(window.innerWidth<600?6:12))),ticks=[];for(let i=0;i<n;i+=interval)ticks.push(i);if(!ticks.includes(n-1)){if(n-1-ticks.at(-1)<interval/2)ticks.pop();ticks.push(n-1);}
   const labels=ticks.map(i=>rows[i][0].slice(5).replace('-','/'));
   for(let k=1;k<=steps;k++){ticks.push(n-1+k*2.5);labels.push(window.innerWidth<600?['①','②','③','④'][k-1]:'조건 '+k);}
   return {type:'linear',tickmode:'array',tickvals:ticks,ticktext:labels,range:[-0.65,n-1+(steps?steps*2.5+0.8:0.65)],showgrid:false,zeroline:false,rangeslider:{visible:false},automargin:true,tickfont:{size:10}};}
@@ -577,17 +582,18 @@ function candleChart(id,T){
       customdata:ps.map((_,i)=>i===0?bars.at(-1)[0]+' 실제 종가':'조건 '+i+' · 날짜/시점 미지정'),hovertemplate:'%{customdata}<br>시나리오 참조 가격 %{y:,.2f}<br>실제 미래 체결값 아님<extra></extra>'});}
   const l=plotLayout(window.innerWidth<600?440:470);l.margin={l:65,r:20,t:38,b:45};l.hovermode='closest';
   l.legend=narrow()?{orientation:'h',x:0,y:1.02,yanchor:'bottom',entrywidth:.5,entrywidthmode:'fraction',font:{size:10}}:{orientation:'h',x:0,y:1.18,font:{size:10}};
-  l.xaxis={...axisSessions(bars,steps),anchor:'y2',title:{text:window.innerWidth<600?'실제 거래일 | ①②는 조건부 단계':'왼쪽: 실제 거래일  |  오른쪽: 조건부 단계 (기간 아님)',font:{size:10}}};
+  l.xaxis={...axisSessions(bars,steps),anchor:'y2',title:{text:!steps?'실제 거래일':window.innerWidth<600?'실제 거래일 | ①②는 조건부 단계':'왼쪽: 실제 거래일  |  오른쪽: 조건부 단계 (기간 아님)',font:{size:10}}};
   l.yaxis={...l.yaxis,domain:[.31,1],title:{text:T.currency},tickfont:{size:10}};
   l.yaxis2={domain:[0,.19],title:{text:'거래량 (주)',font:{size:10}},showgrid:false,zeroline:false,tickformat:'.2s',tickfont:{size:10},automargin:true};
-  l.shapes=[{type:'rect',x0:n-.6,x1:n-1+steps*2.5+.8,yref:'paper',y0:0,y1:1,line:{width:0},fillcolor:tint(C.amber,.06),layer:'below'},
-    {type:'line',x0:n-.6,x1:n-.6,yref:'paper',y0:0,y1:1,line:{color:C.amber,width:1,dash:'dot'}}];
+  // 조건부 경로가 없으면(base/alt 생략) 시나리오 영역·안내문을 그리지 않음 → 순수 캔들 차트
+  l.shapes=steps?[{type:'rect',x0:n-.6,x1:n-1+steps*2.5+.8,yref:'paper',y0:0,y1:1,line:{width:0},fillcolor:tint(C.amber,.06),layer:'below'},
+    {type:'line',x0:n-.6,x1:n-.6,yref:'paper',y0:0,y1:1,line:{color:C.amber,width:1,dash:'dot'}}]:[];
   const ei=bars.findIndex(r=>r[0]===T.eventDate);if(ei>=0)l.shapes.push({type:'line',x0:ei,x1:ei,yref:'paper',y0:0,y1:1,line:{color:C.muted,dash:'dot',width:1}});
   for(const [v,color] of [[T.sma20,C.amber],[T.sma50,C.muted]])if(v!=null)l.shapes.push({type:'line',xref:'paper',x0:0,x1:1,y0:v,y1:v,line:{color,dash:'dot',width:1}});
   if(T.resistance)l.shapes.push({type:'rect',xref:'paper',x0:0,x1:1,y0:T.resistance[0],y1:T.resistance[1],fillcolor:tint(C.red,.06),line:{color:tint(C.red,.4),width:1},layer:'below'});
   if(T.support)l.shapes.push({type:'rect',xref:'paper',x0:0,x1:1,y0:T.support[0],y1:T.support[1],fillcolor:tint(C.green,.06),line:{color:tint(C.green,.35),width:1},layer:'below'});
   // 모바일에서는 범례와 겹치므로 생략 (x축 제목이 같은 내용을 설명함)
-  l.annotations=narrow()?[]:[{xref:'paper',yref:'paper',x:1,y:1.03,text:'조건부 시나리오 · 시점 미지정',showarrow:false,xanchor:'right',font:{size:9,color:C.amber}}];
+  l.annotations=narrow()||!steps?[]:[{xref:'paper',yref:'paper',x:1,y:1.03,text:'조건부 시나리오 · 시점 미지정',showarrow:false,xanchor:'right',font:{size:9,color:C.amber}}];
   if(T.sma20!=null)l.annotations.push({xref:'paper',x:1,y:T.sma20,text:'기준일 SMA20 '+p(T.sma20),showarrow:false,xanchor:'right',font:{size:9,color:C.amber},bgcolor:C.surface});
   if(T.sma50!=null)l.annotations.push({xref:'paper',x:1,y:T.sma50,text:'기준일 SMA50 '+p(T.sma50),showarrow:false,xanchor:'right',font:{size:9,color:C.muted},bgcolor:C.surface});
   // 두 이동평균 값이 2% 이내로 붙어 있으면 이름표만 위아래로 벌림 (선 위치는 그대로)
