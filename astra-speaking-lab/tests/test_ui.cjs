@@ -18,7 +18,7 @@ async function app(t,{state=null,raw=null,legacy=false,offline=false,connected=f
   w.HTMLDialogElement.prototype.showModal=function(){this.open=true};w.HTMLDialogElement.prototype.close=function(){this.open=false};
   w.URL.createObjectURL=()=> 'blob:test';w.URL.revokeObjectURL=()=>{};
   w.SpeechSynthesisUtterance=class {constructor(text){this.text=text}};
-  w.__spokenAll=[];w.__speechCancels=0;w.speechSynthesis={speak:u=>{w.__spoken=u;w.__spokenAll.push(u);},cancel(){w.__speechCancels++;},pause(){w.__speechPauses=(w.__speechPauses||0)+1;},resume(){w.__speechResumes=(w.__speechResumes||0)+1;},addEventListener:(name,fn)=>{w.__speechEvents=w.__speechEvents||{};w.__speechEvents[name]=fn;},getVoices:()=>[{lang:"en-US",localService:true}]};
+  w.__spokenAll=[];w.__batches=[];w.__speechCancels=0;w.speechSynthesis={speak:u=>{w.__spoken=u;w.__spokenAll.push(u);if(!w.__batchOpen){w.__batches.push([]);w.__batchOpen=true;queueMicrotask(()=>w.__batchOpen=false);}w.__batches.at(-1).push(u);},cancel(){w.__speechCancels++;},pause(){w.__speechPauses=(w.__speechPauses||0)+1;},resume(){w.__speechResumes=(w.__speechResumes||0)+1;},addEventListener:(name,fn)=>{w.__speechEvents=w.__speechEvents||{};w.__speechEvents[name]=fn;},getVoices:()=>[{lang:"en-US",localService:true}]};
   if(speech){w.__recognitions=[];w.webkitSpeechRecognition=class{constructor(){w.__recognitions.push(this);}start(){this.started=true;}stop(){this.stopped=true;setTimeout(()=>this.onend&&this.onend(),1);}abort(){this.aborted=true;}};}
   if(translator)w.Translator={create:async options=>{w.__translationCreates=(w.__translationCreates||0)+1;return {translate:async text=>{w.__translatedTexts=w.__translatedTexts||[];w.__translatedTexts.push(text);return w.__translate?await w.__translate(text):fixtureKorean(text);},destroy:()=>{w.__translatorDestroyed=true;}};}};
   Object.defineProperty(w.navigator,'clipboard',{value:{writeText:async x=>w.__clipboard=x}});
@@ -283,7 +283,9 @@ function transcriptOnly(a,lines=KO_LINES.map(x=>x[0])){
  return lines;
 }
 function change(a,id,value){a.$(id).value=String(value);a.$(id).dispatchEvent(new a.w.Event('change'));}
-async function finishSpeech(a){const u=a.w.__spoken;assert.ok(u);u.onstart?.();u.onend?.();await tick();return u;}
+async function finishSpeech(a){const u=a.w.__spoken;assert.ok(u);const first=a.w.__batches.at(-1)?.[0];if(first&&first!==u)first.onstart?.();u.onstart?.();u.onend?.();await tick();return u;}
+// Text of the utterances queued together most recently: a long sentence is read as several pieces.
+const heardRow=a=>a.w.__batches.at(-1).map(u=>u.text).join(' ');
 function openScript(a){a.$('ytScriptDetails').open=true;a.$('ytScriptDetails').dispatchEvent(new a.w.Event('toggle'));}
 test('full transcript playback and extracted cards include all 65 sentences in source order',async t=>{
  const a=await app(t);a.d.querySelector('[data-view="youtube"]').click();await manyCaptions(a,65);
@@ -461,7 +463,7 @@ test('PDF sentence ranges repeat exact text with prepared meanings without trans
  for(let i=0;i<4;i++){const row=m.rows[1+i%2];assert.equal(a.w.__spoken.text,row.text);assert.equal(a.$('ytScriptNowKorean').textContent,row.korean_text);await finishSpeech(a);}assert.equal(a.w.__spokenAll.length,4);assert.match(a.$('ytScriptStatus').textContent,/2회 반복/);assert.equal(a.calls.length,0);
 });
 test('PDF topic filters retain whole playback and reach the final source sentence',async t=>{
- const a=await app(t,{offline:true,translator:false}),m=openMaterial(a,'pdf_elon');change(a,'materialSection','elon_39');const filtered=m.rows.filter(r=>r.section_id==='elon_39');assert.equal(a.d.querySelectorAll('.material-card').length,filtered.length);assert.equal(a.$('ytScriptFrom').options.length,363);a.click('materialListenSection');assert.equal(a.w.__spoken.text,filtered[0].text);assert.match(a.$('ytScriptNowSource').textContent,/약 5년 뒤/);for(const row of filtered){assert.equal(a.w.__spoken.text,row.text);assert.equal(a.$('ytScriptNowKorean').textContent,row.korean_text);await finishSpeech(a);}assert.match(a.$('ytScriptStatus').textContent,/1회 반복/);assert.equal(a.$('ytScriptProgress').value,363);assert.equal(a.calls.length,0);
+ const a=await app(t,{offline:true,translator:false}),m=openMaterial(a,'pdf_elon');change(a,'materialSection','elon_39');const filtered=m.rows.filter(r=>r.section_id==='elon_39');assert.equal(a.d.querySelectorAll('.material-card').length,filtered.length);assert.equal(a.$('ytScriptFrom').options.length,363);a.click('materialListenSection');assert.equal(heardRow(a),filtered[0].text);assert.match(a.$('ytScriptNowSource').textContent,/약 5년 뒤/);for(const row of filtered){assert.equal(heardRow(a),row.text);assert.equal(a.$('ytScriptNowKorean').textContent,row.korean_text);await finishSpeech(a);}assert.match(a.$('ytScriptStatus').textContent,/1회 반복/);assert.equal(a.$('ytScriptProgress').value,363);assert.equal(a.calls.length,0);
 });
 test('PDF single practice starts with Korean and keeps English hidden until requested',async t=>{
  const a=await app(t,{offline:true,translator:false}),m=openMaterial(a);a.d.querySelector('.material-speak').click();await tick();assert.equal(a.w.LabTest.getExercise().card_ids[0],m.rows[0].card_id);assert.equal(a.$('taskText').textContent,m.rows[0].korean_text);assert.equal(a.$('sampleBox').classList.contains('hidden'),true);assert.match(a.$('taskOrigin').textContent,/PDF 연습지/);assert.equal(a.calls.length,0);
@@ -590,12 +592,12 @@ test('Harvard PDF opens from the searchable catalog offline with all Korean and 
 });
 test('Harvard PDF playback crosses all 84 units with persistent Korean and no translation requests',async t=>{
  const a=await app(t,{offline:true,translator:false}),h=openMaterial(a,'pdf_harvard');a.click('ytScriptPlayAll');
- for(const row of h.rows){assert.equal(a.w.__spoken.text,row.text);assert.equal(a.$('ytScriptNowKorean').textContent,row.korean_text);assert.match(a.$('ytScriptNowSource').textContent,new RegExp(row.speaker));await finishSpeech(a);}
- assert.equal(a.w.__spokenAll.length,84);assert.equal(a.$('ytScriptProgress').value,84);assert.equal(a.$('ytScriptNowKorean').textContent,h.rows.at(-1).korean_text);assert.equal(a.calls.length,0);
+ for(const row of h.rows){assert.equal(heardRow(a),row.text);assert.equal(a.$('ytScriptNowKorean').textContent,row.korean_text);assert.match(a.$('ytScriptNowSource').textContent,new RegExp(row.speaker));await finishSpeech(a);}
+ assert.equal(a.w.__batches.length,84);assert.ok(a.w.__batches.every(b=>b.every(u=>u.text.split(/\s+/).length<=26)),'no piece is long enough to be cut off');assert.equal(a.$('ytScriptProgress').value,84);assert.equal(a.$('ytScriptNowKorean').textContent,h.rows.at(-1).korean_text);assert.equal(a.calls.length,0);
 });
 test('Harvard topic practice includes the final source sentence and exact two-unit repetition',async t=>{
  const a=await app(t,{offline:true,translator:false}),h=openMaterial(a,'pdf_harvard');change(a,'materialSection','harvard_09');assert.equal(a.d.querySelectorAll('.material-card').length,7);assert.equal(a.d.querySelectorAll('.material-english')[6].textContent,h.rows[83].text);
- change(a,'ytScriptFrom',82);change(a,'ytScriptTo',83);change(a,'ytScriptRepeat',2);change(a,'ytScriptGap',0);a.click('ytScriptPlayRange');for(let i=0;i<4;i++){assert.equal(a.w.__spoken.text,h.rows[82+i%2].text);assert.equal(a.$('ytScriptNowKorean').textContent,h.rows[82+i%2].korean_text);await finishSpeech(a);}assert.equal(a.w.__spokenAll.length,4);assert.equal(a.calls.length,0);
+ change(a,'ytScriptFrom',82);change(a,'ytScriptTo',83);change(a,'ytScriptRepeat',2);change(a,'ytScriptGap',0);a.click('ytScriptPlayRange');for(let i=0;i<4;i++){assert.equal(heardRow(a),h.rows[82+i%2].text);assert.equal(a.$('ytScriptNowKorean').textContent,h.rows[82+i%2].korean_text);await finishSpeech(a);}assert.equal(a.w.__batches.length,4);assert.equal(a.calls.length,0);
 });
 test('Harvard selected units and five authored paragraphs start Korean-first without an API',async t=>{
  const a=await app(t,{offline:true,translator:false}),h=openMaterial(a,'pdf_harvard');const picks=a.d.querySelectorAll('.material-pick');picks[2].click();picks[3].click();a.click('materialParagraph');await tick();assert.equal(a.$('taskText').textContent,h.rows[2].korean_text+' '+h.rows[3].korean_text);assert.equal(a.$('sampleBox').classList.contains('hidden'),true);
@@ -756,4 +758,33 @@ test('reopening a video rebuilds cut sentences whole and removes only unused old
  assert.ok(ids.includes(reviewed.id),'piece with review progress kept');assert.ok(ids.includes(whole.id));
  assert.equal(b.d.querySelectorAll('.auto-expression-card').length,1);
  const c=await app(t,{state:JSON.parse(b.w.localStorage.getItem(KEY))});assert.equal(c.$('storageNotice').textContent,'');
+});
+
+// v2.12.0: long sentences are read in short pieces; unpunctuated auto captions break at likely sentence ends.
+const LONG_SENTENCE="But if you don't know why you do what you do, and people respond to why you do what you do, then how will you ever get people to vote for you, or buy something from you, or, more importantly, be loyal and want to be a part of what it is that you do.";
+async function captionDeck(a,raw){a.d.querySelector('[data-view="youtube"]').click();a.fill('ytUrl','https://youtu.be/M7lc1UVf-VE');a.click('ytLoad');a.fill('ytTranscript',raw);a.click('ytFromTranscript');await tick();await tick();}
+test('a long card sentence is read as short pieces and only reports finishing after the last piece',async t=>{
+ const a=await app(t);await captionDeck(a,'0:00\n'+LONG_SENTENCE+'\n0:20\nThat is the whole point.');
+ a.d.querySelector('.auto-tts').click();const batch=a.w.__batches.at(-1);
+ assert.ok(batch.length>=2);assert.equal(heardRow(a),LONG_SENTENCE);assert.ok(batch.every(u=>u.text.split(/\s+/).length<=26));
+ batch[0].onstart();assert.match(a.$('ytSpeechStatus').textContent,/읽고 있습니다/);
+ batch[0].onend();assert.doesNotMatch(a.$('ytSpeechStatus').textContent,/마쳤습니다/);
+ batch.at(-1).onend();assert.match(a.$('ytSpeechStatus').textContent,/마쳤습니다/);
+});
+test('transcript playback reads every piece of a long sentence before moving on, with pause and resume',async t=>{
+ const a=await app(t);await captionDeck(a,'0:00\n'+LONG_SENTENCE+'\n0:20\nThat is the whole point.');
+ a.click('ytScriptPlayAll');await tick();await tick();const first=a.w.__batches.at(-1);
+ assert.ok(first.length>=2);assert.equal(heardRow(a),LONG_SENTENCE);
+ first[0].onstart();first[0].onend?.();await tick();assert.equal(a.w.__batches.length,1,'the next sentence waits for the last piece');
+ a.click('ytScriptPause');assert.equal(a.w.__speechPauses,1);a.click('ytScriptPause');assert.ok(a.w.__speechResumes>=1);
+ first.at(-1).onend();await tick();await tick();assert.equal(heardRow(a),'That is the whole point.');
+ a.w.__spoken.onstart();a.w.__spoken.onend();await tick();assert.match(a.$('ytScriptStatus').textContent,/전체 재생을 마쳤/);
+});
+test('unpunctuated auto captions become cards that start and end at natural sentence breaks',async t=>{
+ const text="when I was in elementary school were you yeah it's actually one of the reasons why I didn't get an agent because I auditioned and I had like a punk rock haircut and I dress like a little you know street dancer and they rejected me oh yeah yeah I disagree with that because I met you I think you were like 16 years old and you had just on This Boy's Life which was your first film really it was on Hollywood Boulevard right yes we were at an after party and I remember thinking this kid is going to be huge";
+ const words=text.split(' ');
+ const a=await app(t);const raw=[];let at=13;for(let i=0;i<words.length;){const n=5+(i%4);raw.push(a.w.LabYouTube.captionStamp(at)+' --> '+a.w.LabYouTube.captionStamp(at+n/2.4+.4)+'\n'+words.slice(i,i+n).join(' '));at+=n/2.4;i+=n;}
+ await captionDeck(a,raw.join('\n\n'));const deck=a.w.LabTest.getState().customCards;
+ assert.equal(deck.length,5);assert.match(deck[2].expression,/because I met you$/);assert.match(deck[3].expression,/^I think you were like 16/);
+ assert.equal(deck.map(c=>c.expression).join(' '),text);assert.ok(deck.every(c=>c.chunk_kind==='speech'));
 });

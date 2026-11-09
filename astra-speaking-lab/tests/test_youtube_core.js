@@ -26,3 +26,38 @@ test('joining stops at 90 words and never runs over a long pause or unpunctuated
  const flat=Array.from({length:12},(_,i)=>Y.captionStamp(i*3)+'\nso we went to the store and then we talked about it for a while').join('\n');
  assert.ok(Y.studyCues(Y.cues(flat)).every(c=>c.text.split(/\s+/).length<=60));
 });
+
+// v2.12.0: auto captions without full stops are cut where a spoken sentence most likely ends.
+const SCREENSHOT="when I was in elementary school were you yeah it's actually one of the reasons why I didn't get an agent because I auditioned and I had like a punk rock haircut and I dress like a little you know street dancer and they rejected me oh yeah yeah I disagree with that because I met you I think you were like 16 years old and you had just on This Boy's Life which was your first film really it was on Hollywood Boulevard right yes we were at an after party and I remember thinking this kid is going to be huge";
+function autoCaptions(text,rate=2.4){const words=text.split(' '),lines=[];let t=13;for(let i=0;i<words.length;){const n=5+(i%4);lines.push(Y.captionStamp(t)+' --> '+Y.captionStamp(t+n/rate+.4)+'\n'+words.slice(i,i+n).join(' '));t+=n/rate;i+=n;}return lines.join('\n\n');}
+test('unpunctuated auto captions break at likely sentence ends, not mid-phrase',()=>{
+ const out=Y.studyCues(Y.cues(autoCaptions(SCREENSHOT)));
+ assert.deepEqual(out.map(c=>c.text.split(' ').slice(0,3).join(' ')),['when I was','yeah it\'s actually','oh yeah yeah','I think you','yes we were']);
+ assert.match(out[2].text,/because I met you$/);assert.match(out[3].text,/^I think you were like 16/);
+ assert.equal(out.map(c=>c.text).join(' '),SCREENSHOT);
+ for(const c of out){assert.equal(c.chunk_kind,'speech');assert.ok(c.text.split(' ').length>=8&&c.text.split(' ').length<=40);assert.ok(c.end>c.start);}
+ assert.ok(out.every((c,i)=>!i||c.start>=out[i-1].start),'chunks keep caption order and times');
+});
+test('a chunk never ends on an article, preposition, conjunction or subject pronoun when a better place exists',()=>{
+ const text='so today I want to talk about something that I think matters a lot to all of us and that is how we learn new things you know when we were kids we learned by playing and making mistakes and nobody told us that mistakes were bad but somewhere along the way we started to believe that being wrong is something to avoid and I think that belief is holding a lot of people back so what can we do about it well the first thing is to notice when you are afraid of being wrong and ask yourself what would happen if I tried anyway thank you';
+ const out=Y.studyCues(Y.cues(autoCaptions(text,2.5)));
+ assert.ok(out.length>=3);assert.equal(out.map(c=>c.text).join(' '),text);
+ for(const c of out.slice(0,-1))assert.doesNotMatch(c.text,/\b(?:a|an|the|of|to|and|but|because|that|I|we|they|is|was)$/,c.text);
+});
+test('question marks in otherwise unpunctuated captions are honoured and labels stay separate',()=>{
+ const raw='0:00 --> 0:04\nso what did you think about the show when you\n0:04 --> 0:08\nfirst saw it on stage last year in London?\n0:08 --> 0:12\nhonestly I was shocked by how good the music was\n0:12 --> 0:14\n[Music]\n0:14 --> 0:18\nand the dancers were incredible from start to finish';
+ const out=Y.studyCues(Y.cues(raw));
+ assert.equal(out[0].text,'so what did you think about the show when you first saw it on stage last year in London?');
+ assert.ok(out.some(c=>c.text==='[Music]'));assert.ok(out.every(c=>!/\[Music\]./.test(c.text)));
+});
+test('long sentences are read as short pieces that keep every word in order',()=>{
+ const sentence="But if you don't know why you do what you do, and people respond to why you do what you do, then how will you ever get people to vote for you, or buy something from you, or, more importantly, be loyal and want to be a part of what it is that you do.";
+ const pieces=Y.speechPieces(sentence);
+ assert.ok(pieces.length>=2);assert.equal(pieces.join(' '),sentence);
+ for(const p of pieces){assert.ok(p.split(' ').length<=26);assert.ok(p.length<=180);}
+ assert.match(pieces[0],/,$/,'the first cut falls after a comma');
+ assert.deepEqual(Y.speechPieces('I was thinking of taking a break.'),['I was thinking of taking a break.']);
+ const flat=SCREENSHOT.split(' ').slice(0,40).join(' ');assert.equal(Y.speechPieces(flat).join(' '),flat);assert.ok(Y.speechPieces(flat).every(p=>p.split(' ').length<=26));
+ assert.deepEqual(Y.speechPieces(''),[]);
+ const long='x'.repeat(30)+' '+Array.from({length:40},(_,i)=>'word'+i).join(' ');assert.equal(Y.speechPieces(long).join(' '),long);
+});

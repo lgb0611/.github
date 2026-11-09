@@ -194,8 +194,9 @@ function speak(text,{practice=true,ids:sourceIds=null,onStatus=null,single=false
   return;
  }
  const ticket=speechTicket;
- // Short queued utterances avoid long-paragraph speech stopping on some browsers.
- const parts=single?[String(text).trim()]:window.LabYouTube.sentenceParts(String(text));
+ // Short queued utterances avoid speech stopping midway: Chrome's online voices can cut off a long
+ // utterance after about 15 seconds, so even a single long sentence is read as short pieces.
+ const parts=window.LabYouTube.speechPieces(String(text));if(!parts.length)return;
  speechQueue=parts.map((part,index)=>{const u=new SpeechSynthesisUtterance(part.trim());u.voice=voice;u.lang=voice.lang;u.rate=Number($('speechRate').value)||.9;
  u.onstart=()=>{if(ticket!==speechTicket)return;clearTimeout(speechStartTimer);if(practice)expose(ids);report(practice?'선택한 영어 문장을 읽고 있습니다.':'선택한 음성을 테스트하고 있습니다.');};
  u.onend=()=>{if(ticket===speechTicket&&index===parts.length-1){clearTimeout(speechStartTimer);speechQueue=[];report('음성 재생을 마쳤습니다.');}};

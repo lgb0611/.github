@@ -57,12 +57,101 @@ function sentenceParts(s){
  return parts.filter(Boolean);
 }
 const MAX_CHUNK_WORDS=90;
+const LABEL=/^\s*(?:\[(?:music|applause|laughter|laughing|cheering|silence)\]|\((?:music|applause|laughter|laughing|cheering|silence)\))\s*[.!?]?\s*$/i;
+// Auto captions usually have no full stops. These word lists estimate where a spoken sentence ends:
+// never after an article, preposition, conjunction, auxiliary or subject pronoun; gladly before "yeah", "oh", "I think".
+const NO_END=new Set(("a an the this these those my your his its our their some any every each of to in on at for with from by about into onto over under after "+
+ "before between through during without within like as than and or but because so that which who whom whose if when while although though unless until since "+
+ "where whether will would can could should may might must shall i we they he she not very just really "+
+ "gonna wanna gotta kind sort more most less such also even still i'm you're we're they're it's that's there's he's she's what's i've you've we've they've i'll "+
+ "you'll we'll they'll i'd you'd we'd they'd don't doesn't didn't can't won't wouldn't couldn't shouldn't isn't aren't wasn't weren't haven't hasn't hadn't").split(' '));
+// Verbs like "do" or "is" usually continue, but can also end a clause ("what you do"): a lighter penalty.
+const SOFT_END=new Set('is are was were am be been being have has had do does did'.split(' '));
+const GOOD_END={yeah:3,yes:3,yep:3,yup:3,okay:3,ok:3,right:2,too:2,though:2,anyway:2,ago:2,again:1.5,really:1,me:1,him:1,them:1,us:1,you:.5,it:.5,there:.5,here:.5,now:.5,today:1,tonight:1,yesterday:1,tomorrow:1};
+const STARTS={yeah:4,yes:4,yep:4,yup:4,oh:4,okay:4,ok:4,alright:4,well:3,wow:4,hey:4,hi:4,hello:4,um:3,uh:3,hmm:3,anyway:3,thanks:4,thank:4,please:3,absolutely:3,exactly:3,honestly:3,"let's":3,"what's":1.5,"that's":1.5,so:2.5,but:2.5,and:1.5,then:1.5,now:1,actually:1.5,because:1,no:2,i:2};
+const PAIRS={'i think':2,'i mean':2,'i guess':2,'i feel':1.5,'i remember':2,'i believe':1.5,'i love':1,'do you':2.5,'did you':2.5,'can you':2.5,'could you':2.5,'have you':2.5,'would you':2.5,'what do':2,'what did':2,'how do':2,'how did':2,'why do':2,'let me':2,'you know':-1.5};
+const CONTINUES=new Set(['of','than','which','whom','whose','to','as']);
+const bare=w=>String(w||'').toLowerCase().replace(/[’‘]/g,"'").replace(/[^a-z0-9']/g,'').replace(/^'+|'+$/g,'');
+function boundaryScore(tokens,i){
+ // Higher means "a new sentence probably starts at tokens[i]".
+ const before=tokens[i-1]||'',prev=bare(before),next=bare(tokens[i]),after=bare(tokens[i+1]);
+ let v=0;
+ // Written punctuation is the best evidence; word lists only matter when it is missing.
+ if(/[.!?]["'”’)]*$/.test(before))v+=8;else if(/(?:[,;:]["'”’)]*|--|—)$/.test(before))v+=2.5;
+ else{if(NO_END.has(prev))v-=5;else if(SOFT_END.has(prev))v-=2.5;if(/^\d/.test(prev))v-=3;}
+ v+=GOOD_END[prev]||0;
+ if(CONTINUES.has(next))v-=3;
+ v+=STARTS[next]||0;
+ v+=PAIRS[next+' '+after]||0;
+ return v;
+}
+const SPEECH_MIN=8,SPEECH_MAX=40,SPEECH_TARGET=24,STRONG_BOUNDARY=4;
+function speechChunks(xs){
+ // For captions without full stops: cut where wording and pauses suggest a sentence ends,
+ // keeping each chunk between 8 and 40 words and its real caption start/end times.
+ const out=[];let toks=[];
+ const sameRun=(a,b)=>a.start===null&&b.start===null||a.start!==null&&b.start!==null&&b.start>=a.start&&b.start-a.end<=2;
+ const emit=()=>{
+  const n=toks.length;if(!n)return;
+  const words=toks.map(t=>t.word),score=[0];
+  for(let i=1;i<n;i++)score.push(boundaryScore(words,i)+toks[i].pause);
+  const span=(a,b)=>toks[a].cue.start===null?0:toks[b].cue.start-toks[a].cue.start;
+  let s=0;
+  while(s<n){
+   let hi=Math.min(n-1,s+SPEECH_MAX);while(hi>s+1&&span(s,hi)>45)hi--;
+   const lo=s+SPEECH_MIN,last=Math.min(hi,n-4);let cut=-1;
+   for(let i=lo;i<=last;i++)if(score[i]>=STRONG_BOUNDARY){cut=i;break;}
+   if(cut<0&&n-s<=SPEECH_MAX&&span(s,n-1)<=45)cut=n;
+   if(cut<0){let best=-Infinity;for(let i=Math.min(lo,hi);i<=hi;i++){const v=score[i]-Math.abs(i-s-SPEECH_TARGET)*.05;if(v>best){best=v;cut=i;}}}
+   if(cut<=s)cut=Math.min(n,s+SPEECH_MAX);
+   const first=toks[s],end=toks[cut-1],text=words.slice(s,cut).join(' ');
+   const whole=/[.!?]["'”’)]*$/.test(text)&&(s===0||/[.!?]["'”’)]*$/.test(words[s-1]));
+   out.push({...first.cue,text,end:end.cue.end,chunk_kind:whole?'sentence':'speech',estimated:!first.first||!end.last||toks.slice(s,cut).some(t=>t.cue.estimated)});
+   s=cut;
+  }
+  toks=[];
+ };
+ for(const cue of xs){
+  if(LABEL.test(cue.text)){emit();out.push({...cue});continue;}
+  const prev=toks.at(-1)?.cue;
+  if(prev&&!sameRun(prev,cue))emit();
+  const gap=prev&&sameRun(prev,cue)&&prev.end!==null&&cue.start!==null?cue.start-prev.end:0;
+  const words=cue.text.split(/\s+/).filter(Boolean);
+  words.forEach((word,k)=>toks.push({word,cue,first:k===0,last:k===words.length-1,pause:k===0&&gap>=1.2?3:k===0&&gap>=.6?1.5:0}));
+ }
+ emit();
+ return out;
+}
+function speechPieces(text,{maxWords=26,maxChars=180}={}){
+ // Browsers can stop reading a long utterance after about 15 seconds (Chrome's online voices),
+ // so read long sentences as consecutive pieces cut at commas or clause starts.
+ // 26 words take about 13 seconds even at the slowest 0.75x setting.
+ const out=[];
+ for(const part of sentenceParts(String(text??''))){
+  const toks=part.split(/\s+/).filter(Boolean);let s=0;
+  while(s<toks.length){
+   const rest=toks.slice(s).join(' ');
+   if(toks.length-s<=maxWords&&rest.length<=maxChars){out.push(rest);break;}
+   let hi=Math.min(toks.length-3,s+maxWords);while(hi>s+1&&toks.slice(s,hi).join(' ').length>maxChars)hi--;
+   let cut=-1,best=-Infinity;
+   for(let i=Math.min(s+4,hi);i<=hi;i++){const v=boundaryScore(toks,i)+(i-s)*.08;if(v>best){best=v;cut=i;}}
+   if(cut<=s)cut=Math.max(s+1,hi);
+   out.push(toks.slice(s,cut).join(' '));s=cut;
+  }
+ }
+ return out;
+}
 function studyCues(xs){
+ // Mostly unpunctuated captions (auto-generated): estimate sentence ends from wording and pauses.
+ const spoken=xs.filter(c=>!LABEL.test(c.text)).map(c=>c.text).join(' '),wordCount=spoken.split(/\s+/).filter(Boolean).length;
+ // Commas count too: a long but properly punctuated sentence keeps the sentence-based path.
+ const marks=(spoken.match(/[.!?,;:]["'”’)]*(?=\s|$)/g)||[]).length;
+ if(wordCount>=30&&marks*25<wordCount)return speechChunks(xs).map((cue,i)=>({...cue,id:'cue_'+i}));
  // Join caption fragments, then split at sentence boundaries. Keep actual caption ranges.
  const joined=[];let pending=null;
  const flush=()=>{if(pending)joined.push(pending);pending=null;};
  for(const cue of xs){
-  if(/^\s*(?:\[(?:music|applause|laughter|laughing|cheering|silence)\]|\((?:music|applause|laughter|laughing|cheering|silence)\))\s*[.!?]?\s*$/i.test(cue.text)){flush();joined.push({...cue});continue;}
+  if(LABEL.test(cue.text)){flush();joined.push({...cue});continue;}
   const parts=sentenceParts(cue.text);
   for(const part of parts){
    const next={...cue,text:part,estimated:cue.estimated||parts.length>1};
@@ -120,5 +209,5 @@ function importItems(raw,v,xs){
  if(obj.video_id!==v.id||!Array.isArray(obj.items)||!obj.items.length||obj.items.length>100)throw Error('현재 영상의 문장 1~100개가 들어 있는 JSON이 필요합니다.');
  const seen=new Set();return obj.items.map(item=>{const c=xs.find(c=>c.id===item?.cue_id),key=JSON.stringify([item?.cue_id,item?.expression]);if(!c||item.source_text!==c.text||seen.has(key))throw Error('자막 근거가 바뀌었거나 원문에 없는 표현입니다.');seen.add(key);const made=card(v,c,{...item,start:c.start,end:c.end});if(item.new_task_ko!==undefined&&(!text(item.new_task_ko,2000)||!item.new_task_ko.trim()||!text(item.new_sample_en,2000)||!item.new_sample_en.trim()))throw Error('새 상황의 한글 문제와 영어 예문을 함께 입력하세요.');return {card:made,task:item.new_task_ko||'',sample:item.new_sample_en||''};});
 }
-return {validId,time,stamp,captionStamp,video,watch,embed,cues,sentenceParts,studyCues,suggest,validCard,card,importItems};
+return {validId,time,stamp,captionStamp,video,watch,embed,cues,sentenceParts,speechPieces,boundaryScore,studyCues,suggest,validCard,card,importItems};
 });

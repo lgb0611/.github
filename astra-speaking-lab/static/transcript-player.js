@@ -232,16 +232,20 @@ function speakScriptSentence(s){
    scriptKoErrors.set(row.text,error.message);if(s.phase!=='paused')s.phase='translation_error';else s.resumePhase='restart';scriptMessage(error.message,true);renderScriptTransport();
   });return;
  }
- const u=new SpeechSynthesisUtterance(row.text);s.utterance=u;u.voice=s.voice;u.lang=s.voice.lang;u.rate=s.rate;let ended=false;
+ // A long row is read as short consecutive pieces; Chrome's online voices can stop a long utterance midway.
+ const texts=window.LabYouTube.speechPieces(row.text),pieces=(texts.length?texts:[row.text]).map(text=>{const x=new SpeechSynthesisUtterance(text);x.voice=s.voice;x.lang=s.voice.lang;x.rate=s.rate;return x;});
+ const u=pieces[0],finalPiece=pieces[pieces.length-1];s.utterance=u;s.pieces=pieces;let ended=false;
  const current=()=>scriptValid(s)&&s.segment===segment&&!ended;
+ pieces.slice(1).forEach(x=>{x.onstart=()=>{if(current())s.utterance=x;};});
  u.onstart=()=>{if(!current())return;clearTimeout(scriptStartTimer);s.started=true;if(s.phase!=='paused')s.phase='playing';const ids=scriptCardIds(row);if(ids.length)expose(ids);scriptMessage(s.phase==='paused'?'대본 재생을 일시정지했습니다.':`${s.index+1}번 문장을 읽고 있습니다.`);renderScriptTransport();};
- u.onend=()=>{if(!current()||ended)return;ended=true;clearTimeout(scriptStartTimer);s.utterance=null;if(s.phase==='paused'){s.endedWhilePaused=true;return;}advanceScript(s);};
- u.onerror=e=>{if(!current())return;scriptFailure(s,e.error==='network'?'온라인 음성 연결이 끊겼습니다. 인터넷이나 기기 음성을 확인한 뒤 다시 재생하세요.':`대본 재생 오류 (${e.error||'알 수 없음'}). 위의 음성 테스트를 확인한 뒤 다시 시작하세요.`);};
+ finalPiece.onend=()=>{if(!current()||ended)return;ended=true;clearTimeout(scriptStartTimer);s.utterance=null;s.pieces=null;if(s.phase==='paused'){s.endedWhilePaused=true;return;}advanceScript(s);};
+ const failed=e=>{if(!current())return;scriptFailure(s,e.error==='network'?'온라인 음성 연결이 끊겼습니다. 인터넷이나 기기 음성을 확인한 뒤 다시 재생하세요.':`대본 재생 오류 (${e.error||'알 수 없음'}). 위의 음성 테스트를 확인한 뒤 다시 시작하세요.`);};
  if($('ytScriptFollow').checked){const page=Math.floor(s.index/SCRIPT_PAGE_SIZE)*SCRIPT_PAGE_SIZE;if(page!==scriptPage){scriptPage=page;renderScriptList();}}
  renderScriptTransport();
  if($('ytScriptFollow').checked&&$('ytScriptDetails').open){const active=$('ytScriptList').querySelector('.is-current');if(active)$('ytScriptList').scrollTop=active.offsetTop-$('ytScriptList').offsetTop;}
  scriptMessage(`${s.index+1}번 문장 재생 준비 중…`);armScriptStart(s,segment);
- try{speechSynthesis.resume?.();speechSynthesis.speak(u);prefetchScriptKorean(s);}catch(e){scriptFailure(s,'음성을 시작하지 못했습니다. 다른 영어 음성을 선택한 뒤 다시 재생하세요.');}
+ pieces.forEach(x=>{x.onerror=failed;});
+ try{speechSynthesis.resume?.();pieces.forEach(x=>speechSynthesis.speak(x));prefetchScriptKorean(s);}catch(e){scriptFailure(s,'음성을 시작하지 못했습니다. 다른 영어 음성을 선택한 뒤 다시 재생하세요.');}
 }
 function scheduleScriptNext(s,delay){
  s.phase='gap';s.gapUntil=performance.now()+delay;s.remainingGap=delay;
